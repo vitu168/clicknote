@@ -116,10 +116,10 @@ export default function Header() {
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/[0.06] dark:bg-slate-800 dark:ring-white/10">
+            <div className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/6 dark:bg-slate-800 dark:ring-white/10">
               {/* User card — GitHub/Dribbble style */}
-              <div className="flex items-center gap-3 bg-gradient-to-br from-slate-50 to-indigo-50/60 px-4 py-4 dark:from-slate-800 dark:to-indigo-950/30">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-sm font-bold text-white shadow-md shadow-indigo-200/50 dark:shadow-indigo-900/50">
+              <div className="flex items-center gap-3 bg-linear-to-br from-slate-50 to-indigo-50/60 px-4 py-4 dark:from-slate-800 dark:to-indigo-950/30">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-indigo-500 to-violet-600 text-sm font-bold text-white shadow-md shadow-indigo-200/50 dark:shadow-indigo-900/50">
                   {profile?.avatarUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={profile.avatarUrl} alt={displayName} className="h-full w-full object-cover" />

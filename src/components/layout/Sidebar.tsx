@@ -85,7 +85,7 @@ export default function Sidebar() {
     <aside
       className={cn(
         'relative flex h-full shrink-0 flex-col bg-white border-r border-slate-200 dark:bg-slate-900 dark:border-slate-700/60 transition-all duration-300 ease-in-out overflow-hidden',
-        collapsed ? 'w-[68px]' : 'w-56',
+        collapsed ? 'w-17' : 'w-56',
       )}
     >
       {/* Brand header — collapsed = click-to-expand, expanded = logo+title+collapse btn */}
@@ -97,14 +97,14 @@ export default function Sidebar() {
             aria-label="Expand sidebar"
             className="flex w-full flex-col items-center gap-1.5 py-3.5 text-slate-400 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-950/30 dark:hover:text-indigo-400 transition-colors group"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow shadow-indigo-200/60">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-linear-to-br from-indigo-500 to-violet-600 shadow shadow-indigo-200/60">
               <StickyNote className="h-4 w-4 text-white" />
             </div>
             <ChevronRight className="h-3 w-3" />
           </button>
         ) : (
           <div className="flex items-center gap-2.5 px-3 py-3.5">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow shadow-indigo-200/60">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-indigo-500 to-violet-600 shadow shadow-indigo-200/60">
               <StickyNote className="h-4 w-4 text-white" />
             </div>
             <div className="flex-1 min-w-0">
@@ -190,7 +190,7 @@ export default function Sidebar() {
         >
           <div
             title={collapsed ? displayName : undefined}
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-[10px] font-bold text-white overflow-hidden"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-indigo-500 to-violet-600 text-[10px] font-bold text-white overflow-hidden"
           >
             {profile?.avatarUrl ? (
               // eslint-disable-next-line @next/next/no-img-element

@@ -24,7 +24,7 @@ export default function NotesPage() {
   const [filter, setFilter] = useState<Filter>('all');
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<NoteInfo | null>(null);
-  const [totalCount, setTotalCount] = useState(0);
+  const [, setTotalCount] = useState(0);
 
   const fetchNotes = useCallback(async () => {
     if (!userId) return;
@@ -103,30 +103,12 @@ export default function NotesPage() {
     router.push(`/notes/${note.id}`);
   }
 
-  const favCount = notes.filter((n) => n.isFavorites).length;
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-lg font-bold text-slate-900">Notes</h1>
-          <p className="text-xs text-slate-500">
-            {totalCount} {totalCount === 1 ? 'note' : 'notes'} · {favCount} favorite{favCount !== 1 ? 's' : ''}
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setShowForm(true)}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors"
-        >
-          <Plus className="h-4 w-4" />
-          New Note
-        </button>
-      </div>
-
-      {/* Filters & search */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+      {/* Controls row — search, filters, refresh, new note button */}
+      <div className="flex items-center gap-2">
+        {/* Search */}
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
@@ -134,30 +116,32 @@ export default function NotesPage() {
             placeholder="Search notes…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white py-2 pl-9 pr-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
+            className="h-9 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition"
           />
         </div>
 
-        <div className="flex gap-1 rounded-xl border border-slate-200 bg-white p-1">
+        {/* Filter buttons */}
+        <div className="flex h-9 items-center gap-1 rounded-xl border border-slate-200 bg-white px-1">
           {(['all', 'favorites'] as Filter[]).map((f) => (
             <button
               key={f}
               type="button"
               onClick={() => setFilter(f)}
               className={cn(
-                'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors',
+                'flex h-7 shrink-0 items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition-colors',
                 filter === f
-                  ? 'bg-indigo-600 text-white shadow-sm'
-                  : 'text-slate-500 hover:bg-slate-50',
+                  ? 'bg-indigo-600 text-white'
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50',
               )}
             >
               {f === 'favorites' && <Star className="h-3 w-3" fill={filter === 'favorites' ? 'currentColor' : 'none'} />}
-              {f === 'all' ? <FileText className="h-3 w-3" /> : null}
-              {f === 'all' ? 'All Notes' : 'Favorites'}
+              {f === 'all' && <FileText className="h-3 w-3" />}
+              <span>{f === 'all' ? 'All Notes' : 'Favorites'}</span>
             </button>
           ))}
         </div>
 
+        {/* Refresh */}
         <button
           type="button"
           onClick={fetchNotes}
@@ -165,6 +149,14 @@ export default function NotesPage() {
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-colors"
         >
           <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowForm(true)}
+          className="flex h-9 shrink-0 items-center gap-1.5 rounded-xl bg-indigo-600 px-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors"
+        >
+          <Plus className="h-4 w-4" />
+          New Note
         </button>
       </div>
 
