@@ -46,14 +46,14 @@ export default function UsersPage() {
         {summaryCards.map((card) => (
           <div
             key={card.label}
-            className="flex items-center gap-3 rounded-2xl bg-white px-4 py-4 ring-1 ring-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default"
+            className="flex items-center gap-3 rounded-2xl bg-white dark:bg-slate-800 px-4 py-4 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm hover:shadow-md dark:hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default"
           >
             <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${card.color}`}>
               <card.icon className="h-4 w-4" />
             </div>
             <div>
-              <p className="text-xl font-bold text-slate-900">{card.value}</p>
-              <p className="text-[11px] text-slate-500">{card.label}</p>
+              <p className="text-xl font-bold text-slate-900 dark:text-slate-100">{card.value}</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">{card.label}</p>
             </div>
           </div>
         ))}
@@ -62,7 +62,7 @@ export default function UsersPage() {
       {loading ? (
         <div className="space-y-2">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-14 animate-pulse rounded-xl bg-slate-100" />
+            <div key={i} className="h-14 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-700/50" />
           ))}
         </div>
       ) : (

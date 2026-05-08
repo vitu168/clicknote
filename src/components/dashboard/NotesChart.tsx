@@ -26,10 +26,10 @@ export default function NotesChart({ total, favorites, users, activeUsers }: {
   const max = Math.max(...bars.map((b) => b.value), 1);
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
-      <div className="px-6 py-4 border-b border-slate-100">
-        <p className="text-sm font-semibold text-slate-900">Notes Overview</p>
-        <p className="text-xs text-slate-400 mt-0.5">Breakdown of notes and users in your workspace</p>
+    <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
+      <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Notes Overview</p>
+        <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Breakdown of notes and users in your workspace</p>
       </div>
       <div className="px-6 py-5">
         {/* Bar chart */}
@@ -38,14 +38,14 @@ export default function NotesChart({ total, favorites, users, activeUsers }: {
             const pct = Math.round((bar.value / max) * 100);
             return (
               <div key={bar.label} className="flex flex-1 flex-col items-center gap-2">
-                <span className="text-xs font-bold text-slate-700">{bar.value}</span>
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{bar.value}</span>
                 <div className={`w-full rounded-t-lg ${bar.bg} relative overflow-hidden`} style={{ height: '100px' }}>
                   <div
                     className={`absolute bottom-0 left-0 right-0 rounded-t-lg ${bar.color} transition-all duration-700`}
                     style={{ height: `${pct}%` }}
                   />
                 </div>
-                <span className="text-[10px] text-slate-500 text-center leading-tight">{bar.label}</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 text-center leading-tight">{bar.label}</span>
               </div>
             );
           })}
@@ -53,21 +53,21 @@ export default function NotesChart({ total, favorites, users, activeUsers }: {
 
         {/* Legend / ratio row */}
         <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <div className="rounded-xl bg-slate-50 px-4 py-3">
-            <p className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Favorite Rate</p>
-            <p className="mt-0.5 text-lg font-bold text-slate-900">
+          <div className="rounded-xl bg-slate-50 dark:bg-slate-700/50 px-4 py-3">
+            <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Favorite Rate</p>
+            <p className="mt-0.5 text-lg font-bold text-slate-900 dark:text-slate-100">
               {total > 0 ? `${Math.round((favorites / total) * 100)}%` : '—'}
             </p>
           </div>
-          <div className="rounded-xl bg-slate-50 px-4 py-3">
-            <p className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Notes / User</p>
-            <p className="mt-0.5 text-lg font-bold text-slate-900">
+          <div className="rounded-xl bg-slate-50 dark:bg-slate-700/50 px-4 py-3">
+            <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Notes / User</p>
+            <p className="mt-0.5 text-lg font-bold text-slate-900 dark:text-slate-100">
               {users > 0 ? (total / users).toFixed(1) : '—'}
             </p>
           </div>
-          <div className="rounded-xl bg-slate-50 px-4 py-3">
-            <p className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Active Rate</p>
-            <p className="mt-0.5 text-lg font-bold text-slate-900">
+          <div className="rounded-xl bg-slate-50 dark:bg-slate-700/50 px-4 py-3">
+            <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Active Rate</p>
+            <p className="mt-0.5 text-lg font-bold text-slate-900 dark:text-slate-100">
               {users > 0 ? `${Math.round((activeUsers / users) * 100)}%` : '—'}
             </p>
           </div>

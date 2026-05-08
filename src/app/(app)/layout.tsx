@@ -18,8 +18,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   if (loading || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#F5F5FA]">
-        <div className="flex flex-col items-center gap-3 text-slate-500">
+      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-slate-900">
+        <div className="flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 shadow shadow-indigo-200">
             <FileText className="h-5 w-5 text-white" />
           </div>
@@ -30,11 +30,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#F5F5FA]">
+    <div className="flex h-screen overflow-hidden bg-white dark:bg-slate-900">
       <Sidebar />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header />
-        <main className="flex-1 overflow-y-auto p-5 lg:p-6">
+        <main className="flex-1 overflow-y-auto p-5 bg-slate-50 dark:bg-slate-950 lg:p-6">
           <div
             key={pathname}
             className="animate-page-in"

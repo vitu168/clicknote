@@ -31,7 +31,7 @@ export default function MessengerPage() {
 
   if (loading) {
     return (
-      <div className="flex h-full items-center justify-center text-slate-400">
+      <div className="flex h-full items-center justify-center text-slate-400 dark:text-slate-500">
         <div className="flex flex-col items-center gap-2">
           <MessageSquare className="h-8 w-8 animate-pulse" />
           <p className="text-xs">Loading contacts…</p>

@@ -11,16 +11,16 @@ interface RecentTransactionsProps {
 
 export default function RecentTransactions({ transactions }: RecentTransactionsProps) {
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
+    <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-slate-700">
         <div>
-          <p className="text-sm font-semibold text-slate-900">Recent Orders</p>
-          <p className="text-xs text-slate-400 mt-0.5">{transactions.length} orders this period</p>
+          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Recent Orders</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{transactions.length} orders this period</p>
         </div>
         <Link
           href="/dashboard"
-          className="flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+          className="flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
         >
           View all <ArrowRight className="h-3.5 w-3.5" />
         </Link>
@@ -30,44 +30,44 @@ export default function RecentTransactions({ transactions }: RecentTransactionsP
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-100">
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
+            <tr className="border-b border-slate-100 dark:border-slate-700">
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                 Customer
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider hidden md:table-cell">
+              <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider hidden md:table-cell">
                 Product
               </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">
+              <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                 Amount
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider hidden lg:table-cell">
+              <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider hidden lg:table-cell">
                 Date
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <tbody className="divide-y divide-slate-50 dark:divide-slate-700/50">
             {transactions.map((tx) => (
-              <tr key={tx.id} className="group hover:bg-slate-50 transition-colors">
+              <tr key={tx.id} className="group hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                 <td className="px-6 py-3.5">
                   <div className="flex items-center gap-3">
                     <Avatar name={tx.customer} colorClass={tx.avatarColor} size="sm" />
                     <div>
-                      <p className="font-medium text-slate-800 leading-none">{tx.customer}</p>
-                      <p className="text-xs text-slate-400 mt-0.5">{tx.id}</p>
+                      <p className="font-medium text-slate-800 dark:text-slate-100 leading-none">{tx.customer}</p>
+                      <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{tx.id}</p>
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-3.5 text-slate-600 hidden md:table-cell">{tx.product}</td>
-                <td className="px-4 py-3.5 text-right font-semibold text-slate-900">
+                <td className="px-4 py-3.5 text-slate-600 dark:text-slate-300 hidden md:table-cell">{tx.product}</td>
+                <td className="px-4 py-3.5 text-right font-semibold text-slate-900 dark:text-slate-100">
                   {formatCurrency(tx.amount)}
                 </td>
                 <td className="px-4 py-3.5">
                   <Badge variant={tx.status} showDot>{tx.status}</Badge>
                 </td>
-                <td className="px-6 py-3.5 text-slate-500 hidden lg:table-cell">
+                <td className="px-6 py-3.5 text-slate-500 dark:text-slate-400 hidden lg:table-cell">
                   {formatDate(tx.date)}
                 </td>
               </tr>

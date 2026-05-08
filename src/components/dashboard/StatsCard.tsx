@@ -62,7 +62,7 @@ export default function StatsCard({ stat, className }: { stat: DashStat; classNa
   return (
     <div
       className={cn(
-        'group relative overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md cursor-default',
+        'group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md cursor-default',
         c.glow,
         className,
       )}
@@ -73,7 +73,7 @@ export default function StatsCard({ stat, className }: { stat: DashStat; classNa
       <div className="p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{stat.label}</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">{stat.label}</p>
             <p className={cn('mt-2 text-3xl font-extrabold tracking-tight', c.text)}>{stat.value}</p>
 
             {hasTrend ? (

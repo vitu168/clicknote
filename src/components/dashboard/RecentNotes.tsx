@@ -15,31 +15,31 @@ function timeAgo(dateStr: string | null | undefined): string {
 
 export default function RecentNotes({ notes }: { notes: NoteInfo[] }) {
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
-      <div className="px-6 py-4 border-b border-slate-100">
-        <p className="text-sm font-semibold text-slate-900">Recent Notes</p>
-        <p className="text-xs text-slate-400 mt-0.5">Latest activity across all notes</p>
+    <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
+      <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Recent Notes</p>
+        <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Latest activity across all notes</p>
       </div>
       {notes.length === 0 ? (
         <div className="flex flex-col items-center py-12">
-          <FileText className="h-8 w-8 text-slate-200 mb-2" />
-          <p className="text-sm text-slate-400">No notes yet</p>
+          <FileText className="h-8 w-8 text-slate-200 dark:text-slate-700 mb-2" />
+          <p className="text-sm text-slate-400 dark:text-slate-500">No notes yet</p>
         </div>
       ) : (
-        <ul className="divide-y divide-slate-50">
+        <ul className="divide-y divide-slate-50 dark:divide-slate-700/50">
           {notes.map((note) => (
-            <li key={note.id} className="flex items-start gap-3 px-6 py-3.5 hover:bg-slate-50/70 transition-colors">
-              <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+            <li key={note.id} className="flex items-start gap-3 px-6 py-3.5 hover:bg-slate-50/70 dark:hover:bg-slate-700/50 transition-colors">
+              <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400">
                 <FileText className="h-4 w-4" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className="text-sm font-medium text-slate-900 truncate">{note.name || 'Untitled'}</p>
+                  <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">{note.name || 'Untitled'}</p>
                   {note.isFavorites && <Star className="h-3 w-3 text-amber-400 fill-amber-400 shrink-0" />}
                 </div>
-                <p className="text-xs text-slate-500 truncate mt-0.5">{note.description || 'No description'}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">{note.description || 'No description'}</p>
               </div>
-              <span className="shrink-0 text-xs text-slate-400 whitespace-nowrap">{timeAgo(note.createdAt)}</span>
+              <span className="shrink-0 text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap">{timeAgo(note.createdAt)}</span>
             </li>
           ))}
         </ul>

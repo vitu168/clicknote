@@ -28,12 +28,12 @@ export default function NotificationSettings() {
   }
 
   return (
-    <ul className="divide-y divide-slate-100">
+    <ul className="divide-y divide-slate-100 dark:divide-slate-700">
       {toggles.map((item) => (
         <li key={item.id} className="flex items-center justify-between py-4">
           <div className="flex-1 pr-6">
-            <p className="text-sm font-medium text-slate-900">{item.label}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{item.description}</p>
+            <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{item.label}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{item.description}</p>
           </div>
           <label className="relative inline-flex h-6 w-11 cursor-pointer items-center shrink-0">
             <input
@@ -45,7 +45,7 @@ export default function NotificationSettings() {
             />
             <span
               className={`absolute inset-0 rounded-full transition-colors duration-300 ${
-                item.enabled ? 'bg-indigo-500' : 'bg-slate-200'
+                item.enabled ? 'bg-indigo-500' : 'bg-slate-200 dark:bg-slate-700'
               }`}
             />
             <span

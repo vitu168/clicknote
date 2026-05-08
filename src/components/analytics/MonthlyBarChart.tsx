@@ -24,18 +24,18 @@ export default function MonthlyBarChart({ data }: MonthlyBarChartProps) {
   const barWidth = (barGroupWidth - 8) / 2;
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
-      <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-100">
+    <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
+      <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-100 dark:border-slate-700">
         <div>
-          <p className="text-sm font-semibold text-slate-900">Monthly Traffic</p>
-          <p className="text-xs text-slate-400 mt-0.5">Visitors vs Page Views</p>
+          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Monthly Traffic</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Visitors vs Page Views</p>
         </div>
-        <div className="flex items-center gap-4 text-xs text-slate-500">
+        <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
           <span className="flex items-center gap-1.5">
             <span className="h-2.5 w-2.5 rounded-full bg-indigo-500" />Visitors
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-indigo-200" />Page Views
+            <span className="h-2.5 w-2.5 rounded-full bg-indigo-200 dark:bg-indigo-400/50" />Page Views
           </span>
         </div>
       </div>

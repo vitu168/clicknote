@@ -44,14 +44,14 @@ export default function RevenueChart({ data }: RevenueChartProps) {
   );
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
+    <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-100">
+      <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-100 dark:border-slate-700">
         <div>
-          <p className="text-sm font-semibold text-slate-900">Sales Overview</p>
-          <p className="text-xs text-slate-400 mt-0.5">Last 8 months</p>
+          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Sales Overview</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Last 8 months</p>
         </div>
-        <div className="flex items-center gap-4 text-xs text-slate-500">
+        <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
           <span className="flex items-center gap-1.5">
             <span className="h-2.5 w-2.5 rounded-full bg-indigo-500" />
             Revenue

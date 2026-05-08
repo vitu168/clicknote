@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { FileText, Star, Users, UserCheck, RefreshCw, TrendingUp } from 'lucide-react';
 import StatsCard, { type DashStat } from '@/components/dashboard/StatsCard';
 import RecentNotes from '@/components/dashboard/RecentNotes';
@@ -84,6 +84,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [lastRefreshed, setLastRefreshed] = useState<Date | null>(null);
+  const initialized = useRef(false);
 
   const load = useCallback(async (isManual = false) => {
     if (!user?.userId) return;
@@ -98,10 +99,22 @@ export default function DashboardPage() {
     }
   }, [user?.userId]);
 
+  // Initial load on mount and when user changes
   useEffect(() => {
-    const interval = setInterval(() => load(), 30_000);
+    if (user?.userId && !initialized.current) {
+      initialized.current = true;
+      load();
+    }
+  }, [user?.userId, load]);
+
+  // Auto-refresh every 30 seconds
+  useEffect(() => {
+    if (!user?.userId) return;
+    const interval = setInterval(() => {
+      load();
+    }, 30_000);
     return () => clearInterval(interval);
-  }, [load]);
+  }, [user?.userId, load]);
 
   /* ── Stats ─────────────────────────────────────────────────── */
   const stats: DashStat[] = [
@@ -124,7 +137,7 @@ export default function DashboardPage() {
   const lineData: LineDataPoint[] = data ? buildWeeklyTrend(data.allNotes) : [];
 
   const skeleton = (h: string) => (
-    <div className={`animate-pulse rounded-2xl bg-slate-100 ${h}`} />
+    <div className={`animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-700/50 ${h}`} />
   );
 
   const today = new Date().toLocaleDateString('en-US', {

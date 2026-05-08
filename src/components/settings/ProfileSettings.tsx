@@ -72,20 +72,20 @@ export default function ProfileSettings() {
           <button
             type="button"
             title="Change photo"
-            className="absolute -bottom-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-white ring-2 ring-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+            className="absolute -bottom-1.5 -right-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-white dark:bg-slate-700 ring-2 ring-slate-200 dark:ring-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
           >
             <Camera className="h-3.5 w-3.5" />
           </button>
         </div>
         <div>
-          <p className="text-sm font-medium text-slate-900">Profile Photo</p>
-          <p className="text-xs text-slate-500 mt-0.5">Paste an image URL. JPG, PNG, or GIF.</p>
+          <p className="text-sm font-medium text-slate-900 dark:text-slate-100">Profile Photo</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Paste an image URL. JPG, PNG, or GIF.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1.5">
+          <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
             Full Name
           </label>
           <input
@@ -94,11 +94,11 @@ export default function ProfileSettings() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all"
+            className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-950/50 transition-all"
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
+          <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
             Email Address
           </label>
           <input
@@ -107,11 +107,11 @@ export default function ProfileSettings() {
             type="email"
             value={email}
             readOnly
-            className="w-full cursor-not-allowed rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-500 outline-none"
+            className="w-full cursor-not-allowed rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-2.5 text-sm text-slate-500 dark:text-slate-400 outline-none"
           />
         </div>
         <div className="sm:col-span-2">
-          <label htmlFor="avatarUrl" className="block text-sm font-medium text-slate-700 mb-1.5">
+          <label htmlFor="avatarUrl" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
             Avatar URL
           </label>
           <input
@@ -121,13 +121,13 @@ export default function ProfileSettings() {
             value={avatarUrl}
             onChange={(e) => setAvatarUrl(e.target.value)}
             placeholder="https://…"
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all"
+            className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-950/50 transition-all"
           />
         </div>
       </div>
 
       {error && (
-        <p className="rounded-lg bg-rose-50 px-3 py-2 text-xs font-medium text-rose-600">{error}</p>
+        <p className="rounded-lg bg-rose-50 dark:bg-rose-950/30 px-3 py-2 text-xs font-medium text-rose-600 dark:text-rose-400">{error}</p>
       )}
 
       <div className="flex items-center gap-3">
@@ -139,7 +139,7 @@ export default function ProfileSettings() {
           <Save className="h-4 w-4" />
           {saving ? 'Saving…' : 'Save Changes'}
         </button>
-        {saved && <span className="text-sm text-emerald-600 font-medium">✓ Changes saved</span>}
+        {saved && <span className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">✓ Changes saved</span>}
       </div>
     </form>
   );

@@ -121,7 +121,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
           if (msg.is_deleted) {
             return (
               <div key={msg.id} className={cn('flex', isMe ? 'justify-end' : 'justify-start')}>
-                <span className="text-[11px] italic text-slate-400">Message deleted</span>
+                <span className="text-[11px] italic text-slate-400 dark:text-slate-500">Message deleted</span>
               </div>
             );
           }
@@ -129,7 +129,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
             <div key={msg.id} className={cn('group flex items-end gap-2', isMe ? 'flex-row-reverse' : 'flex-row')}>
               {/* Avatar */}
               {!isMe && (
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-bold text-indigo-700">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-950/50 text-[10px] font-bold text-indigo-700 dark:text-indigo-400">
                   {(otherUser.name ?? otherUser.email ?? 'U').slice(0, 2).toUpperCase()}
                 </div>
               )}
@@ -139,10 +139,10 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
                 {msg.reply_to_text && (
                   <div className={cn(
                     'mb-1 rounded-lg border-l-2 px-2.5 py-1 text-[11px]',
-                    isMe ? 'border-indigo-300 bg-indigo-50 text-right' : 'border-slate-300 bg-slate-50',
+                    isMe ? 'border-indigo-300 dark:border-indigo-900/70 bg-indigo-50 dark:bg-indigo-950/30 text-right' : 'border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50',
                   )}>
                     <span className="font-semibold">{msg.reply_to_sender_name}</span>
-                    <p className="text-slate-500 line-clamp-1">{msg.reply_to_text}</p>
+                    <p className="text-slate-500 dark:text-slate-400 line-clamp-1">{msg.reply_to_text}</p>
                   </div>
                 )}
 
@@ -152,7 +152,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
                     'rounded-2xl px-3.5 py-2.5 text-sm shadow-sm',
                     isMe
                       ? 'rounded-br-md bg-indigo-600 text-white'
-                      : 'rounded-bl-md bg-white text-slate-800 ring-1 ring-slate-200',
+                      : 'rounded-bl-md bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 ring-1 ring-slate-200 dark:ring-slate-600',
                   )}
                 >
                   {msg.text}
@@ -167,7 +167,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
                         type="button"
                         onClick={() => handleReaction(msg.id, r.emoji, msg.reactions)}
                         aria-label={`Toggle ${r.emoji} reaction`}
-                        className="inline-flex items-center gap-0.5 rounded-full bg-slate-100 px-1.5 py-0.5 text-xs hover:bg-slate-200 transition-colors"
+                        className="inline-flex items-center gap-0.5 rounded-full bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 text-xs hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
                       >
                         {r.emoji}
                       </button>
@@ -177,7 +177,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
 
                 {/* Time + actions */}
                 <div className={cn('mt-0.5 flex items-center gap-1.5', isMe ? 'justify-end' : 'justify-start')}>
-                  <span className="text-[10px] text-slate-400">{formatTime(msg.created_at)}</span>
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500">{formatTime(msg.created_at)}</span>
 
                   <div className="flex opacity-0 group-hover:opacity-100 transition-opacity gap-0.5">
                     <button
@@ -185,7 +185,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
                       onClick={() => setReactionTarget(reactionTarget === msg.id ? null : msg.id)}
                       aria-label="Add reaction"
                       title="Add reaction"
-                      className="rounded p-0.5 text-slate-400 hover:text-indigo-500 transition-colors"
+                      className="rounded p-0.5 text-slate-400 dark:text-slate-500 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors"
                     >
                       <SmilePlus className="h-3 w-3" />
                     </button>
@@ -195,7 +195,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
                         onClick={() => handleDelete(msg.id)}
                         aria-label="Delete message"
                         title="Delete message"
-                        className="rounded p-0.5 text-slate-400 hover:text-rose-500 transition-colors"
+                        className="rounded p-0.5 text-slate-400 dark:text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
                       >
                         <Trash2 className="h-3 w-3" />
                       </button>
@@ -206,7 +206,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
                 {/* Reaction picker */}
                 {reactionTarget === msg.id && (
                   <div className={cn(
-                    'absolute z-10 flex gap-1 rounded-xl bg-white p-2 shadow-lg ring-1 ring-slate-200',
+                    'absolute z-10 flex gap-1 rounded-xl bg-white dark:bg-slate-700 p-2 shadow-lg ring-1 ring-slate-200 dark:ring-slate-600',
                     isMe ? 'right-0 bottom-8' : 'left-0 bottom-8',
                   )}>
                     {REACTIONS.map((emoji) => (
@@ -215,7 +215,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
                         type="button"
                         onClick={() => handleReaction(msg.id, emoji, msg.reactions)}
                         aria-label={`React with ${emoji}`}
-                        className="rounded-lg p-1 text-base hover:bg-slate-100 transition-colors"
+                        className="rounded-lg p-1 text-base hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
                       >
                         {emoji}
                       </button>
@@ -230,7 +230,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
       </div>
 
       {/* Input */}
-      <div className="border-t border-slate-100 bg-white px-4 py-3">
+      <div className="border-t border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3">
         <div className="flex items-end gap-2">
           <textarea
             value={text}
@@ -238,7 +238,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
             onKeyDown={handleKeyDown}
             placeholder="Type a message… (Enter to send)"
             rows={1}
-            className="flex-1 resize-none rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition max-h-32 overflow-y-auto"
+            className="flex-1 resize-none rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-950/50 transition max-h-32 overflow-y-auto"
           />
           <button
             type="button"

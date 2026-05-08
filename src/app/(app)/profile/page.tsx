@@ -54,12 +54,12 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6">
       {/* Profile card */}
-      <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
+      <div className="overflow-hidden rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
         <div className="h-24 bg-linear-to-br from-indigo-500 via-violet-500 to-fuchsia-500" />
         <div className="relative px-6 pb-6">
           <div className="-mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-end gap-4">
-              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-indigo-500 to-violet-600 text-2xl font-bold text-white ring-4 ring-white">
+              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-indigo-500 to-violet-600 text-2xl font-bold text-white ring-4 ring-white dark:ring-slate-800">
                 {profile?.avatarUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={profile.avatarUrl} alt="" className="h-full w-full object-cover" />
@@ -68,15 +68,15 @@ export default function ProfilePage() {
                 )}
               </div>
               <div className="pb-1">
-                <p className="text-lg font-bold text-slate-900">{displayName}</p>
-                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-500">
+                <p className="text-lg font-bold text-slate-900 dark:text-slate-100">{displayName}</p>
+                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
                   <Mail className="h-3 w-3" /> {user.email}
                 </p>
               </div>
             </div>
             <Link
               href="/settings"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
             >
               <Edit3 className="h-3.5 w-3.5" /> Edit profile
             </Link>
@@ -97,15 +97,15 @@ export default function ProfilePage() {
       </div>
 
       {/* My Notes */}
-      <section className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
-        <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+      <section className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 px-6 py-4">
           <div>
-            <p className="text-sm font-semibold text-slate-900">My notes</p>
-            <p className="text-xs text-slate-400">Everything you&apos;ve captured</p>
+            <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">My notes</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">Everything you&apos;ve captured</p>
           </div>
           <Link
             href="/notes"
-            className="text-xs font-semibold text-indigo-600 hover:underline"
+            className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
           >
             View all
           </Link>
@@ -114,11 +114,11 @@ export default function ProfilePage() {
           {loading ? (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="h-32 animate-pulse rounded-2xl bg-slate-100" />
+                <div key={i} className="h-32 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-700" />
               ))}
             </div>
           ) : notes.length === 0 ? (
-            <p className="text-center text-sm text-slate-400 py-8">
+            <p className="text-center text-sm text-slate-400 dark:text-slate-500 py-8">
               You haven&apos;t created any notes yet.
             </p>
           ) : (
@@ -146,13 +146,13 @@ function StatCard({
   tint: string;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-2xl bg-white px-5 py-4 ring-1 ring-slate-200 shadow-sm">
+    <div className="flex items-center gap-3 rounded-2xl bg-white dark:bg-slate-800 px-5 py-4 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
       <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${tint}`}>
         <Icon className="h-4 w-4" />
       </div>
       <div>
-        <p className="text-xl font-bold text-slate-900">{value}</p>
-        <p className="text-[11px] text-slate-500">{label}</p>
+        <p className="text-xl font-bold text-slate-900 dark:text-slate-100">{value}</p>
+        <p className="text-[11px] text-slate-500 dark:text-slate-400">{label}</p>
       </div>
     </div>
   );

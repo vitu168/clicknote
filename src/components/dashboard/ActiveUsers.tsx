@@ -18,19 +18,19 @@ const avatarColors = [
 
 export default function ActiveUsers({ users }: { users: UserProfile[] }) {
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
-      <div className="px-6 py-4 border-b border-slate-100">
-        <p className="text-sm font-semibold text-slate-900">Active Users</p>
-        <p className="text-xs text-slate-400 mt-0.5">Users registered in the workspace</p>
+    <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
+      <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Active Users</p>
+        <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Users registered in the workspace</p>
       </div>
       {users.length === 0 ? (
         <div className="px-6 py-12 text-center">
-          <p className="text-sm text-slate-400">No users yet</p>
+          <p className="text-sm text-slate-400 dark:text-slate-500">No users yet</p>
         </div>
       ) : (
-        <ul className="divide-y divide-slate-50 px-3 py-2">
+        <ul className="divide-y divide-slate-50 dark:divide-slate-700/50 px-3 py-2">
           {users.map((user, i) => (
-            <li key={user.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 transition-colors">
+            <li key={user.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
               <div
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-linear-to-br ${avatarColors[i % avatarColors.length]} text-[11px] font-bold text-white overflow-hidden`}
               >
@@ -42,11 +42,11 @@ export default function ActiveUsers({ users }: { users: UserProfile[] }) {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">{user.name || 'Unknown'}</p>
-                <p className="text-xs text-slate-400 truncate">{user.email}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">{user.name || 'Unknown'}</p>
+                <p className="text-xs text-slate-400 dark:text-slate-500 truncate">{user.email}</p>
               </div>
               {user.isNote && (
-                <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                <span className="shrink-0 rounded-full bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">
                   Note
                 </span>
               )}

@@ -63,10 +63,10 @@ export default function LineChart({
   const yTicks = [0, Math.round(max / 2), max];
 
   return (
-    <div className="flex h-full flex-col rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
-      <div className="border-b border-slate-100 px-6 py-4">
-        <p className="text-sm font-semibold text-slate-900">{title}</p>
-        {subtitle && <p className="mt-0.5 text-xs text-slate-400">{subtitle}</p>}
+    <div className="flex h-full flex-col rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
+      <div className="border-b border-slate-100 dark:border-slate-700 px-6 py-4">
+        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{title}</p>
+        {subtitle && <p className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">{subtitle}</p>}
       </div>
 
       <div className="flex-1 px-4 pb-4 pt-2">

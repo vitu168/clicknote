@@ -27,10 +27,10 @@ export default function TrafficDonut({ sources }: TrafficDonutProps) {
   });
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
-      <div className="px-6 py-5 border-b border-slate-100">
-        <p className="text-sm font-semibold text-slate-900">Traffic Sources</p>
-        <p className="text-xs text-slate-400 mt-0.5">This month breakdown</p>
+    <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
+      <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-700">
+        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Traffic Sources</p>
+        <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">This month breakdown</p>
       </div>
 
       <div className="flex items-center gap-6 px-6 py-6">
@@ -55,8 +55,8 @@ export default function TrafficDonut({ sources }: TrafficDonutProps) {
             ))}
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <p className="text-2xl font-bold text-slate-900">100%</p>
-            <p className="text-xs text-slate-400">Traffic</p>
+            <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">100%</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">Traffic</p>
           </div>
         </div>
 
@@ -68,9 +68,9 @@ export default function TrafficDonut({ sources }: TrafficDonutProps) {
                 <span
                   className={`h-2.5 w-2.5 rounded-full shrink-0 ${source.dotClass}`}
                 />
-                <span className="text-sm text-slate-600">{source.name}</span>
+                <span className="text-sm text-slate-600 dark:text-slate-300">{source.name}</span>
               </div>
-              <span className="text-sm font-semibold text-slate-900">{source.percentage}%</span>
+              <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">{source.percentage}%</span>
             </li>
           ))}
         </ul>

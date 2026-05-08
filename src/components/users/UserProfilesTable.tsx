@@ -58,9 +58,9 @@ export default function UserProfilesTable({ profiles, onDelete }: UserProfilesTa
   });
 
   return (
-    <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
+    <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
       {/* Toolbar */}
-      <div className="flex items-center gap-3 border-b border-slate-100 px-6 py-4">
+      <div className="flex items-center gap-3 border-b border-slate-100 dark:border-slate-700 px-6 py-4">
         <div className="relative flex-1 max-w-xs">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
@@ -68,10 +68,10 @@ export default function UserProfilesTable({ profiles, onDelete }: UserProfilesTa
             placeholder="Search users…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="h-9 w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-4 text-sm placeholder:text-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition"
+            className="h-9 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 pl-9 pr-4 text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-900 dark:text-slate-100 outline-none focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-950/50 transition"
           />
         </div>
-        <p className="ml-auto text-xs text-slate-400">
+        <p className="ml-auto text-xs text-slate-400 dark:text-slate-500">
           {filtered.length} of {profiles.length} users
         </p>
       </div>
@@ -80,20 +80,20 @@ export default function UserProfilesTable({ profiles, onDelete }: UserProfilesTa
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-slate-100">
-              <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <tr className="border-b border-slate-100 dark:border-slate-700">
+              <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                 User
               </th>
-              <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400 md:table-cell">
+              <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 md:table-cell">
                 Email
               </th>
-              <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400 lg:table-cell">
+              <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 lg:table-cell">
                 Joined
               </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                 Notes
               </th>
-              <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                 Actions
               </th>
             </tr>

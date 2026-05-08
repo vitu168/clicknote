@@ -22,15 +22,15 @@ export default function AnalyticsPage() {
         {kpiCards.map((card) => (
           <div
             key={card.label}
-            className="flex items-center gap-3 rounded-2xl bg-white px-4 py-4 ring-1 ring-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default"
+            className="flex items-center gap-3 rounded-2xl bg-white dark:bg-slate-800 px-4 py-4 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default"
           >
             <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${card.color}`}>
               <card.icon className="h-4.5 w-4.5" />
             </div>
             <div>
-              <p className="text-xl font-bold text-slate-900 leading-none">{card.value}</p>
-              <p className="text-[11px] text-slate-500 mt-0.5">{card.label}</p>
-              <p className="text-[11px] font-medium text-emerald-600 mt-0.5">{card.change} this month</p>
+              <p className="text-xl font-bold text-slate-900 dark:text-slate-100 leading-none">{card.value}</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{card.label}</p>
+              <p className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 mt-0.5">{card.change} this month</p>
             </div>
           </div>
         ))}
@@ -52,22 +52,22 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Top pages table */}
-      <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm animate-fade-in">
-        <div className="px-6 py-5 border-b border-slate-100">
-          <p className="text-sm font-semibold text-slate-900">Top Pages</p>
-          <p className="text-xs text-slate-400 mt-0.5">Most visited pages this month</p>
+      <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm animate-fade-in">
+        <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-700">
+          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Top Pages</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Most visited pages this month</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-100">
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Page</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Views</th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider hidden md:table-cell">Unique</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider hidden lg:table-cell">Avg. Time</th>
+              <tr className="border-b border-slate-100 dark:border-slate-700">
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">Page</th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">Views</th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider hidden md:table-cell">Unique</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider hidden lg:table-cell">Avg. Time</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-slate-50 dark:divide-slate-700">
               {[
                 { page: '/dashboard', views: 4820, unique: 3210, time: '3m 42s' },
                 { page: '/analytics', views: 3640, unique: 2890, time: '4m 18s' },
@@ -75,11 +75,11 @@ export default function AnalyticsPage() {
                 { page: '/settings', views: 1840, unique: 1620, time: '1m 38s' },
                 { page: '/docs', views: 1340, unique: 980, time: '5m 12s' },
               ].map((row) => (
-                <tr key={row.page} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-6 py-3.5 font-mono text-sm text-indigo-600">{row.page}</td>
-                  <td className="px-4 py-3.5 text-right font-medium text-slate-900">{row.views.toLocaleString()}</td>
-                  <td className="px-4 py-3.5 text-right text-slate-500 hidden md:table-cell">{row.unique.toLocaleString()}</td>
-                  <td className="px-6 py-3.5 text-right text-slate-500 hidden lg:table-cell">{row.time}</td>
+                <tr key={row.page} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                  <td className="px-6 py-3.5 font-mono text-sm text-indigo-600 dark:text-indigo-400">{row.page}</td>
+                  <td className="px-4 py-3.5 text-right font-medium text-slate-900 dark:text-slate-100">{row.views.toLocaleString()}</td>
+                  <td className="px-4 py-3.5 text-right text-slate-500 dark:text-slate-400 hidden md:table-cell">{row.unique.toLocaleString()}</td>
+                  <td className="px-6 py-3.5 text-right text-slate-500 dark:text-slate-400 hidden lg:table-cell">{row.time}</td>
                 </tr>
               ))}
             </tbody>

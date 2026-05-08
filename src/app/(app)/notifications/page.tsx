@@ -47,8 +47,8 @@ export default function NotificationsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-lg font-bold text-slate-900">Notifications</h1>
-          <p className="text-xs text-slate-500">
+          <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100">Notifications</h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             {unread > 0 ? `${unread} unread` : 'You are all caught up'}
           </p>
         </div>
@@ -56,7 +56,7 @@ export default function NotificationsPage() {
           <button
             type="button"
             onClick={handleDemoNotification}
-            className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+            className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
           >
             + Demo
           </button>
@@ -64,7 +64,7 @@ export default function NotificationsPage() {
             type="button"
             onClick={markAllRead}
             disabled={unread === 0}
-            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors disabled:opacity-50"
           >
             <Check className="h-3 w-3" /> Mark all read
           </button>
@@ -72,7 +72,7 @@ export default function NotificationsPage() {
             type="button"
             onClick={clearAllNotifications}
             disabled={items.length === 0}
-            className="inline-flex items-center gap-1 rounded-xl border border-rose-200 bg-white px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-1 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-white dark:bg-slate-700 px-3 py-1.5 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors disabled:opacity-50"
           >
             <Trash2 className="h-3 w-3" /> Clear all
           </button>
@@ -80,38 +80,38 @@ export default function NotificationsPage() {
       </div>
 
       {items.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-3 rounded-2xl bg-white py-16 text-center ring-1 ring-slate-200 shadow-sm">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-50 text-rose-500">
+        <div className="flex flex-col items-center justify-center gap-3 rounded-2xl bg-white dark:bg-slate-800 py-16 text-center ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-50 dark:bg-rose-950/30 text-rose-500 dark:text-rose-400">
             <BellOff className="h-7 w-7" />
           </div>
-          <p className="text-sm font-medium text-slate-600">No notifications yet.</p>
-          <p className="text-xs text-slate-400">New activity will show up here as it happens.</p>
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300">No notifications yet.</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500">New activity will show up here as it happens.</p>
         </div>
       ) : (
-        <ul className="divide-y divide-slate-100 overflow-hidden rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
+        <ul className="divide-y divide-slate-100 dark:divide-slate-700 overflow-hidden rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
           {items.map((n) => (
             <li
               key={n.id}
               className={cn(
                 'flex items-start gap-3 px-5 py-4 transition-colors',
-                n.isRead ? 'bg-white' : 'bg-indigo-50/30',
+                n.isRead ? 'bg-white dark:bg-slate-800' : 'bg-indigo-50/30 dark:bg-indigo-950/20',
               )}
             >
               <div
                 className={cn(
                   'mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl',
-                  n.isRead ? 'bg-slate-100 text-slate-400' : 'bg-indigo-100 text-indigo-600',
+                  n.isRead ? 'bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500' : 'bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400',
                 )}
               >
                 <Bell className="h-4 w-4" />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <p className="truncate text-sm font-semibold text-slate-900">{n.title}</p>
+                  <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{n.title}</p>
                   {!n.isRead && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-500" />}
                 </div>
-                <p className="mt-0.5 text-xs text-slate-500 leading-relaxed">{n.body}</p>
-                <p className="mt-1.5 text-[11px] text-slate-400">{relativeTime(n.receivedAt)}</p>
+                <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{n.body}</p>
+                <p className="mt-1.5 text-[11px] text-slate-400 dark:text-slate-500">{relativeTime(n.receivedAt)}</p>
               </div>
               <div className="flex shrink-0 items-center gap-1">
                 {!n.isRead && (
@@ -120,7 +120,7 @@ export default function NotificationsPage() {
                     onClick={() => markRead(n.id)}
                     aria-label="Mark as read"
                     title="Mark as read"
-                    className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 text-slate-400 hover:bg-emerald-50 hover:text-emerald-500 transition-colors"
+                    className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
                   >
                     <Check className="h-3.5 w-3.5" />
                   </button>
@@ -130,7 +130,7 @@ export default function NotificationsPage() {
                   onClick={() => removeNotification(n.id)}
                   aria-label="Dismiss"
                   title="Dismiss"
-                  className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 text-slate-400 hover:bg-rose-50 hover:text-rose-500 transition-colors"
+                  className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>
