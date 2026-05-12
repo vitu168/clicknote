@@ -84,10 +84,10 @@ export default function LineChart({
           </defs>
 
           {/* Horizontal grid lines */}
-          {yTicks.map((v) => {
+          {yTicks.map((v, i) => {
             const y = toY(v);
             return (
-              <g key={v}>
+              <g key={i}>
                 <line
                   x1={PAD.left} y1={y}
                   x2={W - PAD.right} y2={y}
