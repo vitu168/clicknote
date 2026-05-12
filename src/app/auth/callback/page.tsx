@@ -4,18 +4,48 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FileText } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { customAuth } from '@/lib/customAuth';
 
 export default function AuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        router.replace('/auth/complete-profile');
-      } else {
+    async function handleCallback() {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
         router.replace('/auth/login');
+        return;
       }
-    });
+
+      const { user } = session;
+      const email = user.email ?? '';
+      const name =
+        (user.user_metadata?.full_name as string | undefined) ??
+        (user.user_metadata?.name as string | undefined) ??
+        email.split('@')[0] ??
+        '';
+      // Stable derived password — ties the OAuth identity to the custom backend
+      const derivedPassword = `oauth_${user.id}`;
+
+      try {
+        // Returning user — sign in to get a fresh custom token
+        await customAuth.signIn(email, derivedPassword);
+      } catch {
+        try {
+          // First-time OAuth user — create a custom backend account
+          await customAuth.signUp(email, derivedPassword, name);
+        } catch {
+          // Neither worked — send back to login
+          router.replace('/auth/login');
+          return;
+        }
+      }
+
+      router.replace('/auth/complete-profile');
+    }
+
+    handleCallback();
   }, [router]);
 
   return (
