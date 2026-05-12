@@ -11,6 +11,7 @@ export default function AuthCallback() {
 
   useEffect(() => {
     async function handleCallback() {
+      // Wait for Supabase to process the OAuth tokens from the URL
       const { data: { session } } = await supabase.auth.getSession();
 
       if (!session) {
@@ -29,20 +30,21 @@ export default function AuthCallback() {
       const derivedPassword = `oauth_${user.id}`;
 
       try {
-        // Returning user — sign in to get a fresh custom token
+        // Returning OAuth user — sign in to get a fresh custom token
         await customAuth.signIn(email, derivedPassword);
       } catch {
         try {
           // First-time OAuth user — create a custom backend account
           await customAuth.signUp(email, derivedPassword, name);
         } catch {
-          // Neither worked — send back to login
           router.replace('/auth/login');
           return;
         }
       }
 
-      router.replace('/auth/complete-profile');
+      // Full page navigation so SessionProvider re-bootstraps from localStorage
+      // and the auth guard on complete-profile sees the user immediately
+      window.location.href = '/auth/complete-profile';
     }
 
     handleCallback();
