@@ -145,7 +145,7 @@ export default function DashboardPage() {
   });
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
 
       {/* ── Welcome banner ───────────────────────────────────────── */}
       <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-indigo-600 to-violet-600 px-6 py-5 text-white shadow-lg shadow-indigo-200">

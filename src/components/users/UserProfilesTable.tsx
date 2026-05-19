@@ -98,7 +98,7 @@ export default function UserProfilesTable({ profiles, onDelete }: UserProfilesTa
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <tbody className="divide-y divide-slate-50 dark:divide-slate-700/60">
             {filtered.length === 0 ? (
               <tr>
                 <td colSpan={5} className="px-6 py-12 text-center text-sm text-slate-400">
@@ -107,7 +107,7 @@ export default function UserProfilesTable({ profiles, onDelete }: UserProfilesTa
               </tr>
             ) : (
               filtered.map((profile) => (
-                <tr key={profile.id} className="transition-colors hover:bg-slate-50">
+                <tr key={profile.id} className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50">
                   {/* User */}
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">

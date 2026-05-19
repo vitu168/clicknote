@@ -25,7 +25,7 @@ export default function AnalyticsPage() {
             className="flex items-center gap-3 rounded-2xl bg-white dark:bg-slate-800 px-4 py-4 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default"
           >
             <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${card.color}`}>
-              <card.icon className="h-4.5 w-4.5" />
+              <card.icon className="h-5 w-5" />
             </div>
             <div>
               <p className="text-xl font-bold text-slate-900 dark:text-slate-100 leading-none">{card.value}</p>

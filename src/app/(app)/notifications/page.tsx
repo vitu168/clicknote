@@ -46,12 +46,9 @@ export default function NotificationsPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100">Notifications</h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            {unread > 0 ? `${unread} unread` : 'You are all caught up'}
-          </p>
-        </div>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          {unread > 0 ? `${unread} unread` : 'All caught up'}
+        </p>
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
