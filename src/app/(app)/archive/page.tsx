@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Search, Archive as ArchiveIcon, RefreshCw } from 'lucide-react';
+import { Archive as ArchiveIcon, RefreshCw } from 'lucide-react';
+import SearchInput from '@/components/ui/SearchInput';
 import NoteCard from '@/components/notes/NoteCard';
 import { noteService } from '@/lib/services/noteService';
 import type { NoteInfo } from '@/lib/types';
@@ -65,16 +66,12 @@ export default function ArchivePage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
-        <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
-          <input
-            type="text"
-            placeholder="Search archive…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="h-8 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-8 pr-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-violet-400 focus:outline-none focus:ring-1 focus:ring-violet-200 dark:focus:ring-violet-900/40 transition"
-          />
-        </div>
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder="Search archive…"
+          className="flex-1"
+        />
         <span className="shrink-0 text-[11px] text-slate-400 dark:text-slate-500">
           {notes.length} archived
         </span>
@@ -103,7 +100,7 @@ export default function ArchivePage() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-3 py-20 text-center">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 dark:bg-violet-950/30 text-violet-500 dark:text-violet-400">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-50 dark:bg-accent-950/30 text-accent-500 dark:text-accent-400">
             <ArchiveIcon className="h-5 w-5" />
           </div>
           <p className="text-sm font-medium text-slate-600 dark:text-slate-400">

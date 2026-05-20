@@ -5,33 +5,35 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
   LayoutDashboard, MessageSquare, Settings, FileText, LogOut,
-  Users, ChevronLeft, ChevronRight, BarChart2, Star, Archive, Bell,
+  Users, BarChart2, Star, Archive, Bell, ChevronLeft,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useSession } from '@/lib/session';
+import { useI18n } from '@/lib/i18n';
+import ConfirmDialog from '@/components/ui/ConfirmDialog';
 
-const navGroups = [
+const navGroupDefs = [
   {
-    label: 'Workspace',
+    labelKey: 'group.workspace' as const,
     items: [
-      { href: '/dashboard',     label: 'Dashboard',     icon: LayoutDashboard },
-      { href: '/notes',         label: 'Notes',         icon: FileText },
-      { href: '/favorites',     label: 'Favorites',     icon: Star },
-      { href: '/archive',       label: 'Archive',       icon: Archive },
+      { href: '/dashboard',     labelKey: 'nav.dashboard'     as const, icon: LayoutDashboard },
+      { href: '/notes',         labelKey: 'nav.notes'         as const, icon: FileText },
+      { href: '/favorites',     labelKey: 'nav.favorites'     as const, icon: Star },
+      { href: '/archive',       labelKey: 'nav.archive'       as const, icon: Archive },
     ],
   },
   {
-    label: 'Insights',
+    labelKey: 'group.insights' as const,
     items: [
-      { href: '/analytics',     label: 'Analytics',     icon: BarChart2 },
-      { href: '/users',         label: 'Members',       icon: Users },
+      { href: '/analytics',     labelKey: 'nav.analytics'     as const, icon: BarChart2 },
+      { href: '/users',         labelKey: 'nav.members'       as const, icon: Users },
     ],
   },
   {
-    label: 'Communication',
+    labelKey: 'group.communication' as const,
     items: [
-      { href: '/messenger',     label: 'Messenger',     icon: MessageSquare },
-      { href: '/notifications', label: 'Notifications', icon: Bell },
+      { href: '/messenger',     labelKey: 'nav.messenger'     as const, icon: MessageSquare },
+      { href: '/notifications', labelKey: 'nav.notifications' as const, icon: Bell },
     ],
   },
 ];
@@ -43,11 +45,75 @@ function initials(src: string | null | undefined): string {
   return src.slice(0, 2).toUpperCase();
 }
 
+/* Single nav item — shared between expanded & collapsed */
+function NavItem({
+  href,
+  label,
+  icon: Icon,
+  active,
+  collapsed,
+}: {
+  href: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  active: boolean;
+  collapsed: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      title={collapsed ? label : undefined}
+      className={cn(
+        'group relative flex items-center rounded-lg transition-colors duration-150',
+        collapsed ? 'mx-auto h-8 w-8 justify-center' : 'h-8 gap-2.5 px-2',
+        active
+          ? 'bg-accent-50 dark:bg-accent-500/15'
+          : 'hover:bg-slate-100 dark:hover:bg-white/6',
+      )}
+    >
+      {/* Active left-bar — expanded only */}
+      {active && !collapsed && (
+        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-0.75 rounded-r-full bg-accent-500" />
+      )}
+
+      <Icon
+        className={cn(
+          'h-3.75 w-3.75 shrink-0 transition-colors',
+          active
+            ? 'text-accent-600 dark:text-accent-400'
+            : 'text-slate-400 dark:text-white/35 group-hover:text-slate-600 dark:group-hover:text-white/70',
+        )}
+      />
+
+      {/* Label — expanded only */}
+      {!collapsed && (
+        <span
+          className={cn(
+            'flex-1 truncate text-[13px] font-medium transition-colors',
+            active
+              ? 'text-accent-700 dark:text-accent-300'
+              : 'text-slate-600 dark:text-white/55 group-hover:text-slate-900 dark:group-hover:text-white/90',
+          )}
+        >
+          {label}
+        </span>
+      )}
+
+      {/* Active dot — collapsed only */}
+      {active && collapsed && (
+        <span className="absolute -right-0.5 top-1 h-1.5 w-1.5 rounded-full bg-accent-500 ring-2 ring-white dark:ring-[#13111C]" />
+      )}
+    </Link>
+  );
+}
+
 export default function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
-  const pathname  = usePathname();
-  const router    = useRouter();
+  const [collapsed, setCollapsed]     = useState(false);
+  const [signOutOpen, setSignOutOpen] = useState(false);
+  const pathname = usePathname();
+  const router   = useRouter();
   const { user, profile, signOut } = useSession();
+  const { t } = useI18n();
 
   const displayName = profile?.name ?? user?.name ?? user?.email ?? 'Account';
   const email       = user?.email ?? '';
@@ -58,136 +124,188 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className={cn(
-      'relative flex h-full shrink-0 flex-col transition-all duration-300 ease-in-out overflow-hidden',
-      'bg-white border-r border-slate-200 dark:bg-[#13111C] dark:border-white/[0.06]',
-      collapsed ? 'w-14' : 'w-54',
-    )}>
-
-      {/* Brand */}
-      <div className="flex h-14 items-center border-b border-slate-200 dark:border-white/[0.06] px-3">
-        {collapsed ? (
-          <button
-            type="button" onClick={() => setCollapsed(false)} aria-label="Expand sidebar"
-            className="flex w-full items-center justify-center"
-          >
-            <div className="h-7 w-7 rounded-lg overflow-hidden shrink-0">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.svg" alt="Logo" className="h-full w-full object-cover" />
-            </div>
-          </button>
-        ) : (
-          <>
-            <div className="h-7 w-7 rounded-lg overflow-hidden shrink-0">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.svg" alt="Logo" className="h-full w-full object-cover" />
-            </div>
-            <span className="ml-2.5 text-[13px] font-semibold text-slate-900 dark:text-white truncate flex-1">
-              Note
-            </span>
-            <button
-              type="button" onClick={() => setCollapsed(true)} aria-label="Collapse sidebar"
-              className="ml-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 dark:hover:bg-white/[0.08] dark:text-white/40 dark:hover:text-white/80 transition-colors"
-            >
-              <ChevronLeft className="h-3.5 w-3.5" />
-            </button>
-          </>
+    <>
+      <aside
+        className={cn(
+          'relative flex h-full shrink-0 flex-col',
+          'bg-white dark:bg-[#13111C]',
+          'border-r border-slate-200 dark:border-white/6',
+          'transition-[width] duration-300 ease-in-out overflow-hidden',
+          collapsed ? 'w-15' : 'w-55',
         )}
-      </div>
+      >
 
-      {/* Nav */}
-      <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-4">
-        {navGroups.map((group) => (
-          <div key={group.label}>
-            {!collapsed && (
-              <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-white/30">
-                {group.label}
-              </p>
-            )}
-            <div className="space-y-px">
-              {group.items.map(({ href, label, icon: Icon }) => {
-                const active = pathname === href || pathname.startsWith(`${href}/`);
-                return (
-                  <Link
-                    key={href} href={href} title={collapsed ? label : undefined}
-                    className={cn(
-                      'flex items-center gap-2.5 rounded-md px-2 py-1.5 text-[13px] font-medium transition-colors',
-                      collapsed ? 'justify-center' : '',
-                      active
-                        ? 'bg-violet-50 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-white/50 dark:hover:bg-white/6 dark:hover:text-white/90',
-                    )}
-                  >
-                    <Icon className={cn('h-4 w-4 shrink-0',
-                      active ? 'text-violet-600 dark:text-violet-400' : 'text-slate-400 dark:text-white/40',
-                    )} />
-                    {!collapsed && <span className="truncate">{label}</span>}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </nav>
-
-      {/* Settings */}
-      <div className="px-2 py-2 border-t border-slate-200 dark:border-white/6">
-        <Link
-          href="/settings" title={collapsed ? 'Settings' : undefined}
-          className={cn(
-            'flex items-center gap-2.5 rounded-md px-2 py-1.5 text-[13px] font-medium transition-colors',
-            collapsed ? 'justify-center' : '',
-            pathname === '/settings'
-              ? 'bg-violet-50 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300'
-              : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-white/50 dark:hover:bg-white/[0.06] dark:hover:text-white/90',
-          )}
-        >
-          <Settings className={cn('h-4 w-4 shrink-0',
-            pathname === '/settings' ? 'text-violet-600 dark:text-violet-400' : 'text-slate-400 dark:text-white/40',
-          )} />
-          {!collapsed && <span>Settings</span>}
-        </Link>
-      </div>
-
-      {/* User footer */}
-      <div className="px-2 pb-3 pt-2 border-t border-slate-200 dark:border-white/6">
+        {/* ── Brand ── */}
         <div className={cn(
-          'flex items-center gap-2 rounded-md px-2 py-2 transition-colors hover:bg-slate-100 dark:hover:bg-white/[0.06]',
-          collapsed ? 'justify-center' : '',
+          'flex h-14 shrink-0 items-center border-b border-slate-200 dark:border-white/6',
+          collapsed ? 'justify-center px-0' : 'px-3 gap-2.5',
         )}>
-          <div
-            title={collapsed ? displayName : undefined}
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-violet-600 text-[10px] font-semibold text-white overflow-hidden"
+          {/* Logo — click to expand when collapsed */}
+          <button
+            type="button"
+            onClick={collapsed ? () => setCollapsed(false) : undefined}
+            aria-label={collapsed ? 'Expand sidebar' : undefined}
+            tabIndex={collapsed ? 0 : -1}
+            className="h-6 w-6 shrink-0 rounded-md overflow-hidden focus:outline-none"
           >
-            {profile?.avatarUrl
-              ? <img src={profile.avatarUrl} alt="" className="h-full w-full object-cover" />  // eslint-disable-line @next/next/no-img-element
-              : initials(displayName)}
-          </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="Logo" className="h-full w-full object-cover" />
+          </button>
+
+          {/* App name + collapse button — visible when expanded */}
           {!collapsed && (
-            <div className="flex min-w-0 flex-1 items-center gap-1">
-              <div className="min-w-0 flex-1">
-                <p className="text-[11px] font-semibold text-slate-800 dark:text-white/80 truncate leading-none">{displayName}</p>
-                <p className="text-[10px] text-slate-400 dark:text-white/30 truncate mt-0.5">{email}</p>
+            <>
+              <span className="flex-1 truncate text-[13px] font-semibold text-slate-900 dark:text-white">
+                Note
+              </span>
+              <button
+                type="button"
+                onClick={() => setCollapsed(true)}
+                aria-label="Collapse sidebar"
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-slate-400 dark:text-white/30 hover:bg-slate-100 dark:hover:bg-white/[0.07] hover:text-slate-600 dark:hover:text-white/70 transition-colors"
+              >
+                <ChevronLeft className="h-3.5 w-3.5" />
+              </button>
+            </>
+          )}
+
+        </div>
+
+        {/* ── Nav ── */}
+        <nav className={cn(
+          'flex-1 overflow-y-auto overflow-x-hidden py-2',
+          collapsed ? 'flex flex-col items-center gap-0.5 px-1.5' : 'px-2 space-y-3',
+        )}>
+
+          {/* Expand button — top of nav, only when collapsed */}
+          {collapsed && (
+            <button
+              type="button"
+              onClick={() => setCollapsed(false)}
+              aria-label="Expand sidebar"
+              title="Expand sidebar"
+              className="mb-1 flex h-5 w-5 items-center justify-center rounded-md text-slate-300 dark:text-white/20 hover:text-accent-500 dark:hover:text-accent-400 hover:bg-accent-50 dark:hover:bg-accent-500/15 transition-colors"
+            >
+              <svg width="5" height="9" viewBox="0 0 5 9" fill="none">
+                <path d="M1 1l3 3.5L1 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          )}
+          {navGroupDefs.map((group, gi) => (
+            <div
+              key={group.labelKey}
+              className={cn(collapsed ? 'contents' : '')}
+            >
+              {/* Separator between groups — collapsed: thin line; expanded: section label */}
+              {gi > 0 && (
+                collapsed
+                  ? <div className="my-1 h-px w-8 self-center bg-slate-200 dark:bg-white/10 rounded-full" />
+                  : null
+              )}
+
+              {!collapsed && (
+                <p className="mb-0.5 mt-1 px-2 text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-white/25 select-none">
+                  {t(group.labelKey)}
+                </p>
+              )}
+
+              {/* Items */}
+              <div className={cn(
+                collapsed ? 'contents' : 'space-y-px',
+              )}>
+                {group.items.map(({ href, labelKey, icon }) => (
+                  <NavItem
+                    key={href}
+                    href={href}
+                    label={t(labelKey)}
+                    icon={icon}
+                    active={pathname === href || pathname.startsWith(`${href}/`)}
+                    collapsed={collapsed}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </nav>
+
+        {/* ── Settings ── */}
+        <div className={cn(
+          'shrink-0 border-t border-slate-200 dark:border-white/6',
+          collapsed ? 'flex justify-center py-2 px-1.5' : 'px-2 py-2',
+        )}>
+          <NavItem
+            href="/settings"
+            label={t('nav.settings')}
+            icon={Settings}
+            active={pathname === '/settings'}
+            collapsed={collapsed}
+          />
+        </div>
+
+        {/* ── User footer ── */}
+        <div className={cn(
+          'shrink-0 border-t border-slate-200 dark:border-white/6',
+          collapsed ? 'flex flex-col items-center gap-1.5 py-3 px-1.5' : 'p-2',
+        )}>
+          {collapsed ? (
+            <>
+              <div
+                title={displayName}
+                className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-accent-600 text-[11px] font-semibold text-white"
+              >
+                {profile?.avatarUrl
+                  // eslint-disable-next-line @next/next/no-img-element
+                  ? <img src={profile.avatarUrl} alt="" className="h-full w-full object-cover" />
+                  : initials(displayName)}
               </div>
               <button
-                type="button" onClick={handleSignOut} aria-label="Sign out" title="Sign out"
-                className="shrink-0 p-1 rounded text-slate-400 hover:text-red-500 dark:text-white/30 dark:hover:text-red-400 transition-colors"
+                type="button"
+                title="Sign out"
+                onClick={() => setSignOutOpen(true)}
+                className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 dark:text-white/25 hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+              </button>
+            </>
+          ) : (
+            <div className="flex items-center gap-2.5 rounded-lg px-2 py-2 hover:bg-slate-50 dark:hover:bg-white/4 transition-colors">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-accent-600 text-[11px] font-semibold text-white">
+                {profile?.avatarUrl
+                  // eslint-disable-next-line @next/next/no-img-element
+                  ? <img src={profile.avatarUrl} alt="" className="h-full w-full object-cover" />
+                  : initials(displayName)}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[12px] font-semibold leading-none text-slate-800 dark:text-white/85">
+                  {displayName}
+                </p>
+                <p className="mt-0.5 truncate text-[10px] leading-none text-slate-400 dark:text-white/30">
+                  {email}
+                </p>
+              </div>
+              <button
+                type="button"
+                title="Sign out"
+                onClick={() => setSignOutOpen(true)}
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-slate-400 dark:text-white/25 hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
               >
                 <LogOut className="h-3.5 w-3.5" />
               </button>
             </div>
           )}
         </div>
-      </div>
+      </aside>
 
-      {collapsed && (
-        <button
-          type="button" onClick={() => setCollapsed(false)} aria-label="Expand"
-          className="absolute bottom-20 left-1/2 -translate-x-1/2 flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-[#1e1c2e] text-slate-400 dark:text-white/40 hover:text-slate-700 dark:hover:text-white/80 shadow-sm transition-colors"
-        >
-          <ChevronRight className="h-3 w-3" />
-        </button>
-      )}
-    </aside>
+      {/* Sign-out confirm */}
+      <ConfirmDialog
+        open={signOutOpen}
+        onClose={() => setSignOutOpen(false)}
+        onConfirm={handleSignOut}
+        title="Sign out"
+        description="You'll need to sign in again to access your workspace."
+        confirmLabel="Sign out"
+        variant="danger"
+      />
+    </>
   );
 }

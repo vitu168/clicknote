@@ -35,7 +35,7 @@ export default function NoteCard({ note, onDelete, onToggleFavorite, onClick, on
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2.5 min-w-0">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-accent-50 dark:bg-accent-950/30 text-accent-600 dark:text-accent-400">
             <FileText className="h-4 w-4" />
           </div>
           <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
@@ -63,7 +63,7 @@ export default function NoteCard({ note, onDelete, onToggleFavorite, onClick, on
               onClick={(e) => { e.stopPropagation(); onArchive(note); }}
               aria-label="Archive note"
               title="Archive"
-              className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-500 hover:bg-violet-50 dark:hover:bg-violet-950/30 hover:text-violet-500 dark:hover:text-violet-400 transition-colors"
+              className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-500 hover:bg-accent-50 dark:hover:bg-accent-950/30 hover:text-accent-500 dark:hover:text-accent-400 transition-colors"
             >
               <Archive className="h-3.5 w-3.5" />
             </button>

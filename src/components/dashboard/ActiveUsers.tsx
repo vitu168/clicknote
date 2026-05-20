@@ -8,7 +8,7 @@ function initials(name: string | null, email: string | null): string {
 }
 
 const avatarColors = [
-  'from-violet-500 to-violet-600',
+  'from-accent-500 to-accent-600',
   'from-emerald-400 to-teal-500',
   'from-amber-400 to-orange-500',
   'from-rose-400 to-pink-500',

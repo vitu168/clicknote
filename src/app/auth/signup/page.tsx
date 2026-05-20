@@ -87,7 +87,7 @@ export default function SignupPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-accent-400 focus:ring-2 focus:ring-accent-100 transition"
             />
           </div>
 
@@ -105,7 +105,7 @@ export default function SignupPage() {
                 placeholder="Min 6 characters"
                 required
                 minLength={6}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 pr-10 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 pr-10 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-accent-400 focus:ring-2 focus:ring-accent-100 transition"
               />
               <button
                 type="button"
@@ -130,7 +130,7 @@ export default function SignupPage() {
               onChange={(e) => setConfirm(e.target.value)}
               placeholder="Repeat password"
               required
-              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-accent-400 focus:ring-2 focus:ring-accent-100 transition"
             />
           </div>
 
@@ -142,8 +142,8 @@ export default function SignupPage() {
             type="submit"
             disabled={loading}
             className={cn(
-              'mt-1 w-full rounded-xl bg-violet-600 py-2.5 text-sm font-semibold text-white shadow-sm',
-              'hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-300 transition-colors',
+              'mt-1 w-full rounded-xl bg-accent-600 py-2.5 text-sm font-semibold text-white shadow-sm',
+              'hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-300 transition-colors',
               loading && 'opacity-60 cursor-not-allowed',
             )}
           >
@@ -196,7 +196,7 @@ export default function SignupPage() {
 
         <p className="mt-5 text-center text-xs text-slate-500">
           Already have an account?{' '}
-          <Link href="/auth/login" className="font-semibold text-violet-600 hover:underline">
+          <Link href="/auth/login" className="font-semibold text-accent-600 hover:underline">
             Log In
           </Link>
         </p>

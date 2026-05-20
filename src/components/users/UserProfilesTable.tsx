@@ -30,8 +30,8 @@ function formatDate(dateStr: string | null): string {
 }
 
 const AVATAR_COLORS = [
-  'bg-violet-500',
-  'bg-violet-500',
+  'bg-accent-500',
+  'bg-accent-500',
   'bg-sky-500',
   'bg-emerald-500',
   'bg-amber-500',
@@ -68,7 +68,7 @@ export default function UserProfilesTable({ profiles, onDelete }: UserProfilesTa
             placeholder="Search users…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="h-9 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 pl-9 pr-4 text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-900 dark:text-slate-100 outline-none focus:border-violet-400 dark:focus:border-violet-500 focus:ring-2 focus:ring-violet-100 dark:focus:ring-violet-950/50 transition"
+            className="h-9 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 pl-9 pr-4 text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-900 dark:text-slate-100 outline-none focus:border-accent-400 dark:focus:border-accent-500 focus:ring-2 focus:ring-accent-100 dark:focus:ring-accent-950/50 transition"
           />
         </div>
         <p className="ml-auto text-xs text-slate-400 dark:text-slate-500">

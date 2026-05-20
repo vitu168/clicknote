@@ -36,7 +36,7 @@ export default function UsersPage() {
   const noteUsers = profiles.filter((p) => p.isNote).length;
 
   const summaryCards = [
-    { label: 'Total Users', value: totalCount, icon: Users, color: 'bg-violet-50 text-violet-600' },
+    { label: 'Total Users', value: totalCount, icon: Users, color: 'bg-accent-50 text-accent-600' },
     { label: 'Active (isNote)', value: noteUsers, icon: FileText, color: 'bg-emerald-50 text-emerald-600' },
   ];
 

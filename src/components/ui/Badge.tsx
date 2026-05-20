@@ -9,10 +9,10 @@ const variantStyles: Record<BadgeVariant, string> = {
   pending:    'bg-amber-50 text-amber-700 ring-amber-200',
   completed:  'bg-emerald-50 text-emerald-700 ring-emerald-200',
   failed:     'bg-red-50 text-red-700 ring-red-200',
-  refunded:   'bg-violet-50 text-violet-700 ring-violet-200',
-  admin:      'bg-violet-50 text-violet-700 ring-violet-200',
+  refunded:   'bg-accent-50 text-accent-700 ring-accent-200',
+  admin:      'bg-accent-50 text-accent-700 ring-accent-200',
   editor:     'bg-blue-50 text-blue-700 ring-blue-200',
-  developer:  'bg-violet-50 text-violet-700 ring-violet-200',
+  developer:  'bg-accent-50 text-accent-700 ring-accent-200',
   viewer:     'bg-slate-100 text-slate-600 ring-slate-200',
 };
 
@@ -22,10 +22,10 @@ const dotStyles: Record<BadgeVariant, string> = {
   pending:   'bg-amber-500',
   completed: 'bg-emerald-500',
   failed:    'bg-red-500',
-  refunded:  'bg-violet-500',
-  admin:     'bg-violet-500',
+  refunded:  'bg-accent-500',
+  admin:     'bg-accent-500',
   editor:    'bg-blue-500',
-  developer: 'bg-violet-500',
+  developer: 'bg-accent-500',
   viewer:    'bg-slate-400',
 };
 

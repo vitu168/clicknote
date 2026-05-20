@@ -71,7 +71,7 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
       >
         {/* Header */}
         <div className="flex shrink-0 items-center gap-3 border-b border-slate-100 px-5 py-4 dark:border-slate-800">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-violet-500 to-violet-600 text-white shadow shadow-violet-200">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-accent-500 to-accent-600 text-white shadow shadow-accent-200">
             <StickyNote className="h-4 w-4" />
           </div>
           <div className="flex-1 min-w-0">
@@ -108,7 +108,7 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
                 onChange={(e) => setName(e.target.value)}
                 placeholder="What's this note about?"
                 maxLength={200}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-2 focus:ring-violet-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-violet-900/50 transition-all"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none placeholder:text-slate-400 focus:border-accent-400 focus:bg-white focus:ring-2 focus:ring-accent-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-accent-900/50 transition-all"
               />
               <p className="text-right text-[11px] text-slate-400 dark:text-slate-600">
                 {name.length} / 200
@@ -126,15 +126,15 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Add details, ideas, or anything you want to remember…"
                 rows={9}
-                className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-2 focus:ring-violet-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-violet-900/50 transition-all"
+                className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-accent-400 focus:bg-white focus:ring-2 focus:ring-accent-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-accent-900/50 transition-all"
               />
             </div>
 
             {/* Tip when empty */}
             {!name && !description && (
-              <div className="flex items-start gap-3 rounded-xl bg-violet-50 px-4 py-3 dark:bg-violet-950/30">
-                <FileText className="mt-0.5 h-4 w-4 shrink-0 text-violet-400" />
-                <p className="text-xs text-violet-600 dark:text-violet-400">
+              <div className="flex items-start gap-3 rounded-xl bg-accent-50 px-4 py-3 dark:bg-accent-950/30">
+                <FileText className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" />
+                <p className="text-xs text-accent-600 dark:text-accent-400">
                   Your note will appear in the list once saved.
                 </p>
               </div>
@@ -162,8 +162,8 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
                 type="submit"
                 disabled={loading}
                 className={cn(
-                  'flex-1 rounded-xl bg-linear-to-r from-violet-600 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-violet-200/50 transition-all',
-                  'hover:from-violet-700 hover:to-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-300 dark:shadow-violet-900/30',
+                  'flex-1 rounded-xl bg-linear-to-r from-accent-600 to-accent-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-accent-200/50 transition-all',
+                  'hover:from-accent-700 hover:to-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-300 dark:shadow-accent-900/30',
                   loading && 'cursor-not-allowed opacity-60',
                 )}
               >

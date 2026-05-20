@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Search, Star, RefreshCw } from 'lucide-react';
+import { Star, RefreshCw } from 'lucide-react';
+import SearchInput from '@/components/ui/SearchInput';
 import { useRouter } from 'next/navigation';
 import NoteCard from '@/components/notes/NoteCard';
 import { noteService } from '@/lib/services/noteService';
@@ -70,16 +71,12 @@ export default function FavoritesPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
-        <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
-          <input
-            type="text"
-            placeholder="Search favorites…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="h-8 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-8 pr-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-violet-400 focus:outline-none focus:ring-1 focus:ring-violet-200 dark:focus:ring-violet-900/40 transition"
-          />
-        </div>
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder="Search favorites…"
+          className="flex-1"
+        />
         <span className="shrink-0 text-[11px] text-slate-400 dark:text-slate-500">
           {notes.length} starred
         </span>

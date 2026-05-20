@@ -17,7 +17,7 @@ export default function RootPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F5F5FA]">
       <div className="flex flex-col items-center gap-3 text-slate-500">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-600 shadow shadow-violet-200">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-600 shadow shadow-accent-200">
           <FileText className="h-5 w-5 text-white" />
         </div>
         <p className="text-xs">Loading…</p>

@@ -27,7 +27,7 @@ export default function WelcomePage() {
       <main className="flex flex-1 items-center justify-center px-6 pb-12">
         <div className="grid w-full max-w-5xl gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
           <div className="space-y-6 text-center lg:text-left">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-50 px-3 py-1 text-[11px] font-semibold text-violet-700 ring-1 ring-violet-100">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-50 px-3 py-1 text-[11px] font-semibold text-accent-700 ring-1 ring-accent-100">
               <Sparkles className="h-3 w-3" /> Now on the web
             </span>
             <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -41,7 +41,7 @@ export default function WelcomePage() {
             <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
               <Link
                 href="/auth/signup"
-                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-700 transition-colors"
+                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-accent-700 transition-colors"
               >
                 Get started <ArrowRight className="h-4 w-4" />
               </Link>
@@ -58,7 +58,7 @@ export default function WelcomePage() {
             <FeatureCard icon={FileText} title="Smart notes" body="Create, search, and favorite." tint="bg-emerald-50 text-emerald-600" />
             <FeatureCard icon={MessageSquare} title="Messaging" body="Chat with your team in real time." tint="bg-sky-50 text-sky-600" />
             <FeatureCard icon={Sparkles} title="Favorites" body="Pin the notes that matter most." tint="bg-amber-50 text-amber-600" />
-            <FeatureCard icon={FileText} title="Archive" body="Keep your workspace tidy." tint="bg-violet-50 text-violet-600" />
+            <FeatureCard icon={FileText} title="Archive" body="Keep your workspace tidy." tint="bg-accent-50 text-accent-600" />
           </div>
         </div>
       </main>

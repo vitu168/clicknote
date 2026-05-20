@@ -148,7 +148,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
 
       {/* ── Welcome banner ───────────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-violet-600 to-violet-600 px-6 py-5 text-white shadow-lg shadow-violet-200">
+      <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-accent-600 to-accent-600 px-6 py-5 text-white shadow-lg shadow-accent-200">
         {/* Decorative circles */}
         <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute -bottom-6 right-20 h-24 w-24 rounded-full bg-white/10" />
@@ -156,11 +156,11 @@ export default function DashboardPage() {
         <div className="relative flex items-center justify-between gap-4">
           <div>
             <h1 className="text-lg font-bold tracking-tight">{greeting(user?.name)}</h1>
-            <p className="mt-0.5 text-sm text-violet-200">{today}</p>
+            <p className="mt-0.5 text-sm text-accent-200">{today}</p>
             {data && (
               <div className="mt-3 flex items-center gap-1.5">
-                <TrendingUp className="h-4 w-4 text-violet-300" />
-                <span className="text-sm text-violet-100">
+                <TrendingUp className="h-4 w-4 text-accent-300" />
+                <span className="text-sm text-accent-100">
                   You have <span className="font-bold text-white">{data.totalNotes}</span> notes,{' '}
                   <span className="font-bold text-white">{data.totalFavorites}</span> starred
                 </span>
@@ -179,7 +179,7 @@ export default function DashboardPage() {
               Refresh
             </button>
             {lastRefreshed && (
-              <p className="text-[10px] text-violet-300">
+              <p className="text-[10px] text-accent-300">
                 Updated {lastRefreshed.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </p>
             )}

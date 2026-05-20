@@ -36,11 +36,11 @@ const colorStyles = {
     text: 'text-rose-600',
   },
   violet: {
-    icon: 'bg-violet-50 text-violet-600',
-    ring: 'ring-violet-100',
-    bar: 'bg-violet-500',
-    glow: 'shadow-violet-100',
-    text: 'text-violet-600',
+    icon: 'bg-accent-50 text-accent-600',
+    ring: 'ring-accent-100',
+    bar: 'bg-accent-500',
+    glow: 'shadow-accent-100',
+    text: 'text-accent-600',
   },
 };
 

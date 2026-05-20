@@ -75,7 +75,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-accent-400 focus:ring-2 focus:ring-accent-100 transition"
             />
           </div>
 
@@ -86,7 +86,7 @@ export default function LoginPage() {
               </label>
               <Link
                 href="/auth/forgot-password"
-                className="text-[11px] text-violet-600 hover:underline"
+                className="text-[11px] text-accent-600 hover:underline"
               >
                 Forgot Password?
               </Link>
@@ -100,7 +100,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 pr-10 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 pr-10 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-accent-400 focus:ring-2 focus:ring-accent-100 transition"
               />
               <button
                 type="button"
@@ -123,8 +123,8 @@ export default function LoginPage() {
             type="submit"
             disabled={loading}
             className={cn(
-              'mt-1 w-full rounded-xl bg-violet-600 py-2.5 text-sm font-semibold text-white shadow-sm',
-              'hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-300 transition-colors',
+              'mt-1 w-full rounded-xl bg-accent-600 py-2.5 text-sm font-semibold text-white shadow-sm',
+              'hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-accent-300 transition-colors',
               loading && 'opacity-60 cursor-not-allowed',
             )}
           >
@@ -177,7 +177,7 @@ export default function LoginPage() {
 
         <p className="mt-5 text-center text-xs text-slate-500">
           Don&apos;t have an account?{' '}
-          <Link href="/auth/signup" className="font-semibold text-violet-600 hover:underline">
+          <Link href="/auth/signup" className="font-semibold text-accent-600 hover:underline">
             Sign Up
           </Link>
         </p>

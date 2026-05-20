@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Mail, FileText, Star, Calendar, Edit3 } from 'lucide-react';
+import { Mail, FileText, Star, Calendar, Pencil } from 'lucide-react';
 import { useSession } from '@/lib/session';
 import { noteService } from '@/lib/services/noteService';
 import type { NoteInfo } from '@/lib/types';
@@ -17,11 +17,7 @@ function initials(src: string | null | undefined): string {
 
 function formatDate(iso: string | null): string {
   if (!iso) return '—';
-  return new Date(iso).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 export default function ProfilePage() {
@@ -42,9 +38,7 @@ export default function ProfilePage() {
     }
   }, [user]);
 
-  useEffect(() => {
-    fetchNotes();
-  }, [fetchNotes]);
+  useEffect(() => { fetchNotes(); }, [fetchNotes]);
 
   if (!user) return null;
 
@@ -52,75 +46,100 @@ export default function ProfilePage() {
   const favorites = notes.filter((n) => n.isFavorites);
 
   return (
-    <div className="space-y-6">
-      {/* Profile card */}
+    <div className="space-y-5">
+
+      {/* Hero card */}
       <div className="overflow-hidden rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
-        <div className="h-24 bg-linear-to-br from-violet-500 via-violet-500 to-fuchsia-500" />
-        <div className="relative px-6 pb-6">
-          <div className="-mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
+        {/* Banner */}
+        <div className="relative h-28 bg-linear-to-135deg from-accent-400 via-accent-500 to-accent-700">
+          <div className="absolute inset-0 opacity-20"
+            style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }}
+          />
+        </div>
+
+        {/* Avatar + info */}
+        <div className="px-6 pb-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between -mt-10">
             <div className="flex items-end gap-4">
-              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-violet-500 to-violet-600 text-2xl font-bold text-white ring-4 ring-white dark:ring-slate-800">
-                {profile?.avatarUrl ? (
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-accent-500 to-accent-600 text-2xl font-bold text-white ring-4 ring-white dark:ring-slate-800 shadow-sm">
+                {profile?.avatarUrl
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={profile.avatarUrl} alt="" className="h-full w-full object-cover" />
-                ) : (
-                  initials(displayName)
-                )}
+                  ? <img src={profile.avatarUrl} alt="" className="h-full w-full object-cover" />
+                  : initials(displayName)}
               </div>
               <div className="pb-1">
-                <p className="text-lg font-bold text-slate-900 dark:text-slate-100">{displayName}</p>
-                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-                  <Mail className="h-3 w-3" /> {user.email}
+                <p className="text-base font-bold text-slate-900 dark:text-slate-100 leading-tight">{displayName}</p>
+                <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                  <Mail className="h-3 w-3 shrink-0" />
+                  {user.email}
                 </p>
               </div>
             </div>
             <Link
               href="/settings"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
+              className="flex w-fit items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700/80 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm"
             >
-              <Edit3 className="h-3.5 w-3.5" /> Edit profile
+              <Pencil className="h-3 w-3" />
+              Edit profile
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard icon={FileText} label="Notes" value={notes.length} tint="bg-emerald-50 text-emerald-600" />
-        <StatCard icon={Star} label="Favorites" value={favorites.length} tint="bg-amber-50 text-amber-600" />
-        <StatCard
-          icon={Calendar}
-          label="Joined"
-          value={formatDate(profile?.createdAt ?? null)}
-          tint="bg-violet-50 text-violet-600"
-        />
+      {/* Stats strip */}
+      <div className="grid grid-cols-3 gap-4">
+        {[
+          { icon: FileText, label: 'Notes',     value: notes.length,      color: 'text-accent-600 dark:text-accent-400',  bg: 'bg-accent-50 dark:bg-accent-950/30' },
+          { icon: Star,     label: 'Favorites', value: favorites.length,  color: 'text-amber-600 dark:text-amber-400',    bg: 'bg-amber-50 dark:bg-amber-950/30' },
+          { icon: Calendar, label: 'Joined',    value: formatDate(profile?.createdAt ?? null), color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-950/30' },
+        ].map(({ icon: Icon, label, value, color, bg }) => (
+          <div key={label} className="flex items-center gap-3 rounded-xl bg-white dark:bg-slate-800 px-4 py-3.5 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
+            <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${bg}`}>
+              <Icon className={`h-4 w-4 ${color}`} />
+            </div>
+            <div className="min-w-0">
+              <p className="text-lg font-bold leading-tight text-slate-900 dark:text-slate-100 truncate">{value}</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">{label}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* My Notes */}
-      <section className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
-        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 px-6 py-4">
+      <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm overflow-hidden">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 px-5 py-3.5">
           <div>
             <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">My notes</p>
-            <p className="text-xs text-slate-400 dark:text-slate-500">Everything you&apos;ve captured</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Everything you&apos;ve captured</p>
           </div>
           <Link
             href="/notes"
-            className="text-xs font-semibold text-violet-600 dark:text-violet-400 hover:underline"
+            className="text-xs font-semibold text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 transition-colors"
           >
-            View all
+            View all →
           </Link>
         </div>
-        <div className="p-6">
+
+        <div className="p-5">
           {loading ? (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="h-32 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-700" />
+                <div key={i} className="h-32 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-700" />
               ))}
             </div>
           ) : notes.length === 0 ? (
-            <p className="text-center text-sm text-slate-400 dark:text-slate-500 py-8">
-              You haven&apos;t created any notes yet.
-            </p>
+            <div className="flex flex-col items-center justify-center gap-2 py-12">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-700">
+                <FileText className="h-5 w-5 text-slate-400 dark:text-slate-500" />
+              </div>
+              <p className="text-sm text-slate-400 dark:text-slate-500">No notes yet</p>
+              <Link
+                href="/notes"
+                className="mt-1 text-xs font-semibold text-accent-600 dark:text-accent-400 hover:underline"
+              >
+                Create your first note
+              </Link>
+            </div>
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {notes.slice(0, 6).map((note) => (
@@ -129,31 +148,8 @@ export default function ProfilePage() {
             </div>
           )}
         </div>
-      </section>
-    </div>
-  );
-}
+      </div>
 
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  tint,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: number | string;
-  tint: string;
-}) {
-  return (
-    <div className="flex items-center gap-3 rounded-2xl bg-white dark:bg-slate-800 px-5 py-4 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
-      <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${tint}`}>
-        <Icon className="h-4 w-4" />
-      </div>
-      <div>
-        <p className="text-xl font-bold text-slate-900 dark:text-slate-100">{value}</p>
-        <p className="text-[11px] text-slate-500 dark:text-slate-400">{label}</p>
-      </div>
     </div>
   );
 }

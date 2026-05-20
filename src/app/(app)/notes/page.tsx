@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Plus, Search, Star, FileText, RefreshCw } from 'lucide-react';
+import { Plus, Star, FileText, RefreshCw } from 'lucide-react';
 import NoteCard from '@/components/notes/NoteCard';
 import NoteForm from '@/components/notes/NoteForm';
+import ConfirmDialog from '@/components/ui/ConfirmDialog';
+import SearchInput from '@/components/ui/SearchInput';
 import { noteService } from '@/lib/services/noteService';
 import type { NoteInfo } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -24,6 +26,7 @@ export default function NotesPage() {
   const [filter, setFilter] = useState<Filter>('all');
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<NoteInfo | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const [, setTotalCount] = useState(0);
 
   const fetchNotes = useCallback(async () => {
@@ -78,8 +81,13 @@ export default function NotesPage() {
   }
 
   async function handleDelete(id: number) {
-    if (!confirm('Delete this note?')) return;
-    await noteService.deleteNote(id);
+    setDeleteId(id);
+  }
+
+  async function confirmDelete() {
+    if (deleteId === null) return;
+    await noteService.deleteNote(deleteId);
+    setDeleteId(null);
     fetchNotes();
   }
 
@@ -107,17 +115,12 @@ export default function NotesPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
-        {/* Search */}
-        <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
-          <input
-            type="text"
-            placeholder="Search notes…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="h-8 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-8 pr-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-violet-400 focus:outline-none focus:ring-1 focus:ring-violet-200 dark:focus:ring-violet-900/40 transition"
-          />
-        </div>
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder="Search notes…"
+          className="flex-1"
+        />
 
         {/* Filter — icon only */}
         <div className="flex h-8 items-center gap-px rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-0.5">
@@ -128,7 +131,7 @@ export default function NotesPage() {
             className={cn(
               'flex h-6 w-6 items-center justify-center rounded-md transition-colors',
               filter === 'all'
-                ? 'bg-violet-600 text-white'
+                ? 'bg-accent-600 text-white'
                 : 'text-slate-400 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-white/6 dark:hover:text-white/80',
             )}
           >
@@ -141,7 +144,7 @@ export default function NotesPage() {
             className={cn(
               'flex h-6 w-6 items-center justify-center rounded-md transition-colors',
               filter === 'favorites'
-                ? 'bg-violet-600 text-white'
+                ? 'bg-accent-600 text-white'
                 : 'text-slate-400 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/20',
             )}
           >
@@ -164,7 +167,7 @@ export default function NotesPage() {
           onClick={() => setShowForm(true)}
           title="New Note"
           aria-label="New Note"
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-violet-600 text-white hover:bg-violet-700 transition-colors"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent-600 text-white hover:bg-accent-700 transition-colors"
         >
           <Plus className="h-4 w-4" />
         </button>
@@ -195,7 +198,7 @@ export default function NotesPage() {
             <button
               type="button"
               onClick={() => setShowForm(true)}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-accent-600 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-700 transition-colors"
             >
               <Plus className="h-4 w-4" />
               Create your first note
@@ -235,6 +238,17 @@ export default function NotesPage() {
           submitLabel="Update Note"
         />
       )}
+
+      {/* Delete confirm */}
+      <ConfirmDialog
+        open={deleteId !== null}
+        onClose={() => setDeleteId(null)}
+        onConfirm={confirmDelete}
+        title="Delete note"
+        description="This note will be permanently deleted and cannot be recovered."
+        confirmLabel="Delete"
+        variant="danger"
+      />
     </div>
   );
 }

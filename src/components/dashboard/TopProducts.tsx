@@ -41,8 +41,8 @@ export default function TopProducts({ products }: TopProductsProps) {
                   <div
                     className={cn(
                       'h-full rounded-full',
-                      index === 0 ? 'bg-violet-500' :
-                      index === 1 ? 'bg-violet-500' :
+                      index === 0 ? 'bg-accent-500' :
+                      index === 1 ? 'bg-accent-500' :
                       index === 2 ? 'bg-blue-500' :
                       index === 3 ? 'bg-emerald-500' : 'bg-amber-500',
                     )}
