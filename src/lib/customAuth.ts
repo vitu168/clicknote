@@ -92,6 +92,14 @@ export const customAuth = {
     return toAuthUser(auth);
   },
 
+  /** POST /api/auth/social — exchange a Supabase session for a backend JWT (SSO entry point). */
+  async signInWithSupabaseTokens(accessToken: string, refreshToken: string): Promise<AuthUser> {
+    const raw = await api.post<unknown>('/api/auth/social', { accessToken, refreshToken });
+    const auth = parseAuthResponse(raw);
+    await saveAuth(auth);
+    return toAuthUser(auth);
+  },
+
   /** POST /api/auth/forgot-password — sends a password-reset email via the backend. */
   async forgotPassword(email: string): Promise<void> {
     await api.post('/api/auth/forgot-password', { email });

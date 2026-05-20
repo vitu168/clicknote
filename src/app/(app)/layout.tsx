@@ -12,7 +12,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useSession();
 
   useEffect(() => {
-    if (!loading && !user) router.replace('/auth/welcome');
+    if (!loading && !user) {
+      const authPlatformUrl = process.env.NEXT_PUBLIC_AUTH_PLATFORM_URL ?? 'http://localhost:3001';
+      const ssoCallback = `${window.location.origin}/auth/sso-callback`;
+      window.location.href = `${authPlatformUrl}/signin?redirect_uri=${encodeURIComponent(ssoCallback)}`;
+    }
   }, [user, loading, router]);
 
   if (loading || !user) {
