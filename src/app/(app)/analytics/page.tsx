@@ -8,7 +8,7 @@ import WeeklyLineChart from '@/components/analytics/WeeklyLineChart';
 export const metadata: Metadata = { title: 'Analytics' };
 
 const kpiCards = [
-  { label: 'Total Visitors', value: '8,400', change: '+6.3%', icon: Users, color: 'bg-indigo-50 text-indigo-600' },
+  { label: 'Total Visitors', value: '8,400', change: '+6.3%', icon: Users, color: 'bg-violet-50 text-violet-600' },
   { label: 'Page Views', value: '25,100', change: '+6.4%', icon: Eye, color: 'bg-blue-50 text-blue-600' },
   { label: 'Conversions', value: '272', change: '+6.3%', icon: MousePointerClick, color: 'bg-emerald-50 text-emerald-600' },
   { label: 'Bounce Rate', value: '38.2%', change: '-2.1%', icon: TrendingUp, color: 'bg-amber-50 text-amber-600' },
@@ -76,7 +76,7 @@ export default function AnalyticsPage() {
                 { page: '/docs', views: 1340, unique: 980, time: '5m 12s' },
               ].map((row) => (
                 <tr key={row.page} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                  <td className="px-6 py-3.5 font-mono text-sm text-indigo-600 dark:text-indigo-400">{row.page}</td>
+                  <td className="px-6 py-3.5 font-mono text-sm text-violet-600 dark:text-violet-400">{row.page}</td>
                   <td className="px-4 py-3.5 text-right font-medium text-slate-900 dark:text-slate-100">{row.views.toLocaleString()}</td>
                   <td className="px-4 py-3.5 text-right text-slate-500 dark:text-slate-400 hidden md:table-cell">{row.unique.toLocaleString()}</td>
                   <td className="px-6 py-3.5 text-right text-slate-500 dark:text-slate-400 hidden lg:table-cell">{row.time}</td>

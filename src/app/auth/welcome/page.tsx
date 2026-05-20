@@ -17,16 +17,17 @@ export default function WelcomePage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#F5F5FA]">
       <header className="flex items-center gap-2.5 px-6 py-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 shadow shadow-indigo-200">
-          <FileText className="h-4 w-4 text-white" />
+        <div className="h-9 w-9 rounded-xl overflow-hidden shrink-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.svg" alt="Note" className="h-full w-full object-cover" />
         </div>
-        <p className="text-sm font-bold text-slate-900">Yby Notes</p>
+        <p className="text-sm font-bold text-slate-900">Note</p>
       </header>
 
       <main className="flex flex-1 items-center justify-center px-6 pb-12">
         <div className="grid w-full max-w-5xl gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
           <div className="space-y-6 text-center lg:text-left">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-[11px] font-semibold text-indigo-700 ring-1 ring-indigo-100">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-50 px-3 py-1 text-[11px] font-semibold text-violet-700 ring-1 ring-violet-100">
               <Sparkles className="h-3 w-3" /> Now on the web
             </span>
             <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -40,7 +41,7 @@ export default function WelcomePage() {
             <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
               <Link
                 href="/auth/signup"
-                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors"
+                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-violet-700 transition-colors"
               >
                 Get started <ArrowRight className="h-4 w-4" />
               </Link>
@@ -63,7 +64,7 @@ export default function WelcomePage() {
       </main>
 
       <footer className="px-6 pb-6 text-center text-[11px] text-slate-400">
-        &copy; {new Date().getFullYear()} Yby Notes
+        &copy; {new Date().getFullYear()} Note
       </footer>
     </div>
   );

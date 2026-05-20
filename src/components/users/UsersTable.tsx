@@ -38,7 +38,7 @@ export default function UsersTable({ users }: UsersTableProps) {
               placeholder="Search users..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="h-9 w-64 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 pl-9 pr-4 text-sm placeholder-slate-400 dark:placeholder-slate-500 text-slate-900 dark:text-slate-100 outline-none focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-950/50 transition-all"
+              className="h-9 w-64 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 pl-9 pr-4 text-sm placeholder-slate-400 dark:placeholder-slate-500 text-slate-900 dark:text-slate-100 outline-none focus:border-violet-400 dark:focus:border-violet-500 focus:ring-2 focus:ring-violet-100 dark:focus:ring-violet-950/50 transition-all"
             />
           </div>
 
@@ -50,7 +50,7 @@ export default function UsersTable({ users }: UsersTableProps) {
                 onClick={() => setRoleFilter(role)}
                 className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
                   roleFilter === role
-                    ? 'bg-indigo-600 text-white'
+                    ? 'bg-violet-600 text-white'
                     : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
                 }`}
               >
@@ -60,7 +60,7 @@ export default function UsersTable({ users }: UsersTableProps) {
           </div>
         </div>
 
-        <button className="flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-200">
+        <button className="flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-700 transition-colors shadow-sm shadow-violet-200">
           <UserPlus className="h-4 w-4" />
           Add User
         </button>

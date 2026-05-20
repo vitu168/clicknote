@@ -20,7 +20,7 @@ export default function RecentTransactions({ transactions }: RecentTransactionsP
         </div>
         <Link
           href="/dashboard"
-          className="flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
+          className="flex items-center gap-1 text-xs font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
         >
           View all <ArrowRight className="h-3.5 w-3.5" />
         </Link>

@@ -106,39 +106,47 @@ export default function NotesPage() {
 
   return (
     <div className="space-y-6">
-      {/* Controls row — search, filters, refresh, new note button */}
       <div className="flex items-center gap-2">
         {/* Search */}
         <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
           <input
             type="text"
             placeholder="Search notes…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-9 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-9 pr-4 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/40 transition"
+            className="h-8 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-8 pr-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-violet-400 focus:outline-none focus:ring-1 focus:ring-violet-200 dark:focus:ring-violet-900/40 transition"
           />
         </div>
 
-        {/* Filter buttons */}
-        <div className="flex h-9 items-center gap-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-1">
-          {(['all', 'favorites'] as Filter[]).map((f) => (
-            <button
-              key={f}
-              type="button"
-              onClick={() => setFilter(f)}
-              className={cn(
-                'flex h-7 shrink-0 items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-semibold transition-colors',
-                filter === f
-                  ? 'bg-indigo-600 text-white'
-                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50',
-              )}
-            >
-              {f === 'favorites' && <Star className="h-3 w-3" fill={filter === 'favorites' ? 'currentColor' : 'none'} />}
-              {f === 'all' && <FileText className="h-3 w-3" />}
-              <span>{f === 'all' ? 'All Notes' : 'Favorites'}</span>
-            </button>
-          ))}
+        {/* Filter — icon only */}
+        <div className="flex h-8 items-center gap-px rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-0.5">
+          <button
+            type="button"
+            onClick={() => setFilter('all')}
+            title="All Notes"
+            className={cn(
+              'flex h-6 w-6 items-center justify-center rounded-md transition-colors',
+              filter === 'all'
+                ? 'bg-violet-600 text-white'
+                : 'text-slate-400 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-white/6 dark:hover:text-white/80',
+            )}
+          >
+            <FileText className="h-3 w-3" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setFilter('favorites')}
+            title="Favorites"
+            className={cn(
+              'flex h-6 w-6 items-center justify-center rounded-md transition-colors',
+              filter === 'favorites'
+                ? 'bg-violet-600 text-white'
+                : 'text-slate-400 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/20',
+            )}
+          >
+            <Star className="h-3 w-3" fill={filter === 'favorites' ? 'currentColor' : 'none'} />
+          </button>
         </div>
 
         {/* Refresh */}
@@ -146,17 +154,19 @@ export default function NotesPage() {
           type="button"
           onClick={fetchNotes}
           aria-label="Refresh"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+          title="Refresh"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 hover:border-slate-300 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
         >
-          <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
+          <RefreshCw className={cn('h-3.5 w-3.5', loading && 'animate-spin')} />
         </button>
         <button
           type="button"
           onClick={() => setShowForm(true)}
-          className="flex h-9 shrink-0 items-center gap-1.5 rounded-xl bg-indigo-600 px-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors"
+          title="New Note"
+          aria-label="New Note"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-violet-600 text-white hover:bg-violet-700 transition-colors"
         >
           <Plus className="h-4 w-4" />
-          New Note
         </button>
       </div>
 
@@ -185,7 +195,7 @@ export default function NotesPage() {
             <button
               type="button"
               onClick={() => setShowForm(true)}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700 transition-colors"
             >
               <Plus className="h-4 w-4" />
               Create your first note

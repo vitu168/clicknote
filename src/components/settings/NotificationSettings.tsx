@@ -45,7 +45,7 @@ export default function NotificationSettings() {
             />
             <span
               className={`absolute inset-0 rounded-full transition-colors duration-300 ${
-                item.enabled ? 'bg-indigo-500' : 'bg-slate-200 dark:bg-slate-700'
+                item.enabled ? 'bg-violet-500' : 'bg-slate-200 dark:bg-slate-700'
               }`}
             />
             <span

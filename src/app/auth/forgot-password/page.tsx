@@ -36,8 +36,9 @@ export default function ForgotPasswordPage() {
     <div className="flex min-h-screen items-center justify-center bg-[#F5F5FA] px-4">
       <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
         <div className="mb-7 text-center">
-          <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 shadow shadow-indigo-200">
-            {sent ? <MailCheck className="h-5 w-5 text-white" /> : <KeyRound className="h-5 w-5 text-white" />}
+          <div className="mx-auto mb-3 h-11 w-11 rounded-2xl overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="Note" className="h-full w-full object-cover" />
           </div>
           <h1 className="text-lg font-bold text-slate-900">
             {sent ? 'Check your email' : 'Reset password'}
@@ -79,7 +80,7 @@ export default function ForgotPasswordPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition"
+                className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition"
               />
             </div>
 
@@ -91,8 +92,8 @@ export default function ForgotPasswordPage() {
               type="submit"
               disabled={loading}
               className={cn(
-                'mt-1 w-full rounded-xl bg-indigo-600 py-2.5 text-sm font-semibold text-white shadow-sm',
-                'hover:bg-indigo-700 transition-colors',
+                'mt-1 w-full rounded-xl bg-violet-600 py-2.5 text-sm font-semibold text-white shadow-sm',
+                'hover:bg-violet-700 transition-colors',
                 loading && 'opacity-60 cursor-not-allowed',
               )}
             >
@@ -102,7 +103,7 @@ export default function ForgotPasswordPage() {
         )}
 
         <p className="mt-5 text-center text-xs text-slate-500">
-          <Link href="/auth/login" className="font-semibold text-indigo-600 hover:underline">
+          <Link href="/auth/login" className="font-semibold text-violet-600 hover:underline">
             ← Back to sign in
           </Link>
         </p>

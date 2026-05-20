@@ -118,7 +118,7 @@ export default function DashboardPage() {
 
   /* ── Stats ─────────────────────────────────────────────────── */
   const stats: DashStat[] = [
-    { id: 'notes', label: 'My Notes', value: data?.totalNotes ?? '—', icon: FileText, color: 'indigo', description: 'Your notes' },
+    { id: 'notes', label: 'My Notes', value: data?.totalNotes ?? '—', icon: FileText, color: 'violet', description: 'Your notes' },
     { id: 'favorites', label: 'My Favorites', value: data?.totalFavorites ?? '—', icon: Star, color: 'amber', description: 'Your starred notes' },
     { id: 'users', label: 'Total Users', value: data?.totalUsers ?? '—', icon: Users, color: 'emerald', description: 'Registered accounts' },
     { id: 'active', label: 'Active Users', value: data?.totalActive ?? '—', icon: UserCheck, color: 'violet', description: 'Users with note access' },
@@ -127,7 +127,7 @@ export default function DashboardPage() {
   /* ── Bar chart data ─────────────────────────────────────────── */
   const barData: BarItem[] = data
     ? [
-        { label: 'All Notes', value: data.totalNotes, color: '#6366f1', colorLight: '#eef2ff' },
+        { label: 'All Notes', value: data.totalNotes, color: '#7c3aed', colorLight: '#ede9fe' },
         { label: 'Regular', value: Math.max(0, data.totalNotes - data.totalFavorites), color: '#0ea5e9', colorLight: '#e0f2fe' },
         { label: 'Favorites', value: data.totalFavorites, color: '#f59e0b', colorLight: '#fffbeb' },
         { label: 'Users', value: data.totalUsers, color: '#10b981', colorLight: '#ecfdf5' },
@@ -148,7 +148,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
 
       {/* ── Welcome banner ───────────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-indigo-600 to-violet-600 px-6 py-5 text-white shadow-lg shadow-indigo-200">
+      <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-violet-600 to-violet-600 px-6 py-5 text-white shadow-lg shadow-violet-200">
         {/* Decorative circles */}
         <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute -bottom-6 right-20 h-24 w-24 rounded-full bg-white/10" />
@@ -156,11 +156,11 @@ export default function DashboardPage() {
         <div className="relative flex items-center justify-between gap-4">
           <div>
             <h1 className="text-lg font-bold tracking-tight">{greeting(user?.name)}</h1>
-            <p className="mt-0.5 text-sm text-indigo-200">{today}</p>
+            <p className="mt-0.5 text-sm text-violet-200">{today}</p>
             {data && (
               <div className="mt-3 flex items-center gap-1.5">
-                <TrendingUp className="h-4 w-4 text-indigo-300" />
-                <span className="text-sm text-indigo-100">
+                <TrendingUp className="h-4 w-4 text-violet-300" />
+                <span className="text-sm text-violet-100">
                   You have <span className="font-bold text-white">{data.totalNotes}</span> notes,{' '}
                   <span className="font-bold text-white">{data.totalFavorites}</span> starred
                 </span>
@@ -179,7 +179,7 @@ export default function DashboardPage() {
               Refresh
             </button>
             {lastRefreshed && (
-              <p className="text-[10px] text-indigo-300">
+              <p className="text-[10px] text-violet-300">
                 Updated {lastRefreshed.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </p>
             )}
@@ -215,7 +215,7 @@ export default function DashboardPage() {
               data={lineData}
               title="Activity This Week"
               subtitle="Notes created per day over the last 7 days"
-              color="#6366f1"
+              color="#7c3aed"
             />
           )}
         </div>

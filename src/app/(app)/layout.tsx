@@ -20,8 +20,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-white dark:bg-slate-900">
         <div className="flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 shadow shadow-indigo-200">
-            <FileText className="h-5 w-5 text-white" />
+          <div className="h-12 w-12 rounded-2xl overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="Note" className="h-full w-full object-cover" />
           </div>
           <p className="text-xs">Loading your workspace…</p>
         </div>

@@ -54,8 +54,9 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-[#F5F5FA] px-4">
       <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
         <div className="mb-7 text-center">
-          <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 shadow shadow-indigo-200">
-            <LogIn className="h-5 w-5 text-white" />
+          <div className="mx-auto mb-3 h-11 w-11 rounded-2xl overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="Note" className="h-full w-full object-cover" />
           </div>
           <h1 className="text-lg font-bold text-slate-900">Welcome back</h1>
           <p className="mt-1 text-xs text-slate-500">Sign in to your account</p>
@@ -74,7 +75,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition"
             />
           </div>
 
@@ -85,7 +86,7 @@ export default function LoginPage() {
               </label>
               <Link
                 href="/auth/forgot-password"
-                className="text-[11px] text-indigo-600 hover:underline"
+                className="text-[11px] text-violet-600 hover:underline"
               >
                 Forgot Password?
               </Link>
@@ -99,7 +100,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 pr-10 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 pr-10 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition"
               />
               <button
                 type="button"
@@ -122,8 +123,8 @@ export default function LoginPage() {
             type="submit"
             disabled={loading}
             className={cn(
-              'mt-1 w-full rounded-xl bg-indigo-600 py-2.5 text-sm font-semibold text-white shadow-sm',
-              'hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-colors',
+              'mt-1 w-full rounded-xl bg-violet-600 py-2.5 text-sm font-semibold text-white shadow-sm',
+              'hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-300 transition-colors',
               loading && 'opacity-60 cursor-not-allowed',
             )}
           >
@@ -176,7 +177,7 @@ export default function LoginPage() {
 
         <p className="mt-5 text-center text-xs text-slate-500">
           Don&apos;t have an account?{' '}
-          <Link href="/auth/signup" className="font-semibold text-indigo-600 hover:underline">
+          <Link href="/auth/signup" className="font-semibold text-violet-600 hover:underline">
             Sign Up
           </Link>
         </p>

@@ -15,8 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: { default: 'Yby Notes', template: '%s | Yby Notes' },
-  description: 'Notes, chat, and collaboration — ported from the Yby mobile app.',
+  title: { default: 'Note', template: '%s | Note' },
+  description: 'Notes, chat, and collaboration.',
+  icons: { icon: '/logo.svg', apple: '/logo.svg' },
 };
 
 export default function RootLayout({

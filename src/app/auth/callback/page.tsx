@@ -74,7 +74,7 @@ export default function AuthCallback() {
           <p className="text-sm font-medium text-rose-600 mb-4">{errorMsg}</p>
           <button
             onClick={() => router.replace('/auth/login')}
-            className="text-xs font-semibold text-indigo-600 hover:underline"
+            className="text-xs font-semibold text-violet-600 hover:underline"
           >
             Back to login
           </button>
@@ -86,7 +86,7 @@ export default function AuthCallback() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F5F5FA]">
       <div className="flex flex-col items-center gap-3 text-slate-500">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 shadow shadow-indigo-200">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-600 shadow shadow-violet-200">
           <FileText className="h-5 w-5 text-white" />
         </div>
         <p className="text-xs">Signing you in…</p>

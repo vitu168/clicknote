@@ -129,7 +129,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
             <div key={msg.id} className={cn('group flex items-end gap-2', isMe ? 'flex-row-reverse' : 'flex-row')}>
               {/* Avatar */}
               {!isMe && (
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-950/50 text-[10px] font-bold text-indigo-700 dark:text-indigo-400">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-violet-100 dark:bg-violet-950/50 text-[10px] font-bold text-violet-700 dark:text-violet-400">
                   {(otherUser.name ?? otherUser.email ?? 'U').slice(0, 2).toUpperCase()}
                 </div>
               )}
@@ -139,7 +139,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
                 {msg.reply_to_text && (
                   <div className={cn(
                     'mb-1 rounded-lg border-l-2 px-2.5 py-1 text-[11px]',
-                    isMe ? 'border-indigo-300 dark:border-indigo-900/70 bg-indigo-50 dark:bg-indigo-950/30 text-right' : 'border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50',
+                    isMe ? 'border-violet-300 dark:border-violet-900/70 bg-violet-50 dark:bg-violet-950/30 text-right' : 'border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50',
                   )}>
                     <span className="font-semibold">{msg.reply_to_sender_name}</span>
                     <p className="text-slate-500 dark:text-slate-400 line-clamp-1">{msg.reply_to_text}</p>
@@ -151,7 +151,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
                   className={cn(
                     'rounded-2xl px-3.5 py-2.5 text-sm shadow-sm',
                     isMe
-                      ? 'rounded-br-md bg-indigo-600 text-white'
+                      ? 'rounded-br-md bg-violet-600 text-white'
                       : 'rounded-bl-md bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 ring-1 ring-slate-200 dark:ring-slate-600',
                   )}
                 >
@@ -185,7 +185,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
                       onClick={() => setReactionTarget(reactionTarget === msg.id ? null : msg.id)}
                       aria-label="Add reaction"
                       title="Add reaction"
-                      className="rounded p-0.5 text-slate-400 dark:text-slate-500 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors"
+                      className="rounded p-0.5 text-slate-400 dark:text-slate-500 hover:text-violet-500 dark:hover:text-violet-400 transition-colors"
                     >
                       <SmilePlus className="h-3 w-3" />
                     </button>
@@ -238,7 +238,7 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
             onKeyDown={handleKeyDown}
             placeholder="Type a message… (Enter to send)"
             rows={1}
-            className="flex-1 resize-none rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-950/50 transition max-h-32 overflow-y-auto"
+            className="flex-1 resize-none rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-violet-400 dark:focus:border-violet-500 focus:ring-2 focus:ring-violet-100 dark:focus:ring-violet-950/50 transition max-h-32 overflow-y-auto"
           />
           <button
             type="button"
@@ -247,8 +247,8 @@ export default function ChatView({ currentUserId, otherUser }: ChatViewProps) {
             aria-label="Send message"
             title="Send message"
             className={cn(
-              'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-sm transition-colors',
-              'hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed',
+              'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-600 text-white shadow-sm transition-colors',
+              'hover:bg-violet-700 disabled:opacity-40 disabled:cursor-not-allowed',
             )}
           >
             <Send className="h-4 w-4" />

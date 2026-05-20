@@ -9,18 +9,11 @@ export interface DashStat {
   change?: number;
   positive?: boolean;
   icon: LucideIcon;
-  color: 'indigo' | 'emerald' | 'amber' | 'rose' | 'violet';
+  color: 'emerald' | 'amber' | 'rose' | 'violet';
   description?: string;
 }
 
 const colorStyles = {
-  indigo: {
-    icon: 'bg-indigo-50 text-indigo-600',
-    ring: 'ring-indigo-100',
-    bar: 'bg-indigo-500',
-    glow: 'shadow-indigo-100',
-    text: 'text-indigo-600',
-  },
   emerald: {
     icon: 'bg-emerald-50 text-emerald-600',
     ring: 'ring-emerald-100',

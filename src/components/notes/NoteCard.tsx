@@ -35,7 +35,7 @@ export default function NoteCard({ note, onDelete, onToggleFavorite, onClick, on
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2.5 min-w-0">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400">
             <FileText className="h-4 w-4" />
           </div>
           <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">

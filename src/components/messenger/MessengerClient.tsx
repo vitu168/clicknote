@@ -21,7 +21,7 @@ function getInitials(name: string | null, email: string | null): string {
 }
 
 const AVATAR_COLORS = [
-  'bg-indigo-500', 'bg-violet-500', 'bg-sky-500',
+  'bg-violet-500', 'bg-violet-500', 'bg-sky-500',
   'bg-emerald-500', 'bg-amber-500', 'bg-rose-500',
 ];
 
@@ -61,7 +61,7 @@ export default function MessengerClient({ users, currentUserId, currentUserName 
               placeholder="Search contacts…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-8 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 pl-8 pr-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-1 focus:ring-indigo-100 dark:focus:ring-indigo-950/50 transition"
+              className="h-8 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 pl-8 pr-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:border-violet-400 dark:focus:border-violet-500 focus:ring-1 focus:ring-violet-100 dark:focus:ring-violet-950/50 transition"
             />
           </div>
         </div>
@@ -80,7 +80,7 @@ export default function MessengerClient({ users, currentUserId, currentUserName 
                 onClick={() => setSelected(user)}
                 className={cn(
                   'flex cursor-pointer items-center gap-3 px-5 py-3.5 transition-colors',
-                  selected?.id === user.id ? 'bg-indigo-50 dark:bg-indigo-950/20' : 'hover:bg-slate-50 dark:hover:bg-slate-700/50',
+                  selected?.id === user.id ? 'bg-violet-50 dark:bg-violet-950/20' : 'hover:bg-slate-50 dark:hover:bg-slate-700/50',
                 )}
               >
                 {user.avatarUrl ? (
@@ -100,7 +100,7 @@ export default function MessengerClient({ users, currentUserId, currentUserName 
                   </div>
                 )}
                 <div className="min-w-0 flex-1">
-                  <p className={cn('truncate text-sm font-semibold', selected?.id === user.id ? 'text-indigo-700 dark:text-indigo-400' : 'text-slate-800 dark:text-slate-100')}>
+                  <p className={cn('truncate text-sm font-semibold', selected?.id === user.id ? 'text-violet-700 dark:text-violet-400' : 'text-slate-800 dark:text-slate-100')}>
                     {user.name ?? user.email ?? 'Unknown'}
                   </p>
                   <p className="truncate text-[11px] text-slate-400 dark:text-slate-500">{user.email ?? ''}</p>

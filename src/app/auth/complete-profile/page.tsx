@@ -64,8 +64,9 @@ export default function CompleteProfilePage() {
     <div className="flex min-h-screen items-center justify-center bg-[#F5F5FA] px-4 py-10">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
         <div className="mb-7 text-center">
-          <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 shadow shadow-indigo-200">
-            <UserCircle2 className="h-5 w-5 text-white" />
+          <div className="mx-auto mb-3 h-11 w-11 rounded-2xl overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="Note" className="h-full w-full object-cover" />
           </div>
           <h1 className="text-lg font-bold text-slate-900">Complete your profile</h1>
           <p className="mt-1 text-xs text-slate-500">
@@ -75,7 +76,7 @@ export default function CompleteProfilePage() {
 
         <div className="mb-5 flex items-center gap-4">
           <div className="relative">
-            <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-indigo-500 to-violet-600 text-xl font-bold text-white">
+            <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-violet-500 to-violet-600 text-xl font-bold text-white">
               {avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={avatarUrl} alt="Avatar preview" className="h-full w-full object-cover" />
@@ -105,7 +106,7 @@ export default function CompleteProfilePage() {
               onChange={(e) => setName(e.target.value)}
               placeholder="Alex Morgan"
               required
-              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition"
             />
           </div>
 
@@ -119,7 +120,7 @@ export default function CompleteProfilePage() {
               value={avatarUrl}
               onChange={(e) => setAvatarUrl(e.target.value)}
               placeholder="https://…"
-              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition"
             />
           </div>
 
@@ -139,8 +140,8 @@ export default function CompleteProfilePage() {
               type="submit"
               disabled={submitting}
               className={cn(
-                'inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm',
-                'hover:bg-indigo-700 transition-colors',
+                'inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm',
+                'hover:bg-violet-700 transition-colors',
                 submitting && 'opacity-60 cursor-not-allowed',
               )}
             >

@@ -53,7 +53,7 @@ export default function RevenueChart({ data }: RevenueChartProps) {
         </div>
         <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
           <span className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-indigo-500" />
+            <span className="h-2.5 w-2.5 rounded-full bg-violet-500" />
             Revenue
           </span>
         </div>

@@ -13,7 +13,7 @@ const sizeStyles = {
   lg: 'h-11 w-11 text-base',
 };
 
-export default function Avatar({ name, colorClass = 'bg-indigo-500', size = 'md', className }: AvatarProps) {
+export default function Avatar({ name, colorClass = 'bg-violet-500', size = 'md', className }: AvatarProps) {
   return (
     <div
       className={cn(

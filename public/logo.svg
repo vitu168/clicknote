@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD04E"/>
+      <stop offset="100%" style="stop-color:#F5A623"/>
+    </linearGradient>
+    <linearGradient id="shadow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8950A;stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:#C47200;stop-opacity:0"/>
+    </linearGradient>
+    <linearGradient id="curlShadow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C47200;stop-opacity:0.6"/>
+      <stop offset="100%" style="stop-color:#C47200;stop-opacity:0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect x="0" y="0" width="512" height="512" rx="80" ry="80" fill="url(#bg)"/>
+
+  <!-- Long diagonal shadow behind pen -->
+  <polygon points="220,40 320,40 512,230 512,330" fill="url(#shadow)" opacity="0.35"/>
+
+  <!-- Page curl shadow at bottom right -->
+  <path d="M512 400 L400 512 L512 512 Z" fill="url(#curlShadow)"/>
+
+  <!-- Page curl shape -->
+  <path d="M400 512 Q440 480 480 440 Q512 420 512 400 L512 512 Z" fill="white" opacity="0.18"/>
+  <path d="M400 512 Q430 470 460 450 Q490 430 512 400" fill="none" stroke="white" stroke-width="2" opacity="0.3"/>
+
+  <!-- Pencil body — rotated ~-45deg, centered -->
+  <g transform="translate(256,256) rotate(-45)">
+    <!-- Main body -->
+    <rect x="-28" y="-110" width="56" height="155" rx="12" ry="12" fill="white" opacity="0.95"/>
+    <!-- Eraser cap -->
+    <rect x="-28" y="-130" width="56" height="26" rx="10" ry="10" fill="white" opacity="0.65"/>
+    <!-- Eraser band top -->
+    <rect x="-28" y="-114" width="56" height="9" rx="0" fill="white" opacity="0.3"/>
+    <!-- Body band (middle stripe) -->
+    <rect x="-28" y="28" width="56" height="10" rx="0" fill="white" opacity="0.3"/>
+    <!-- Ferrule (metal band near tip) -->
+    <rect x="-28" y="42" width="56" height="10" rx="0" fill="white" opacity="0.25"/>
+    <!-- Tip triangle -->
+    <polygon points="-28,52 28,52 0,102" fill="white" opacity="0.9"/>
+    <!-- Tip point -->
+    <polygon points="-10,90 10,90 0,108" fill="#F5A623" opacity="0.9"/>
+  </g>
+</svg>

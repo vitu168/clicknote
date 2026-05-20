@@ -91,13 +91,13 @@ export default function NotificationsPage() {
               key={n.id}
               className={cn(
                 'flex items-start gap-3 px-5 py-4 transition-colors',
-                n.isRead ? 'bg-white dark:bg-slate-800' : 'bg-indigo-50/30 dark:bg-indigo-950/20',
+                n.isRead ? 'bg-white dark:bg-slate-800' : 'bg-violet-50/30 dark:bg-violet-950/20',
               )}
             >
               <div
                 className={cn(
                   'mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl',
-                  n.isRead ? 'bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500' : 'bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400',
+                  n.isRead ? 'bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500' : 'bg-violet-100 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400',
                 )}
               >
                 <Bell className="h-4 w-4" />
@@ -105,7 +105,7 @@ export default function NotificationsPage() {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{n.title}</p>
-                  {!n.isRead && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-500" />}
+                  {!n.isRead && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-violet-500" />}
                 </div>
                 <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{n.body}</p>
                 <p className="mt-1.5 text-[11px] text-slate-400 dark:text-slate-500">{relativeTime(n.receivedAt)}</p>

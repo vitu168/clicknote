@@ -1,13 +1,11 @@
 @import "tailwindcss";
 
-/* Class-based dark mode for Tailwind v4 */
 @variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #F5F5FA;
-  --foreground: #0F172A;
+  --background: #F7F7F8;
+  --foreground: #09090b;
 }
-
 .dark {
   --background: #0f172a;
   --foreground: #f1f5f9;
@@ -27,57 +25,36 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #C7D2FE;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #818CF8;
-}
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
 
-/* Fade-in animation */
 @keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 0.25s ease-out both; }
+
+@keyframes page-in {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.animate-fade-in {
-  animation: fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
+.animate-page-in { animation: page-in 0.25s ease-out both; }
 
-/* Page transition animation — used by AppLayout key={pathname} */
-@keyframes page-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.animate-page-in {
-  animation: page-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
+.animate-fade-in-1 { animation: fade-in 0.25s 0.04s ease-out both; }
+.animate-fade-in-2 { animation: fade-in 0.25s 0.08s ease-out both; }
+.animate-fade-in-3 { animation: fade-in 0.25s 0.12s ease-out both; }
+.animate-fade-in-4 { animation: fade-in 0.25s 0.16s ease-out both; }
 
-/* Staggered fade-in */
-.animate-fade-in-1 { animation: fade-in 0.4s 0.05s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.animate-fade-in-2 { animation: fade-in 0.4s 0.10s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.animate-fade-in-3 { animation: fade-in 0.4s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.animate-fade-in-4 { animation: fade-in 0.4s 0.20s cubic-bezier(0.22, 1, 0.36, 1) both; }
-
-/* Pop-in animation for stat cards */
 @keyframes pop-in {
-  0%   { opacity: 0; transform: scale(0.92) translateY(8px); }
-  70%  { transform: scale(1.02) translateY(0); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
+  0%   { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
 }
-.animate-pop-in { animation: pop-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-pop-in { animation: pop-in 0.2s ease-out both; }
 
-/* Pulsing dot for live indicators */
 @keyframes ping-slow {
   0%, 100% { transform: scale(1); opacity: 1; }
-  50%       { transform: scale(1.6); opacity: 0.4; }
+  50%       { transform: scale(1.5); opacity: 0.4; }
 }
 .animate-ping-slow { animation: ping-slow 2s ease-in-out infinite; }

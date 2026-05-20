@@ -16,7 +16,7 @@ export default function NotesChart({ total, favorites, users, activeUsers }: {
   const regular = Math.max(0, total - favorites);
 
   const bars: Bar[] = [
-    { label: 'All Notes', value: total, color: 'bg-indigo-500', bg: 'bg-indigo-100' },
+    { label: 'All Notes', value: total, color: 'bg-violet-500', bg: 'bg-violet-100' },
     { label: 'Regular', value: regular, color: 'bg-sky-500', bg: 'bg-sky-100' },
     { label: 'Favorites', value: favorites, color: 'bg-amber-400', bg: 'bg-amber-100' },
     { label: 'Total Users', value: users, color: 'bg-emerald-500', bg: 'bg-emerald-100' },

@@ -75,7 +75,7 @@ export default function Header() {
           <input
             type="text"
             placeholder="Search"
-            className="h-8 w-44 rounded-2xl border border-slate-200 bg-slate-50 pl-9 pr-3 text-xs text-slate-700 placeholder:text-slate-400 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:placeholder:text-slate-500"
+            className="h-8 w-44 rounded-2xl border border-slate-200 bg-slate-50 pl-9 pr-3 text-xs text-slate-700 placeholder:text-slate-400 outline-none transition focus:border-violet-400 focus:ring-2 focus:ring-violet-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:placeholder:text-slate-500"
           />
         </div>
 
@@ -84,7 +84,7 @@ export default function Header() {
           type="button"
           onClick={toggle}
           title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          className="flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-indigo-500 dark:hover:bg-indigo-950/40 dark:hover:text-indigo-400"
+          className="flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 transition hover:border-violet-200 hover:bg-violet-50 hover:text-violet-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-violet-500 dark:hover:bg-violet-950/40 dark:hover:text-violet-400"
         >
           {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </button>
@@ -93,10 +93,10 @@ export default function Header() {
         <Link
           href="/notifications"
           title="Notifications"
-          className="relative flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-indigo-500 dark:hover:bg-indigo-950/40 dark:hover:text-indigo-400"
+          className="relative flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 transition hover:border-violet-200 hover:bg-violet-50 hover:text-violet-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-violet-500 dark:hover:bg-violet-950/40 dark:hover:text-violet-400"
         >
           <Bell className="h-4 w-4" />
-          <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-indigo-500 ring-1 ring-white dark:ring-slate-900" />
+          <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-violet-500 ring-1 ring-white dark:ring-slate-900" />
         </Link>
 
         {/* Avatar — circle only, no name/email visible */}
@@ -105,7 +105,7 @@ export default function Header() {
             type="button"
             onClick={() => setMenuOpen((v) => !v)}
             title={displayName}
-            className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-indigo-500 to-violet-600 text-[11px] font-semibold text-white shadow-sm shadow-indigo-200 ring-2 ring-white transition hover:ring-indigo-300 dark:ring-slate-900"
+            className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-violet-500 to-violet-600 text-[11px] font-semibold text-white shadow-sm shadow-violet-200 ring-2 ring-white transition hover:ring-violet-300 dark:ring-slate-900"
           >
             {profile?.avatarUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -118,8 +118,8 @@ export default function Header() {
           {menuOpen && (
             <div className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/6 dark:bg-slate-800 dark:ring-white/10">
               {/* User card — GitHub/Dribbble style */}
-              <div className="flex items-center gap-3 bg-linear-to-br from-slate-50 to-indigo-50/60 px-4 py-4 dark:from-slate-800 dark:to-indigo-950/30">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-indigo-500 to-violet-600 text-sm font-bold text-white shadow-md shadow-indigo-200/50 dark:shadow-indigo-900/50">
+              <div className="flex items-center gap-3 bg-linear-to-br from-slate-50 to-violet-50/60 px-4 py-4 dark:from-slate-800 dark:to-violet-950/30">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-violet-500 to-violet-600 text-sm font-bold text-white shadow-md shadow-violet-200/50 dark:shadow-violet-900/50">
                   {profile?.avatarUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={profile.avatarUrl} alt={displayName} className="h-full w-full object-cover" />

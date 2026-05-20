@@ -55,11 +55,11 @@ export default function ProfilePage() {
     <div className="space-y-6">
       {/* Profile card */}
       <div className="overflow-hidden rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
-        <div className="h-24 bg-linear-to-br from-indigo-500 via-violet-500 to-fuchsia-500" />
+        <div className="h-24 bg-linear-to-br from-violet-500 via-violet-500 to-fuchsia-500" />
         <div className="relative px-6 pb-6">
           <div className="-mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-end gap-4">
-              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-indigo-500 to-violet-600 text-2xl font-bold text-white ring-4 ring-white dark:ring-slate-800">
+              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-violet-500 to-violet-600 text-2xl font-bold text-white ring-4 ring-white dark:ring-slate-800">
                 {profile?.avatarUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={profile.avatarUrl} alt="" className="h-full w-full object-cover" />
@@ -92,7 +92,7 @@ export default function ProfilePage() {
           icon={Calendar}
           label="Joined"
           value={formatDate(profile?.createdAt ?? null)}
-          tint="bg-indigo-50 text-indigo-600"
+          tint="bg-violet-50 text-violet-600"
         />
       </div>
 
@@ -105,7 +105,7 @@ export default function ProfilePage() {
           </div>
           <Link
             href="/notes"
-            className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+            className="text-xs font-semibold text-violet-600 dark:text-violet-400 hover:underline"
           >
             View all
           </Link>
