@@ -10,7 +10,11 @@ export interface NoteInfo {
 
 export interface NoteListResponse {
   items: NoteInfo[];
+  page: number;
+  pageSize: number;
   totalCount: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
 }
 export interface UserProfile {
   id: string;
@@ -23,7 +27,11 @@ export interface UserProfile {
 
 export interface UserProfileListResponse {
   items: UserProfile[];
+  page: number;
+  pageSize: number;
   totalCount: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
 }
 
 export interface ChatMessengerMessage {

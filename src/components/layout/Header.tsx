@@ -1,28 +1,58 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Bell, LogOut, Sun, Moon, Settings, User, Palette } from 'lucide-react';
 import SearchInput from '@/components/ui/SearchInput';
 import { useSession } from '@/lib/session';
 import { useTheme } from '@/lib/theme';
 import { useAccent, ACCENT_OPTIONS } from '@/lib/accent';
-import { useI18n, type TranslationKey } from '@/lib/i18n';
+import { useI18n } from '@/lib/i18n';
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
-const pageKeys: Record<string, { nav: TranslationKey; desc: TranslationKey }> = {
-  '/dashboard':     { nav: 'nav.dashboard',     desc: 'desc.dashboard' },
-  '/notes':         { nav: 'nav.notes',          desc: 'desc.notes' },
-  '/favorites':     { nav: 'nav.favorites',      desc: 'desc.favorites' },
-  '/archive':       { nav: 'nav.archive',        desc: 'desc.archive' },
-  '/users':         { nav: 'nav.members',        desc: 'desc.users' },
-  '/messenger':     { nav: 'nav.messenger',      desc: 'desc.messenger' },
-  '/notifications': { nav: 'nav.notifications',  desc: 'desc.notifications' },
-  '/profile':       { nav: 'nav.profile',        desc: 'desc.profile' },
-  '/settings':      { nav: 'nav.settings',       desc: 'desc.settings' },
-  '/analytics':     { nav: 'nav.analytics',      desc: 'desc.analytics' },
-};
+function useNow() {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const tick = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(tick);
+  }, []);
+  return now;
+}
+
+type GreetKey = 'greeting.morning' | 'greeting.afternoon' | 'greeting.evening';
+
+function greetingKey(now: Date): GreetKey {
+  const h = now.getHours();
+  if (h < 12) return 'greeting.morning';
+  if (h < 18) return 'greeting.afternoon';
+  return 'greeting.evening';
+}
+
+const KM_DIGITS = '០១២៣៤៥៦៧៨៩';
+const KM_DAYS   = ['អាទិត្យ', 'ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស្បតិ៍', 'សុក្រ', 'សៅរ៍'];
+const KM_MONTHS = ['មករា','កុម្ភៈ','មីនា','មេសា','ឧសភា','មិថុនា','កក្កដា','សីហា','កញ្ញា','តុលា','វិច្ឆិកា','ធ្នូ'];
+
+function toKhmerNum(n: number, pad = 0): string {
+  return String(n).padStart(pad, '0').replace(/[0-9]/g, d => KM_DIGITS[+d]);
+}
+
+function formatDate(d: Date, lang: string): string {
+  if (lang === 'km') {
+    return `${KM_DAYS[d.getDay()]}, ${toKhmerNum(d.getDate())} ${KM_MONTHS[d.getMonth()]} ${toKhmerNum(d.getFullYear())}`;
+  }
+  return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function formatTime(d: Date, lang: string): string {
+  if (lang === 'km') {
+    const h = d.getHours();
+    const ampm = h < 12 ? 'ព្រឹក' : 'ល្ងាច';
+    const h12 = h % 12 || 12;
+    return `${toKhmerNum(h12, 2)}:${toKhmerNum(d.getMinutes(), 2)} ${ampm}`;
+  }
+  return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+}
 
 function initials(src: string | null | undefined): string {
   if (!src) return '?';
@@ -32,29 +62,26 @@ function initials(src: string | null | undefined): string {
 }
 
 export default function Header() {
-  const pathname   = usePathname();
-  const router     = useRouter();
+  const router = useRouter();
   const { user, profile, signOut } = useSession();
   const { theme, toggle } = useTheme();
   const { accent, setAccent } = useAccent();
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [menuOpen,    setMenuOpen]    = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const menuRef    = useRef<HTMLDivElement>(null);
   const paletteRef = useRef<HTMLDivElement>(null);
+  const now = useNow();
 
-  const pageKey =
-    pageKeys[pathname] ??
-    pageKeys[`/${pathname.split('/')[1] ?? ''}`];
-  const page = pageKey
-    ? { title: t(pageKey.nav), description: t(pageKey.desc) }
-    : { title: '', description: '' };
-
-  const displayName = profile?.name ?? user?.name ?? user?.email ?? 'Account';
+  const displayName = profile?.name ?? user?.name ?? user?.email ?? 'there';
+  const firstName   = displayName.split(' ')[0];
+  const greetText   = `${t(greetingKey(now))}, ${firstName}! 👋`;
+  const dateText = formatDate(now, lang);
+  const timeText = formatTime(now, lang);
 
   useEffect(() => {
     function onDown(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+      if (menuRef.current    && !menuRef.current.contains(e.target as Node))    setMenuOpen(false);
       if (paletteRef.current && !paletteRef.current.contains(e.target as Node)) setPaletteOpen(false);
     }
     document.addEventListener('mousedown', onDown);
@@ -67,25 +94,22 @@ export default function Header() {
   }
 
   return (
-    <header className="relative z-30 flex items-center justify-between gap-4 border-b border-slate-200/70 bg-white/85 px-6 py-3 backdrop-blur shrink-0 dark:border-slate-700/60 dark:bg-slate-900/90">
-      {/* Page title */}
-      <div>
-        <h1 className="text-sm font-semibold leading-none text-slate-900 dark:text-slate-100">
-          {page.title}
-        </h1>
-        <p className="mt-0.5 text-[11px] tracking-[0.02em] text-slate-500 dark:text-slate-400">
-          {page.description}
+    <header className="relative z-30 flex h-14 shrink-0 items-center justify-between gap-4 border-b border-slate-200 bg-white/85 px-6 backdrop-blur dark:border-white/6 dark:bg-slate-900/90">
+
+      {/* Greeting + datetime */}
+      <div className="min-w-0">
+        <p className="truncate text-[13px] font-semibold leading-none text-slate-900 dark:text-slate-100">
+          {greetText}
+        </p>
+        <p className="mt-0.5 text-[11px] text-slate-400 dark:text-slate-500">
+          {dateText} · {timeText}
         </p>
       </div>
 
       <div className="flex flex-1 items-center justify-end gap-1.5">
         {/* Search */}
         <div className="hidden sm:block mr-1 w-40">
-          <SearchInput
-            value=""
-            onChange={() => {}}
-            placeholder={t('action.search')}
-          />
+          <SearchInput value="" onChange={() => {}} placeholder={t('action.search')} />
         </div>
 
         {/* Color picker */}
@@ -102,7 +126,9 @@ export default function Header() {
           {paletteOpen && (
             <div className="absolute right-0 z-50 mt-2 w-52 overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-black/6 dark:bg-slate-800 dark:ring-white/10 animate-pop-in">
               <div className="px-3 py-2.5 border-b border-slate-100 dark:border-slate-700">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">{t('settings.accent_color')}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                  {t('settings.accent_color')}
+                </p>
               </div>
               <div className="p-2 grid grid-cols-3 gap-1">
                 {ACCENT_OPTIONS.map((opt) => (
@@ -118,14 +144,9 @@ export default function Header() {
                         : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/60',
                     )}
                   >
-                    <span
-                      className="h-3.5 w-3.5 shrink-0 rounded-full ring-1 ring-black/10"
-                      style={{ backgroundColor: opt.hex }}
-                    />
+                    <span className="h-3.5 w-3.5 shrink-0 rounded-full ring-1 ring-black/10" style={{ backgroundColor: opt.hex }} />
                     {opt.label}
-                    {accent === opt.value && (
-                      <span className="ml-auto text-[10px] text-slate-400">✓</span>
-                    )}
+                    {accent === opt.value && <span className="ml-auto text-[10px] text-slate-400">✓</span>}
                   </button>
                 ))}
               </div>

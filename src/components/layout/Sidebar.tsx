@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
   LayoutDashboard, MessageSquare, Settings, FileText, LogOut,
-  Users, BarChart2, Star, Archive, Bell, ChevronLeft,
+  Users, BarChart2, Star, Archive, Bell, ChevronLeft, CalendarDays,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useSession } from '@/lib/session';
@@ -20,6 +20,7 @@ const navGroupDefs = [
       { href: '/notes',         labelKey: 'nav.notes'         as const, icon: FileText },
       { href: '/favorites',     labelKey: 'nav.favorites'     as const, icon: Star },
       { href: '/archive',       labelKey: 'nav.archive'       as const, icon: Archive },
+      { href: '/calendar',      labelKey: 'nav.calendar'      as const, icon: CalendarDays },
     ],
   },
   {
@@ -34,6 +35,7 @@ const navGroupDefs = [
     items: [
       { href: '/messenger',     labelKey: 'nav.messenger'     as const, icon: MessageSquare },
       { href: '/notifications', labelKey: 'nav.notifications' as const, icon: Bell },
+      { href: '/settings',      labelKey: 'nav.settings'      as const, icon: Settings },
     ],
   },
 ];
@@ -45,7 +47,6 @@ function initials(src: string | null | undefined): string {
   return src.slice(0, 2).toUpperCase();
 }
 
-/* Single nav item — shared between expanded & collapsed */
 function NavItem({
   href,
   label,
@@ -227,20 +228,6 @@ export default function Sidebar() {
             </div>
           ))}
         </nav>
-
-        {/* ── Settings ── */}
-        <div className={cn(
-          'shrink-0 border-t border-slate-200 dark:border-white/6',
-          collapsed ? 'flex justify-center py-2 px-1.5' : 'px-2 py-2',
-        )}>
-          <NavItem
-            href="/settings"
-            label={t('nav.settings')}
-            icon={Settings}
-            active={pathname === '/settings'}
-            collapsed={collapsed}
-          />
-        </div>
 
         {/* ── User footer ── */}
         <div className={cn(

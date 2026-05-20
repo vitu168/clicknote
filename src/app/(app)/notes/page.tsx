@@ -2,10 +2,13 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Plus, Star, FileText, RefreshCw } from 'lucide-react';
-import NoteCard from '@/components/notes/NoteCard';
+import NoteCard, { NoteListHeader } from '@/components/notes/NoteCard';
 import NoteForm from '@/components/notes/NoteForm';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import SearchInput from '@/components/ui/SearchInput';
+import ViewToggle, { type ViewMode } from '@/components/ui/ViewToggle';
+import Pagination from '@/components/ui/Pagination';
+import { useI18n } from '@/lib/i18n';
 import { noteService } from '@/lib/services/noteService';
 import type { NoteInfo } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -17,6 +20,7 @@ type Filter = 'all' | 'favorites';
 
 export default function NotesPage() {
   const { user } = useSession();
+  const { t } = useI18n();
   const router = useRouter();
   const userId = user?.userId ?? '';
   const [notes, setNotes] = useState<NoteInfo[]>([]);
@@ -24,10 +28,13 @@ export default function NotesPage() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<Filter>('all');
+  const [view, setView] = useState<ViewMode>('grid');
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<NoteInfo | null>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
-  const [, setTotalCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalCount, setTotalCount] = useState(0);
 
   const fetchNotes = useCallback(async () => {
     if (!userId) return;
@@ -38,19 +45,20 @@ export default function NotesPage() {
         userId,
         search: search || undefined,
         isFavorites: filter === 'favorites' ? true : undefined,
-        pageSize: 50,
+        page,
+        pageSize,
       });
       // Hide anything archived locally
       const archived = getArchivedIds();
       const visible = res.items.filter((n) => !archived.has(n.id));
       setNotes(visible);
-      setTotalCount(visible.length);
+      setTotalCount(res.totalCount);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load notes.');
     } finally {
       setLoading(false);
     }
-  }, [search, filter, userId]);
+  }, [search, filter, userId, page, pageSize]);
 
   useEffect(() => {
     const timer = setTimeout(fetchNotes, 300);
@@ -113,20 +121,22 @@ export default function NotesPage() {
 
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2">
+    <div className="h-full overflow-hidden flex flex-col gap-4">
+      {/* Toolbar — fixed, never scrolls */}
+      <div className="shrink-0 flex items-center gap-2">
         <SearchInput
           value={search}
-          onChange={setSearch}
-          placeholder="Search notes…"
-          className="flex-1"
+          onChange={(v) => { setSearch(v); setPage(1); }}
+          placeholder={t('action.search')}
+          className="w-56"
         />
+        <div className="flex-1" />
 
         {/* Filter — icon only */}
         <div className="flex h-8 items-center gap-px rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-0.5">
           <button
             type="button"
-            onClick={() => setFilter('all')}
+            onClick={() => { setFilter('all'); setPage(1); }}
             title="All Notes"
             className={cn(
               'flex h-6 w-6 items-center justify-center rounded-md transition-colors',
@@ -139,7 +149,7 @@ export default function NotesPage() {
           </button>
           <button
             type="button"
-            onClick={() => setFilter('favorites')}
+            onClick={() => { setFilter('favorites'); setPage(1); }}
             title="Favorites"
             className={cn(
               'flex h-6 w-6 items-center justify-center rounded-md transition-colors',
@@ -151,6 +161,8 @@ export default function NotesPage() {
             <Star className="h-3 w-3" fill={filter === 'favorites' ? 'currentColor' : 'none'} />
           </button>
         </div>
+
+        <ViewToggle view={view} onChange={setView} />
 
         {/* Refresh */}
         <button
@@ -173,52 +185,92 @@ export default function NotesPage() {
         </button>
       </div>
 
-      {/* Content */}
+      {/* Error — fixed, never scrolls */}
       {error && (
-        <div className="rounded-xl bg-rose-50 dark:bg-rose-950/30 px-4 py-3 text-sm font-medium text-rose-600 dark:text-rose-400 ring-1 ring-rose-200 dark:ring-rose-900/50">
+        <div className="shrink-0 rounded-xl bg-rose-50 dark:bg-rose-950/30 px-4 py-3 text-sm font-medium text-rose-600 dark:text-rose-400 ring-1 ring-rose-200 dark:ring-rose-900/50">
           {error}
         </div>
       )}
 
-      {loading && notes.length === 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-36 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-800" />
-          ))}
-        </div>
-      ) : notes.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-3 py-20 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500">
-            <FileText className="h-7 w-7" />
+      {/* Scrollable content area */}
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        {loading && notes.length === 0 ? (
+          view === 'list' ? (
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="h-12 animate-pulse bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 last:border-0" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="h-36 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-800" />
+              ))}
+            </div>
+          )
+        ) : notes.length === 0 ? (
+          <div className="flex flex-col items-center justify-center gap-3 py-20 text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500">
+              <FileText className="h-7 w-7" />
+            </div>
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+              {search ? 'No notes match your search.' : filter === 'favorites' ? 'No favorite notes yet.' : 'No notes yet.'}
+            </p>
+            {!search && filter === 'all' && (
+              <button
+                type="button"
+                onClick={() => setShowForm(true)}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-accent-600 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-700 transition-colors"
+              >
+                <Plus className="h-4 w-4" />
+                Create your first note
+              </button>
+            )}
           </div>
-          <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-            {search ? 'No notes match your search.' : filter === 'favorites' ? 'No favorite notes yet.' : 'No notes yet.'}
-          </p>
-          {!search && filter === 'all' && (
-            <button
-              type="button"
-              onClick={() => setShowForm(true)}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-accent-600 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-700 transition-colors"
-            >
-              <Plus className="h-4 w-4" />
-              Create your first note
-            </button>
-          )}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {notes.map((note) => (
-            <NoteCard
-              key={note.id}
-              note={note}
-              onDelete={handleDelete}
-              onToggleFavorite={handleToggleFavorite}
-              onArchive={handleArchive}
-              onClick={openDetail}
-            />
-          ))}
-        </div>
-      )}
+        ) : view === 'list' ? (
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden bg-white dark:bg-slate-800 shadow-sm">
+            <NoteListHeader />
+            {notes.map((note) => (
+              <NoteCard
+                key={note.id}
+                note={note}
+                view="list"
+                onDelete={handleDelete}
+                onToggleFavorite={handleToggleFavorite}
+                onArchive={handleArchive}
+                onClick={openDetail}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-2">
+            {notes.map((note) => (
+              <NoteCard
+                key={note.id}
+                note={note}
+                view="grid"
+                onDelete={handleDelete}
+                onToggleFavorite={handleToggleFavorite}
+                onArchive={handleArchive}
+                onClick={openDetail}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Pagination — fixed at bottom, never scrolls */}
+      <div className="shrink-0 border-t border-slate-200 dark:border-slate-700 pt-4">
+        {!loading && totalCount > 0 && (
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            totalCount={totalCount}
+            onPageChange={setPage}
+            onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
+          />
+        )}
+      </div>
 
       {/* Create form modal */}
       {showForm && (

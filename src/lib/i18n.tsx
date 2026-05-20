@@ -15,6 +15,7 @@ const translations = {
     'nav.notes':         'Notes',
     'nav.favorites':     'Favorites',
     'nav.archive':       'Archive',
+    'nav.calendar':      'Calendar',
     'nav.analytics':     'Analytics',
     'nav.members':       'Members',
     'nav.messenger':     'Messenger',
@@ -62,6 +63,10 @@ const translations = {
     'btn.refresh':    'Refresh',
     'btn.all_notes':  'All Notes',
     'btn.favorites':  'Favorites',
+    // Greeting
+    'greeting.morning':   'Good morning',
+    'greeting.afternoon': 'Good afternoon',
+    'greeting.evening':   'Good evening',
     // Misc
     'misc.loading': 'Loading your workspace…',
   },
@@ -75,6 +80,7 @@ const translations = {
     'nav.notes':         'កំណត់ចំណាំ',
     'nav.favorites':     'បញ្ជីចូលចិត្ត',
     'nav.archive':       'ប័ណ្ណសារ',
+    'nav.calendar':      'ប្រតិទិន',
     'nav.analytics':     'ការវិភាគ',
     'nav.members':       'សមាជិក',
     'nav.messenger':     'សារ',
@@ -122,6 +128,10 @@ const translations = {
     'btn.refresh':    'ធ្វើឡើងវិញ',
     'btn.all_notes':  'ទាំងអស់',
     'btn.favorites':  'ចូលចិត្ត',
+    // Greeting
+    'greeting.morning':   'អរុណសួស្តី',
+    'greeting.afternoon': 'ទិវាសួស្តី',
+    'greeting.evening':   'សាយណ្ហសួស្តី',
     // Misc
     'misc.loading': 'កំពុងផ្ទុក…',
   },

@@ -37,7 +37,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <main className="flex-1 overflow-y-auto p-5 bg-slate-50 dark:bg-slate-950 lg:p-6">
           <div
             key={pathname}
-            className="animate-page-in"
+            className="animate-page-in h-full flex flex-col"
           >
             {children}
           </div>
