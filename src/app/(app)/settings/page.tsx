@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { User, Bell, Palette, Languages, Shield } from 'lucide-react';
+import { User, Bell, Palette, Languages, Shield, Sun, Moon, Check } from 'lucide-react';
 import ProfileSettings from '@/components/settings/ProfileSettings';
 import NotificationSettings from '@/components/settings/NotificationSettings';
 import { useAccent, ACCENT_OPTIONS } from '@/lib/accent';
@@ -9,276 +9,288 @@ import { useI18n, type Language } from '@/lib/i18n';
 import { useTheme } from '@/lib/theme';
 import { cn } from '@/lib/utils';
 
-const LANGUAGE_OPTIONS: { value: Language; nativeLabel: string; flag: string }[] = [
-  { value: 'en', nativeLabel: 'English',    flag: '🇬🇧' },
-  { value: 'km', nativeLabel: 'ភាសាខ្មែរ', flag: '🇰🇭' },
+const LANGUAGE_OPTIONS: { value: Language; nativeLabel: string; englishLabel: string; flag: string }[] = [
+  { value: 'en', nativeLabel: 'English',    englishLabel: 'English', flag: '🇬🇧' },
+  { value: 'km', nativeLabel: 'ភាសាខ្មែរ', englishLabel: 'Khmer',  flag: '🇰🇭' },
 ];
 
-const TABS = [
-  { id: 'account',       label: 'Account',      icon: User      },
-  { id: 'notifications', label: 'Notifications', icon: Bell      },
-  { id: 'appearance',    label: 'Appearance',    icon: Palette   },
-  { id: 'language',      label: 'Language',      icon: Languages },
-  { id: 'security',      label: 'Security',      icon: Shield    },
-] as const;
+type TabId = 'account' | 'notifications' | 'appearance' | 'language' | 'security';
 
-type TabId = typeof TABS[number]['id'];
+/* shared input style */
+const inp = 'w-full rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700/60 px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-accent-400 dark:focus:border-accent-500 focus:ring-2 focus:ring-accent-100 dark:focus:ring-accent-950/40 transition-all';
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState<TabId>('account');
+  const [active, setActive] = useState<TabId>('account');
   const { accent, setAccent } = useAccent();
-  const { lang, setLang } = useI18n();
+  const { lang, setLang, t } = useI18n();
   const { theme, toggle: toggleTheme } = useTheme();
 
+  const nav = [
+    { id: 'account'       as TabId, label: t('settings.my_account'),    icon: User,      group: t('settings.personal_group')  },
+    { id: 'notifications' as TabId, label: t('settings.notifications'),  icon: Bell,      group: t('settings.personal_group')  },
+    { id: 'appearance'    as TabId, label: t('settings.appearance'),     icon: Palette,   group: t('settings.workspace_group') },
+    { id: 'language'      as TabId, label: t('settings.language'),       icon: Languages, group: t('settings.workspace_group') },
+    { id: 'security'      as TabId, label: t('settings.security'),       icon: Shield,    group: t('settings.personal_group')  },
+  ];
+
+  const groups = [t('settings.personal_group'), t('settings.workspace_group')];
+
   return (
-    <div className="h-full overflow-hidden flex flex-col gap-0">
+    <div className="h-full overflow-hidden flex gap-0 rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
 
-      {/* Tab bar */}
-      <div className="shrink-0 flex items-end gap-1 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-t-2xl px-4">
-        {TABS.map((tab) => {
-          const active = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                'flex items-center gap-2 px-4 py-3.5 text-sm font-medium border-b-2 transition-colors -mb-px',
-                active
-                  ? 'border-accent-600 text-accent-700 dark:text-accent-400'
-                  : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600',
-              )}
-            >
-              <tab.icon className="h-3.5 w-3.5 shrink-0" />
-              {tab.label}
-            </button>
-          );
-        })}
-      </div>
+      {/* ── Left sidebar nav ── */}
+      <aside className="w-52 shrink-0 flex flex-col border-r border-slate-100 dark:border-slate-700/80 overflow-y-auto py-4">
+        {groups.map((group) => (
+          <div key={group} className="mb-4 px-3">
+            <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+              {group}
+            </p>
+            <div className="space-y-0.5">
+              {nav.filter((n) => n.group === group).map((item) => {
+                const isActive = active === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setActive(item.id)}
+                    className={cn(
+                      'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-100',
+                      isActive
+                        ? 'bg-accent-50 dark:bg-accent-950/30 text-accent-700 dark:text-accent-400'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-slate-100',
+                    )}
+                  >
+                    <item.icon className={cn('h-3.5 w-3.5 shrink-0', isActive ? 'text-accent-500' : 'text-slate-400 dark:text-slate-500')} />
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </aside>
 
-      {/* Tab content */}
-      <div className="flex-1 min-h-0 overflow-y-auto bg-slate-50 dark:bg-slate-950 rounded-b-2xl">
-        <div className="max-w-2xl py-6 px-1 space-y-5">
+      {/* ── Right content ── */}
+      <div className="flex-1 min-w-0 overflow-y-auto bg-slate-50/50 dark:bg-slate-900/40">
+        <div className="max-w-xl px-8 py-7 space-y-6">
+
+          {/* Page heading */}
+          <div className="pb-1">
+            {(() => {
+              const item = nav.find((n) => n.id === active)!;
+              return (
+                <>
+                  <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">{item.label}</h2>
+                  <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
+                    {active === 'account'       && t('settings.account_desc')}
+                    {active === 'notifications' && t('settings.notif_desc')}
+                    {active === 'appearance'    && t('settings.appearance_desc2')}
+                    {active === 'language'      && t('settings.language_desc2')}
+                    {active === 'security'      && t('settings.security_desc')}
+                  </p>
+                </>
+              );
+            })()}
+          </div>
 
           {/* ── Account ── */}
-          {activeTab === 'account' && (
-            <>
-              <SettingCard
-                title="Profile Information"
-                description="Update your display name, avatar and public details."
-              >
-                <ProfileSettings />
-              </SettingCard>
-            </>
+          {active === 'account' && (
+            <Section>
+              <ProfileSettings />
+            </Section>
           )}
 
           {/* ── Notifications ── */}
-          {activeTab === 'notifications' && (
-            <SettingCard
-              title="Notification Preferences"
-              description="Choose what activity you want to be alerted about."
-            >
+          {active === 'notifications' && (
+            <Section>
               <NotificationSettings />
-            </SettingCard>
+            </Section>
           )}
 
           {/* ── Appearance ── */}
-          {activeTab === 'appearance' && (
+          {active === 'appearance' && (
             <>
-              <SettingCard
-                title="Accent Color"
-                description="Pick a color that reflects your style across the workspace."
-              >
-                <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-                  {ACCENT_OPTIONS.map((opt) => (
-                    <button
-                      key={opt.value}
-                      type="button"
-                      onClick={() => setAccent(opt.value)}
-                      className={cn(
-                        'flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-xs font-medium transition-all',
-                        accent === opt.value
-                          ? 'border-accent-300 dark:border-accent-700 bg-accent-50 dark:bg-accent-950/40 text-accent-700 dark:text-accent-300 ring-1 ring-accent-300 dark:ring-accent-700'
-                          : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-white dark:hover:bg-slate-700/50',
-                      )}
-                    >
-                      <span
-                        className="h-3.5 w-3.5 shrink-0 rounded-full ring-1 ring-black/10"
-                        style={{ backgroundColor: opt.hex }}
-                      />
-                      <span className="truncate">{opt.label}</span>
-                      {accent === opt.value && (
-                        <span className="ml-auto text-[10px] text-accent-500">✓</span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </SettingCard>
-
-              <SettingCard
-                title="Theme"
-                description="Switch between light and dark mode."
-              >
+              {/* Theme */}
+              <Section label={t('settings.theme_label')} hint={t('settings.theme_hint')}>
                 <div className="flex gap-3">
-                  {(['light', 'dark'] as const).map((t) => (
-                    <button
-                      key={t}
-                      type="button"
-                      onClick={() => { if (theme !== t) toggleTheme(); }}
-                      className={cn(
-                        'flex flex-col items-center gap-2 rounded-xl border px-6 py-4 text-sm font-medium transition-all',
-                        theme === t
-                          ? 'border-accent-300 dark:border-accent-700 bg-accent-50 dark:bg-accent-950/40 text-accent-700 dark:text-accent-300 ring-1 ring-accent-300 dark:ring-accent-700'
-                          : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-white dark:hover:bg-slate-700/50',
-                      )}
-                    >
-                      <span className="text-xl">{t === 'light' ? '☀️' : '🌙'}</span>
-                      <span className="capitalize">{t}</span>
-                      {theme === t && (
-                        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-accent-500 text-[9px] text-white font-bold">✓</span>
-                      )}
-                    </button>
-                  ))}
+                  {([
+                    { value: 'light', label: t('settings.light'), icon: Sun  },
+                    { value: 'dark',  label: t('settings.dark'),  icon: Moon },
+                  ] as const).map((opt) => {
+                    const on = theme === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => { if (!on) toggleTheme(); }}
+                        className={cn(
+                          'relative flex flex-1 flex-col items-center gap-3 rounded-xl border-2 py-5 transition-all duration-150',
+                          on
+                            ? 'border-accent-500 bg-accent-50 dark:bg-accent-950/30'
+                            : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600',
+                        )}
+                      >
+                        {/* mini mockup */}
+                        <div className={cn('h-10 w-20 rounded-md border overflow-hidden', opt.value === 'light' ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-700')}>
+                          <div className={cn('h-2 w-full', opt.value === 'light' ? 'bg-slate-100' : 'bg-slate-800')} />
+                          <div className="flex gap-1 p-1.5">
+                            <div className={cn('h-4 w-5 rounded-sm', opt.value === 'light' ? 'bg-slate-200' : 'bg-slate-700')} />
+                            <div className={cn('flex-1 h-1.5 mt-0.5 rounded-sm', opt.value === 'light' ? 'bg-slate-100' : 'bg-slate-800')} />
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <opt.icon className={cn('h-3.5 w-3.5', on ? 'text-accent-600 dark:text-accent-400' : 'text-slate-400')} />
+                          <span className={cn('text-xs font-semibold', on ? 'text-accent-700 dark:text-accent-300' : 'text-slate-600 dark:text-slate-400')}>
+                            {opt.label}
+                          </span>
+                        </div>
+                        {on && (
+                          <span className="absolute top-2.5 right-2.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent-500">
+                            <Check className="h-2.5 w-2.5 text-white" />
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
-              </SettingCard>
+              </Section>
+
+              {/* Accent color */}
+              <Section label={t('settings.accent_color')} hint={t('settings.accent_hint')}>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                  {ACCENT_OPTIONS.map((opt) => {
+                    const on = accent === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => setAccent(opt.value)}
+                        className={cn(
+                          'flex items-center gap-3 rounded-lg border px-3.5 py-2.5 transition-all duration-150',
+                          on
+                            ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-950/30'
+                            : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/50',
+                        )}
+                      >
+                        <span className="h-4 w-4 shrink-0 rounded-full ring-1 ring-black/10" style={{ backgroundColor: opt.hex }} />
+                        <span className={cn('flex-1 text-xs font-medium text-left truncate', on ? 'text-accent-700 dark:text-accent-300' : 'text-slate-600 dark:text-slate-400')}>
+                          {opt.label}
+                        </span>
+                        {on && <Check className="h-3 w-3 shrink-0 text-accent-500" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </Section>
             </>
           )}
 
           {/* ── Language ── */}
-          {activeTab === 'language' && (
-            <SettingCard
-              title="Display Language"
-              description="Choose the language used throughout the interface."
-            >
-              <div className="flex gap-3">
-                {LANGUAGE_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    onClick={() => setLang(opt.value)}
-                    className={cn(
-                      'flex items-center gap-3 rounded-xl border px-5 py-3.5 text-sm font-medium transition-all',
-                      lang === opt.value
-                        ? 'border-accent-300 dark:border-accent-700 bg-accent-50 dark:bg-accent-950/40 text-accent-700 dark:text-accent-300 ring-1 ring-accent-300 dark:ring-accent-700'
-                        : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-white dark:hover:bg-slate-700/50',
-                    )}
-                  >
-                    <span className="text-xl leading-none">{opt.flag}</span>
-                    <span>{opt.nativeLabel}</span>
-                    {lang === opt.value && (
-                      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-accent-500 text-[9px] text-white font-bold">✓</span>
-                    )}
-                  </button>
-                ))}
+          {active === 'language' && (
+            <Section label={t('settings.display_lang')} hint={t('settings.lang_hint')}>
+              <div className="space-y-2">
+                {LANGUAGE_OPTIONS.map((opt) => {
+                  const on = lang === opt.value;
+                  return (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setLang(opt.value)}
+                      className={cn(
+                        'flex w-full items-center gap-4 rounded-xl border-2 px-4 py-3.5 text-left transition-all duration-150',
+                        on
+                          ? 'border-accent-500 bg-accent-50 dark:bg-accent-950/30'
+                          : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600',
+                      )}
+                    >
+                      <span className="text-2xl leading-none">{opt.flag}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className={cn('text-sm font-semibold', on ? 'text-accent-700 dark:text-accent-300' : 'text-slate-800 dark:text-slate-100')}>
+                          {opt.nativeLabel}
+                        </p>
+                        <p className="text-[11px] text-slate-400 dark:text-slate-500">{opt.englishLabel}</p>
+                      </div>
+                      <span className={cn('flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-all', on ? 'bg-accent-500' : 'border-2 border-slate-300 dark:border-slate-600')}>
+                        {on && <Check className="h-3 w-3 text-white" />}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
-            </SettingCard>
+            </Section>
           )}
 
           {/* ── Security ── */}
-          {activeTab === 'security' && (
+          {active === 'security' && (
             <>
-              <SettingCard
-                title="Password"
-                description="Manage your account password and authentication method."
-              >
+              <Section label={t('settings.change_password')} hint={t('settings.password_hint')}>
                 <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                      Current Password
-                    </label>
-                    <input
-                      type="password"
-                      placeholder="••••••••"
-                      className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 outline-none focus:border-accent-400 focus:ring-2 focus:ring-accent-100 dark:focus:ring-accent-950/50 transition-all"
-                    />
+                  <Field label={t('settings.current_password')}>
+                    <input type="password" placeholder="••••••••" className={inp} />
+                  </Field>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Field label={t('settings.new_password')}>
+                      <input type="password" placeholder="••••••••" className={inp} />
+                    </Field>
+                    <Field label={t('settings.confirm_password')}>
+                      <input type="password" placeholder="••••••••" className={inp} />
+                    </Field>
                   </div>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                        New Password
-                      </label>
-                      <input
-                        type="password"
-                        placeholder="••••••••"
-                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 outline-none focus:border-accent-400 focus:ring-2 focus:ring-accent-100 dark:focus:ring-accent-950/50 transition-all"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                        Confirm Password
-                      </label>
-                      <input
-                        type="password"
-                        placeholder="••••••••"
-                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 outline-none focus:border-accent-400 focus:ring-2 focus:ring-accent-100 dark:focus:ring-accent-950/50 transition-all"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <button
-                      type="button"
-                      className="flex items-center gap-2 rounded-xl bg-accent-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-accent-700 transition-colors shadow-sm"
-                    >
-                      Update Password
-                    </button>
-                  </div>
+                  <button type="button" className="rounded-lg bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-700 transition-colors shadow-sm">
+                    {t('settings.update_password')}
+                  </button>
                 </div>
-              </SettingCard>
+              </Section>
 
-              <SettingCard
-                title="Sessions"
-                description="Manage where you're currently signed in."
-              >
-                <div className="space-y-3">
+              <Section label={t('settings.active_sessions')} hint={t('settings.sessions_hint')}>
+                <div className="space-y-2">
                   {[
-                    { device: 'MacBook Pro · Chrome', location: 'Current session', time: 'Active now', current: true },
-                    { device: 'iPhone · Safari',       location: 'Phnom Penh, KH',  time: '2 hours ago',  current: false },
+                    { device: 'MacBook Pro', browser: 'Chrome 124', location: 'Phnom Penh, KH', time: 'Active now',  current: true  },
+                    { device: 'iPhone 15',   browser: 'Safari 17',  location: 'Phnom Penh, KH', time: '2 hours ago', current: false },
                   ].map((s) => (
-                    <div key={s.device} className="flex items-center justify-between rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3">
-                      <div>
-                        <p className="text-sm font-medium text-slate-800 dark:text-slate-100">{s.device}</p>
+                    <div key={s.device} className="flex items-center gap-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 text-base">
+                        {s.device.includes('Mac') ? '💻' : '📱'}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">{s.device} · {s.browser}</p>
                         <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">{s.location} · {s.time}</p>
                       </div>
-                      {s.current ? (
-                        <span className="rounded-full bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                          Current
-                        </span>
-                      ) : (
-                        <button type="button" className="text-[11px] font-medium text-rose-500 hover:text-rose-600 transition-colors">
-                          Revoke
-                        </button>
-                      )}
+                      {s.current
+                        ? <span className="shrink-0 rounded-full bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 ring-1 ring-emerald-200 dark:ring-emerald-800/40">{t('settings.current_session')}</span>
+                        : <button type="button" className="shrink-0 rounded-lg px-2.5 py-1 text-[11px] font-semibold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors">{t('settings.revoke')}</button>
+                      }
                     </div>
                   ))}
                 </div>
-              </SettingCard>
+              </Section>
             </>
           )}
-
         </div>
       </div>
     </div>
   );
 }
 
-function SettingCard({
-  title,
-  description,
-  children,
-}: {
-  title: string;
-  description?: string;
-  children: React.ReactNode;
-}) {
+function Section({ label, hint, children }: { label?: string; hint?: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700">
-        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{title}</p>
-        {description && (
-          <p className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">{description}</p>
-        )}
-      </div>
-      <div className="px-6 py-5">{children}</div>
+    <div className="space-y-3">
+      {label && (
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">{label}</p>
+          {hint && <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{hint}</p>}
+        </div>
+      )}
+      <div>{children}</div>
+    </div>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="block text-[11px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-1.5">{label}</label>
+      {children}
     </div>
   );
 }

@@ -131,7 +131,7 @@ export default function ArchivePage() {
               <ArchiveIcon className="h-5 w-5" />
             </div>
             <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-              {search ? 'No archived notes match your search.' : 'Nothing archived yet.'}
+              {search ? t('archive.no_match') : t('archive.empty')}
             </p>
           </div>
         ) : view === 'list' ? (
@@ -179,9 +179,9 @@ export default function ArchivePage() {
         open={deleteId !== null}
         onClose={() => setDeleteId(null)}
         onConfirm={confirmDelete}
-        title="Delete note"
-        description="This note will be permanently deleted and cannot be recovered."
-        confirmLabel="Delete"
+        title={t('dialog.delete_note_title')}
+        description={t('dialog.delete_note_desc')}
+        confirmLabel={t('dialog.delete')}
         variant="danger"
       />
     </div>

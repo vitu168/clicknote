@@ -214,7 +214,7 @@ export default function NotesPage() {
               <FileText className="h-7 w-7" />
             </div>
             <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-              {search ? 'No notes match your search.' : filter === 'favorites' ? 'No favorite notes yet.' : 'No notes yet.'}
+              {search ? t('notes.no_match') : filter === 'favorites' ? t('notes.no_favorites') : t('notes.empty')}
             </p>
             {!search && filter === 'all' && (
               <button
@@ -223,7 +223,7 @@ export default function NotesPage() {
                 className="inline-flex items-center gap-1.5 rounded-xl bg-accent-600 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-700 transition-colors"
               >
                 <Plus className="h-4 w-4" />
-                Create your first note
+                {t('notes.create_first')}
               </button>
             )}
           </div>
@@ -277,7 +277,7 @@ export default function NotesPage() {
         <NoteForm
           onSubmit={handleCreate}
           onCancel={() => setShowForm(false)}
-          submitLabel="Create Note"
+          submitLabel={t('notes.create')}
         />
       )}
 
@@ -287,7 +287,7 @@ export default function NotesPage() {
           initial={{ name: editing.name, description: editing.description }}
           onSubmit={handleEdit}
           onCancel={() => setEditing(null)}
-          submitLabel="Update Note"
+          submitLabel={t('notes.update')}
         />
       )}
 
@@ -296,9 +296,9 @@ export default function NotesPage() {
         open={deleteId !== null}
         onClose={() => setDeleteId(null)}
         onConfirm={confirmDelete}
-        title="Delete note"
-        description="This note will be permanently deleted and cannot be recovered."
-        confirmLabel="Delete"
+        title={t('dialog.delete_note_title')}
+        description={t('dialog.delete_note_desc')}
+        confirmLabel={t('dialog.delete')}
         variant="danger"
       />
     </div>

@@ -4,6 +4,7 @@ import { Mail, Calendar, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { UserProfile } from '@/lib/types';
 import type { ViewMode } from '@/components/ui/ViewToggle';
+import { useI18n } from '@/lib/i18n';
 
 interface UserCardProps {
   profile: UserProfile;
@@ -67,10 +68,12 @@ function Avatar({ profile, size = 'md' }: { profile: UserProfile; size?: 'sm' | 
 }
 
 export function UserListHeader() {
+  const { t } = useI18n();
+  const headers = [t('table.user'), t('table.email'), t('table.joined'), t('table.status'), ''];
   return (
     <div className={cn('sticky top-0 z-10 grid gap-4 px-4 py-2.5 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 select-none', LIST_COLS)}>
-      {(['USER', 'EMAIL', 'JOINED', 'STATUS', ''] as const).map((h) => (
-        <span key={h} className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+      {headers.map((h, i) => (
+        <span key={i} className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
           {h}
         </span>
       ))}

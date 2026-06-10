@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AlertTriangle, Info, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/lib/i18n';
 
 export interface ConfirmDialogProps {
   open: boolean;
@@ -25,14 +26,15 @@ export default function ConfirmDialog({
   cancelLabel  = 'Cancel',
   variant      = 'default',
 }: ConfirmDialogProps) {
+  const { t } = useI18n();
   const [loading, setLoading] = useState(false);
   const cancelRef = useRef<HTMLButtonElement>(null);
 
   /* Focus cancel button when opened */
   useEffect(() => {
     if (open) {
-      const t = setTimeout(() => cancelRef.current?.focus(), 50);
-      return () => clearTimeout(t);
+      const timerId = setTimeout(() => cancelRef.current?.focus(), 50);
+      return () => clearTimeout(timerId);
     }
   }, [open]);
 
@@ -150,7 +152,7 @@ export default function ConfirmDialog({
               {loading && (
                 <span className="h-3.5 w-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
               )}
-              {loading ? 'Please wait…' : confirmLabel}
+              {loading ? t('dialog.please_wait') : confirmLabel}
             </button>
           </div>
 

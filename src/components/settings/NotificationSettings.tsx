@@ -1,35 +1,43 @@
 'use client';
 
 import { useState } from 'react';
+import { useI18n } from '@/lib/i18n';
 
 interface NotifToggle {
   id: string;
   label: string;
   description: string;
-  enabled: boolean;
 }
 
-const initialToggles: NotifToggle[] = [
-  { id: 'new_note', label: 'New Note Created', description: 'Get notified when a new note is added to the workspace', enabled: true },
-  { id: 'note_mention', label: 'Note Mentions', description: 'Alert when someone mentions you in a note', enabled: true },
-  { id: 'new_message', label: 'New Messages', description: 'Notify when you receive a new chat message', enabled: true },
-  { id: 'note_favorite', label: 'Favorites Activity', description: 'When a note you favorited is updated or deleted', enabled: false },
-  { id: 'new_user', label: 'New User Joined', description: 'Alert when a new user registers in the workspace', enabled: true },
-  { id: 'note_deleted', label: 'Note Deleted', description: 'Notify when a note you created is deleted', enabled: false },
-];
+const INITIAL_ENABLED: Record<string, boolean> = {
+  new_note:     true,
+  note_mention: true,
+  new_message:  true,
+  note_favorite:false,
+  new_user:     true,
+  note_deleted: false,
+};
 
 export default function NotificationSettings() {
-  const [toggles, setToggles] = useState(initialToggles);
+  const { t } = useI18n();
+  const [enabled, setEnabled] = useState<Record<string, boolean>>(INITIAL_ENABLED);
+
+  const toggles_config: NotifToggle[] = [
+    { id: 'new_note',     label: t('notif.new_note_label'),  description: t('notif.new_note_desc') },
+    { id: 'note_mention', label: t('notif.mention_label'),   description: t('notif.mention_desc') },
+    { id: 'new_message',  label: t('notif.message_label'),   description: t('notif.message_desc') },
+    { id: 'note_favorite',label: t('notif.favorite_label'),  description: t('notif.favorite_desc') },
+    { id: 'new_user',     label: t('notif.new_user_label'),  description: t('notif.new_user_desc') },
+    { id: 'note_deleted', label: t('notif.deleted_label'),   description: t('notif.deleted_desc') },
+  ];
 
   function toggle(id: string) {
-    setToggles((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, enabled: !t.enabled } : t)),
-    );
+    setEnabled((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
   return (
     <ul className="divide-y divide-slate-100 dark:divide-slate-700">
-      {toggles.map((item) => (
+      {toggles_config.map((item) => (
         <li key={item.id} className="flex items-center justify-between py-4">
           <div className="flex-1 pr-6">
             <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{item.label}</p>
@@ -39,18 +47,18 @@ export default function NotificationSettings() {
             <input
               type="checkbox"
               className="sr-only"
-              checked={item.enabled}
+              checked={enabled[item.id] ?? false}
               onChange={() => toggle(item.id)}
               aria-label={item.label}
             />
             <span
               className={`absolute inset-0 rounded-full transition-colors duration-300 ${
-                item.enabled ? 'bg-accent-500' : 'bg-slate-200 dark:bg-slate-700'
+                enabled[item.id] ? 'bg-accent-500' : 'bg-slate-200 dark:bg-slate-700'
               }`}
             />
             <span
               className={`relative h-4 w-4 rounded-full bg-white shadow-sm transition-transform duration-300 ${
-                item.enabled ? 'translate-x-6' : 'translate-x-1'
+                enabled[item.id] ? 'translate-x-6' : 'translate-x-1'
               }`}
             />
           </label>

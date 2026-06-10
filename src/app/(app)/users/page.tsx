@@ -11,8 +11,10 @@ import { userProfileService } from '@/lib/services/userProfileService';
 import type { UserProfile } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useSession } from '@/lib/session';
+import { useI18n } from '@/lib/i18n';
 
 export default function UsersPage() {
+  const { t } = useI18n();
   const { user } = useSession();
   const userId = user?.userId ?? '';
 
@@ -86,7 +88,7 @@ export default function UsersPage() {
         <SearchInput
           value={search}
           onChange={(v) => { setSearch(v); setPage(1); }}
-          placeholder="Search members…"
+          placeholder={t('users.search')}
           className="w-56"
         />
         <div className="flex-1" />
@@ -119,7 +121,7 @@ export default function UsersPage() {
               <Users className="h-5 w-5" />
             </div>
             <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-              {search ? 'No members match your search.' : 'No members found.'}
+              {search ? t('users.no_match') : t('users.empty')}
             </p>
           </div>
         ) : view === 'list' ? (
@@ -166,9 +168,9 @@ export default function UsersPage() {
         open={deleteId !== null}
         onClose={() => setDeleteId(null)}
         onConfirm={confirmDelete}
-        title="Delete member"
-        description="This member profile will be permanently deleted and cannot be recovered."
-        confirmLabel="Delete"
+        title={t('dialog.delete_member_title')}
+        description={t('dialog.delete_member_desc')}
+        confirmLabel={t('dialog.delete')}
         variant="danger"
       />
     </div>

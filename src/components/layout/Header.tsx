@@ -66,7 +66,7 @@ export default function Header() {
   const { user, profile, signOut } = useSession();
   const { theme, toggle } = useTheme();
   const { accent, setAccent } = useAccent();
-  const { t, lang } = useI18n();
+  const { t, lang, setLang } = useI18n();
   const [menuOpen,    setMenuOpen]    = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const menuRef    = useRef<HTMLDivElement>(null);
@@ -191,9 +191,11 @@ export default function Header() {
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 z-50 mt-2 w-60 overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-black/6 dark:bg-slate-800 dark:ring-white/10 animate-pop-in">
-              <div className="flex items-center gap-3 bg-linear-to-br from-slate-50 to-accent-50/60 px-4 py-3.5 dark:from-slate-800 dark:to-accent-950/30">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-accent-500 to-accent-600 text-xs font-bold text-white">
+            <div className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-black/6 dark:bg-slate-800 dark:ring-white/10 animate-pop-in">
+
+              {/* User info */}
+              <div className="flex items-center gap-3 px-4 py-3.5 border-b border-slate-100 dark:border-slate-700">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-accent-500 to-accent-600 text-xs font-bold text-white ring-2 ring-white dark:ring-slate-800">
                   {profile?.avatarUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={profile.avatarUrl} alt={displayName} className="h-full w-full object-cover" />
@@ -203,15 +205,16 @@ export default function Header() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold leading-none text-slate-900 dark:text-slate-100">{displayName}</p>
-                  <p className="mt-0.5 truncate text-[11px] text-slate-500 dark:text-slate-400">{user?.email}</p>
+                  <p className="mt-0.5 truncate text-[11px] text-slate-400 dark:text-slate-500">{user?.email}</p>
                 </div>
               </div>
 
+              {/* Nav links */}
               <div className="p-1">
                 <Link
                   href="/profile"
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700/60"
+                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700/60"
                 >
                   <User className="h-3.5 w-3.5 text-slate-400" />
                   {t('action.your_profile')}
@@ -219,18 +222,83 @@ export default function Header() {
                 <Link
                   href="/settings"
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700/60"
+                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700/60"
                 >
                   <Settings className="h-3.5 w-3.5 text-slate-400" />
                   {t('action.settings')}
                 </Link>
               </div>
 
+              {/* Preferences */}
+              <div className="border-t border-slate-100 dark:border-slate-700 px-3 py-3 space-y-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500 px-1">{t('settings.preferences')}</p>
+
+                {/* Theme */}
+                <div className="flex items-center justify-between px-1">
+                  <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Theme</span>
+                  <div className="flex items-center gap-0.5 rounded-lg bg-slate-100 dark:bg-slate-700/60 p-0.5">
+                    <button
+                      type="button"
+                      onClick={() => { if (theme !== 'light') toggle(); }}
+                      title="Light"
+                      className={cn(
+                        'flex h-6 w-6 items-center justify-center rounded-md transition-all',
+                        theme === 'light'
+                          ? 'bg-white dark:bg-slate-600 shadow-sm text-amber-500'
+                          : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
+                      )}
+                    >
+                      <Sun className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { if (theme !== 'dark') toggle(); }}
+                      title="Dark"
+                      className={cn(
+                        'flex h-6 w-6 items-center justify-center rounded-md transition-all',
+                        theme === 'dark'
+                          ? 'bg-white dark:bg-slate-600 shadow-sm text-accent-500'
+                          : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
+                      )}
+                    >
+                      <Moon className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Language */}
+                <div className="flex items-center justify-between px-1">
+                  <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Language</span>
+                  <div className="flex items-center gap-0.5 rounded-lg bg-slate-100 dark:bg-slate-700/60 p-0.5">
+                    {([
+                      { value: 'en' as const, label: 'EN', flag: '🇬🇧' },
+                      { value: 'km' as const, label: 'KM', flag: '🇰🇭' },
+                    ]).map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => setLang(opt.value)}
+                        title={opt.flag}
+                        className={cn(
+                          'flex items-center justify-center h-6 w-7 rounded-md text-sm transition-all',
+                          lang === opt.value
+                            ? 'bg-white dark:bg-slate-600 shadow-sm'
+                            : 'opacity-50 hover:opacity-80',
+                        )}
+                      >
+                        {opt.flag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Sign out */}
               <div className="border-t border-slate-100 dark:border-slate-700 p-1">
                 <button
                   type="button"
                   onClick={handleSignOut}
-                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:hover:bg-rose-950/30"
                 >
                   <LogOut className="h-3.5 w-3.5" />
                   {t('action.sign_out')}

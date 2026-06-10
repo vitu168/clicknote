@@ -10,6 +10,7 @@ import DonutChart, { type DonutSegment } from '@/components/dashboard/DonutChart
 import { noteService } from '@/lib/services/noteService';
 import { userProfileService } from '@/lib/services/userProfileService';
 import { useSession } from '@/lib/session';
+import { useI18n } from '@/lib/i18n';
 import type { NoteInfo, UserProfile } from '@/lib/types';
 
 interface DashData {
@@ -74,6 +75,7 @@ async function fetchDashboard(userId: string): Promise<DashData> {
 
 export default function DashboardPage() {
   const { user } = useSession();
+  const { t } = useI18n();
   const [data, setData] = useState<DashData | null>(null);
   const [loading, setLoading] = useState(true);
   const initialized = useRef(false);
@@ -103,10 +105,10 @@ export default function DashboardPage() {
 
   /* ── Stats ── */
   const stats: DashStat[] = [
-    { id: 'notes',     label: 'My Notes',     value: data?.totalNotes     ?? '—', icon: FileText,  color: 'violet',  change: 6.3,  positive: true,  description: 'this month' },
-    { id: 'favorites', label: 'Favorites',    value: data?.totalFavorites ?? '—', icon: Star,       color: 'amber',   change: 4.1,  positive: true,  description: 'this month' },
-    { id: 'users',     label: 'Total Members',value: data?.totalUsers     ?? '—', icon: Users,      color: 'emerald', change: 6.3,  positive: true,  description: 'this month' },
-    { id: 'active',    label: 'Active Members',value: data?.totalActive   ?? '—', icon: UserCheck,  color: 'rose',    change: -2.1, positive: false, description: 'this month' },
+    { id: 'notes',     label: t('stat.my_notes'),      value: data?.totalNotes     ?? '—', icon: FileText,  color: 'violet',  change: 6.3,  positive: true,  description: t('stat.this_month') },
+    { id: 'favorites', label: t('stat.favorites'),     value: data?.totalFavorites ?? '—', icon: Star,       color: 'amber',   change: 4.1,  positive: true,  description: t('stat.this_month') },
+    { id: 'users',     label: t('stat.total_members'), value: data?.totalUsers     ?? '—', icon: Users,      color: 'emerald', change: 6.3,  positive: true,  description: t('stat.this_month') },
+    { id: 'active',    label: t('stat.active_members'),value: data?.totalActive    ?? '—', icon: UserCheck,  color: 'rose',    change: -2.1, positive: false, description: t('stat.this_month') },
   ];
 
   /* ── Monthly bar chart data ── */
@@ -115,10 +117,10 @@ export default function DashboardPage() {
   /* ── Donut chart data ── */
   const donutData: DonutSegment[] = data
     ? [
-        { label: 'Regular Notes',  value: Math.max(0, data.totalNotes - data.totalFavorites), color: '#6366f1' },
-        { label: 'Favorite Notes', value: data.totalFavorites,                                 color: '#f59e0b' },
-        { label: 'Active Members', value: data.totalActive,                                    color: '#10b981' },
-        { label: 'Other Members',  value: Math.max(0, data.totalUsers - data.totalActive),     color: '#f43f5e' },
+        { label: t('chart.regular_notes'),  value: Math.max(0, data.totalNotes - data.totalFavorites), color: '#6366f1' },
+        { label: t('chart.favorite_notes'), value: data.totalFavorites,                                 color: '#f59e0b' },
+        { label: t('stat.active_members'),  value: data.totalActive,                                    color: '#10b981' },
+        { label: t('chart.other_members'),  value: Math.max(0, data.totalUsers - data.totalActive),     color: '#f43f5e' },
       ].filter((s) => s.value > 0)
     : [];
 
@@ -147,10 +149,10 @@ export default function DashboardPage() {
           {loading ? skeleton('h-full min-h-65') : (
             <BarChart
               data={barData}
-              title="Monthly Notes Activity"
-              subtitle="Notes created vs starred per month"
-              primaryLabel="Notes"
-              secondaryLabel="Favorites"
+              title={t('chart.monthly_title')}
+              subtitle={t('chart.monthly_subtitle')}
+              primaryLabel={t('chart.notes')}
+              secondaryLabel={t('stat.favorites')}
             />
           )}
         </div>
@@ -158,9 +160,9 @@ export default function DashboardPage() {
           {loading ? skeleton('h-full min-h-65') : (
             <DonutChart
               data={donutData}
-              title="Workspace Overview"
-              subtitle="Note & member breakdown"
-              centerLabel="Items"
+              title={t('chart.workspace_title')}
+              subtitle={t('chart.workspace_sub')}
+              centerLabel={t('chart.center')}
             />
           )}
         </div>

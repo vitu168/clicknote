@@ -1,4 +1,4 @@
-export type HolidayType = 'public' | 'buddhist' | 'royal' | 'cultural' | 'international';
+export type HolidayType = 'public' | 'buddhist' | 'royal' | 'cultural' | 'international' | 'jewish';
 
 export interface KhmerHoliday {
   date: string;       // "YYYY-MM-DD"
@@ -66,6 +66,27 @@ export const KHMER_HOLIDAYS: KhmerHoliday[] = [
   { date: '2026-11-26', name: 'Water Festival – Day 3', nameKh: 'បុណ្យអុំទូក ថ្ងៃទី៣', type: 'cultural', description: 'Bon Om Touk – boat racing festival' },
 ];
 
+/** Generate Shabbat entries (Saturday = Shabbat day) for a given year/month (1-based). */
+function generateShabbatForMonth(year: number, month: number): KhmerHoliday[] {
+  const results: KhmerHoliday[] = [];
+  const daysInMonth = new Date(year, month, 0).getDate();
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month - 1, d);
+    if (date.getDay() === 6) { // Saturday
+      const mm = String(month).padStart(2, '0');
+      const dd = String(d).padStart(2, '0');
+      results.push({
+        date: `${year}-${mm}-${dd}`,
+        name: 'Shabbat',
+        nameKh: 'ថ្ងៃសប្ប័ត',
+        type: 'jewish',
+        description: 'Jewish Sabbath — from Friday sunset to Saturday nightfall',
+      });
+    }
+  }
+  return results;
+}
+
 /**
  * Returns all holidays that fall on the given date.
  */
@@ -74,7 +95,9 @@ export function getHolidaysForDate(date: Date): KhmerHoliday[] {
   const mm   = String(date.getMonth() + 1).padStart(2, '0');
   const dd   = String(date.getDate()).padStart(2, '0');
   const key  = `${yyyy}-${mm}-${dd}`;
-  return KHMER_HOLIDAYS.filter((h) => h.date === key);
+  const fixed = KHMER_HOLIDAYS.filter((h) => h.date === key);
+  const shabbat = date.getDay() === 6 ? generateShabbatForMonth(yyyy, date.getMonth() + 1).filter((h) => h.date === key) : [];
+  return [...fixed, ...shabbat];
 }
 
 /**
@@ -92,6 +115,12 @@ export function getHolidaysForMonth(year: number, month: number): Map<number, Kh
       if (!map.has(day)) map.set(day, []);
       map.get(day)!.push(holiday);
     }
+  }
+  // Add weekly Shabbat (Saturdays)
+  for (const shabbat of generateShabbatForMonth(year, month)) {
+    const day = parseInt(shabbat.date.slice(8), 10);
+    if (!map.has(day)) map.set(day, []);
+    map.get(day)!.push(shabbat);
   }
   return map;
 }

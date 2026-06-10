@@ -137,7 +137,7 @@ export default function FavoritesPage() {
               <Star className="h-7 w-7" />
             </div>
             <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-              {search ? 'No favorites match your search.' : 'You have not starred any notes yet.'}
+              {search ? t('favorites.no_match') : t('favorites.empty')}
             </p>
           </div>
         ) : view === 'list' ? (
@@ -189,9 +189,9 @@ export default function FavoritesPage() {
         open={deleteId !== null}
         onClose={() => setDeleteId(null)}
         onConfirm={confirmDelete}
-        title="Delete note"
-        description="This note will be permanently deleted and cannot be recovered."
-        confirmLabel="Delete"
+        title={t('dialog.delete_note_title')}
+        description={t('dialog.delete_note_desc')}
+        confirmLabel={t('dialog.delete')}
         variant="danger"
       />
     </div>

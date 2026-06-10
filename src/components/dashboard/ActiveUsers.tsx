@@ -1,4 +1,7 @@
+'use client';
+
 import type { UserProfile } from '@/lib/types';
+import { useI18n } from '@/lib/i18n';
 
 function initials(name: string | null, email: string | null): string {
   const src = name || email || '?';
@@ -17,15 +20,17 @@ const avatarColors = [
 ];
 
 export default function ActiveUsers({ users }: { users: UserProfile[] }) {
+  const { t } = useI18n();
+
   return (
     <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
       <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700">
-        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Active Users</p>
-        <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Users registered in the workspace</p>
+        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{t('widget.active_users')}</p>
+        <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{t('widget.active_users_sub')}</p>
       </div>
       {users.length === 0 ? (
         <div className="px-6 py-12 text-center">
-          <p className="text-sm text-slate-400 dark:text-slate-500">No users yet</p>
+          <p className="text-sm text-slate-400 dark:text-slate-500">{t('widget.no_users')}</p>
         </div>
       ) : (
         <ul className="divide-y divide-slate-50 dark:divide-slate-700/50 px-3 py-2">
@@ -42,12 +47,12 @@ export default function ActiveUsers({ users }: { users: UserProfile[] }) {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">{user.name || 'Unknown'}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">{user.name || t('widget.untitled')}</p>
                 <p className="text-xs text-slate-400 dark:text-slate-500 truncate">{user.email}</p>
               </div>
               {user.isNote && (
                 <span className="shrink-0 rounded-full bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">
-                  Note
+                  {t('misc.active')}
                 </span>
               )}
             </li>

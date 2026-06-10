@@ -1,7 +1,9 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/lib/i18n';
 
 export interface PaginationProps {
   page: number;
@@ -24,6 +26,7 @@ export default function Pagination({
   pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
   className,
 }: PaginationProps) {
+  const { t } = useI18n();
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
   const from = totalCount === 0 ? 0 : (page - 1) * pageSize + 1;
   const to = Math.min(page * pageSize, totalCount);
@@ -37,7 +40,7 @@ export default function Pagination({
         {onPageSizeChange && (
           <div className="flex items-center gap-1.5">
             <span className="text-[11px] text-slate-400 dark:text-slate-500 select-none">
-              Rows per page
+              {t('pagination.rows_per_page')}
             </span>
             <select
               value={pageSize}
@@ -51,15 +54,15 @@ export default function Pagination({
           </div>
         )}
         <span className="text-[11px] text-slate-400 dark:text-slate-500 select-none">
-          Showing <span className="font-medium text-slate-600 dark:text-slate-300">{from}–{to}</span> of{' '}
-          <span className="font-medium text-slate-600 dark:text-slate-300">{totalCount}</span> records
+          {t('pagination.showing')} <span className="font-medium text-slate-600 dark:text-slate-300">{from}–{to}</span> {t('pagination.of')}{' '}
+          <span className="font-medium text-slate-600 dark:text-slate-300">{totalCount}</span> {t('pagination.records')}
         </span>
       </div>
 
       {/* Right: page controls */}
       <div className="flex items-center gap-1">
         <span className="mr-1.5 text-[11px] text-slate-400 dark:text-slate-500 select-none">
-          Page <span className="font-medium text-slate-600 dark:text-slate-300">{page}</span> of{' '}
+          {t('pagination.page')} <span className="font-medium text-slate-600 dark:text-slate-300">{page}</span> {t('pagination.of')}{' '}
           <span className="font-medium text-slate-600 dark:text-slate-300">{totalPages}</span>
         </span>
 
@@ -84,7 +87,7 @@ function NavBtn({ onClick, disabled, label, children }: {
   onClick: () => void;
   disabled: boolean;
   label: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <button
