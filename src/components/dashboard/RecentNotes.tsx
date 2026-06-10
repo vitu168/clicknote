@@ -4,12 +4,12 @@ import { FileText, Star } from 'lucide-react';
 import type { NoteInfo } from '@/lib/types';
 import { useI18n } from '@/lib/i18n';
 
-export default function RecentNotes({ notes }: { notes: NoteInfo[] }) {
+export default function RecentNotes({ notes, renderTime }: { notes: NoteInfo[]; renderTime: number }) {
   const { t, lang } = useI18n();
 
   function timeAgo(dateStr: string | null | undefined): string {
     if (!dateStr) return '';
-    const diff = Date.now() - new Date(dateStr).getTime();
+    const diff = renderTime - new Date(dateStr).getTime();
     const mins = Math.floor(diff / 60000);
     if (mins < 1) return t('time.just_now');
     if (mins < 60) return lang === 'km' ? `${mins} ${t('time.m_ago')}` : `${mins}m ago`;

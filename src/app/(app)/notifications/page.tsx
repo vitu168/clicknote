@@ -27,10 +27,9 @@ function relativeTime(iso: string): string {
 }
 
 export default function NotificationsPage() {
-  const [items, setItems] = useState<NotificationItem[]>([]);
+  const [items, setItems] = useState<NotificationItem[]>(() => getNotifications());
 
   useEffect(() => {
-    setItems(getNotifications());
     return onNotificationsChange(() => setItems(getNotifications()));
   }, []);
 

@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { KeyRound, MailCheck } from 'lucide-react';
 import { useSession } from '@/lib/session';
 import { cn } from '@/lib/utils';
 

@@ -100,6 +100,18 @@ const translations = {
     'stat.total_members':  'Total Members',
     'stat.active_members': 'Active Members',
     'stat.this_month':     'this month',
+    'stat.vs_last_month':  'vs last month',
+    // ── Insights ──
+    'insight.title':       'Insights',
+    'insight.subtitle':    'Key ratios at a glance',
+    'insight.fav_rate':    'Favorite Rate',
+    'insight.fav_hint':    'of all notes starred',
+    'insight.active_rate': 'Active Rate',
+    'insight.active_hint': 'of all members active',
+    'insight.avg_notes':   'Avg Notes / Member',
+    'insight.avg_hint':    'notes per member',
+    'insight.new_week':    'New This Week',
+    'insight.new_hint':    'notes in last 7 days',
     // ── Charts ──
     'chart.monthly_title':    'Monthly Notes Activity',
     'chart.monthly_subtitle': 'Notes created vs starred per month',
@@ -330,6 +342,18 @@ const translations = {
     'stat.total_members':  'សមាជិកសរុប',
     'stat.active_members': 'សមាជិកសកម្ម',
     'stat.this_month':     'ខែនេះ',
+    'stat.vs_last_month':  'ធៀបនឹងខែមុន',
+    // ── Insights ──
+    'insight.title':       'ការវិភាគ',
+    'insight.subtitle':    'សមាមាត្រសំខាន់ៗ',
+    'insight.fav_rate':    'អត្រាចូលចិត្ត',
+    'insight.fav_hint':    'នៃកំណត់ចំណាំទាំងអស់',
+    'insight.active_rate': 'អត្រាសកម្ម',
+    'insight.active_hint': 'នៃសមាជិកទាំងអស់',
+    'insight.avg_notes':   'កំណត់ចំណាំជាមធ្យម/សមាជិក',
+    'insight.avg_hint':    'កំណត់ចំណាំក្នុងម្នាក់',
+    'insight.new_week':    'ថ្មីសប្ដាហ៍នេះ',
+    'insight.new_hint':    'កំណត់ចំណាំ៧ថ្ងៃចុងក្រោយ',
     // ── Charts ──
     'chart.monthly_title':    'សកម្មភាពប្រចាំខែ',
     'chart.monthly_subtitle': 'កំណត់ចំណាំបង្កើតធៀបនឹងដាក់ផ្កាយ',
@@ -486,19 +510,20 @@ export function useI18n() {
 }
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Language>('en');
+  const [lang, setLangState] = useState<Language>(() => {
+    const saved = typeof window !== 'undefined'
+      ? (localStorage.getItem('lang') as Language | null)
+      : null;
+    return saved === 'km' ? 'km' : 'en';
+  });
 
   useEffect(() => {
-    const saved = localStorage.getItem('lang') as Language | null;
-    const initial: Language = saved === 'km' ? 'km' : 'en';
-    apply(initial);
-    setLangState(initial);
-  }, []);
+    apply(lang);
+  }, [lang]);
 
   function setLang(l: Language) {
     setLangState(l);
     localStorage.setItem('lang', l);
-    apply(l);
   }
 
   function t(key: TranslationKey): string {

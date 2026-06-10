@@ -117,9 +117,11 @@ export default function ConfirmDialog({
               type="button"
               onClick={onClose}
               disabled={loading}
+              aria-label={cancelLabel}
+              title={cancelLabel}
               className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 transition-colors disabled:opacity-40"
             >
-              <X className="h-3.5 w-3.5" />
+              <X className="h-3.5 w-3.5" aria-hidden="true" />
             </button>
           </div>
 

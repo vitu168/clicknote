@@ -42,19 +42,20 @@ export function useAccent() {
 }
 
 export function AccentProvider({ children }: { children: React.ReactNode }) {
-  const [accent, setAccentState] = useState<AccentColor>('blue');
+  const [accent, setAccentState] = useState<AccentColor>(() => {
+    const saved = typeof window !== 'undefined'
+      ? (localStorage.getItem('accent-color') as AccentColor | null)
+      : null;
+    return (saved && ACCENT_OPTIONS.some((o) => o.value === saved)) ? saved : 'blue';
+  });
 
   useEffect(() => {
-    const saved = localStorage.getItem('accent-color') as AccentColor | null;
-    const initial = (saved && ACCENT_OPTIONS.some((o) => o.value === saved)) ? saved : 'blue';
-    apply(initial);
-    setAccentState(initial);
-  }, []);
+    apply(accent);
+  }, [accent]);
 
   function setAccent(color: AccentColor) {
     setAccentState(color);
     localStorage.setItem('accent-color', color);
-    apply(color);
   }
 
   return (

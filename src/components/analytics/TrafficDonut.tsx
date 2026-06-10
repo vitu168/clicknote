@@ -6,6 +6,22 @@ interface TrafficDonutProps {
   sources: TrafficSource[];
 }
 
+type Segment = TrafficSource & { dasharray: string; dashoffset: string };
+
+function buildSegments(sources: TrafficSource[], circumference: number): Segment[] {
+  let offset = 0;
+  return sources.map((source) => {
+    const dashLength = (source.percentage / 100) * circumference;
+    const segment: Segment = {
+      ...source,
+      dasharray: `${dashLength.toFixed(2)} ${circumference.toFixed(2)}`,
+      dashoffset: (-offset).toFixed(2),
+    };
+    offset += dashLength;
+    return segment;
+  });
+}
+
 export default function TrafficDonut({ sources }: TrafficDonutProps) {
   const cx = 80;
   const cy = 80;
@@ -13,18 +29,7 @@ export default function TrafficDonut({ sources }: TrafficDonutProps) {
   const circumference = 2 * Math.PI * r;
   const strokeWidth = 18;
 
-  let cumulativeOffset = 0;
-
-  const segments = sources.map((source) => {
-    const dashLength = (source.percentage / 100) * circumference;
-    const segment = {
-      ...source,
-      dasharray: `${dashLength.toFixed(2)} ${circumference.toFixed(2)}`,
-      dashoffset: (-cumulativeOffset).toFixed(2),
-    };
-    cumulativeOffset += dashLength;
-    return segment;
-  });
+  const segments = buildSegments(sources, circumference);
 
   return (
     <div className="rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { UserCircle2, Save, Camera } from 'lucide-react';
+import { Save, Camera } from 'lucide-react';
 import { useSession } from '@/lib/session';
 import { userProfileService } from '@/lib/services/userProfileService';
 import { customAuth } from '@/lib/customAuth';
@@ -10,25 +10,29 @@ import { cn } from '@/lib/utils';
 
 export default function CompleteProfilePage() {
   const router = useRouter();
-  const { user, profile, loading, refreshProfile } = useSession();
-
-  const [name, setName] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { user, profile, loading } = useSession();
 
   useEffect(() => {
     if (!loading && !user) {
       router.replace('/auth/welcome');
-      return;
     }
-    if (profile) {
-      setName(profile.name ?? user?.name ?? '');
-      setAvatarUrl(profile.avatarUrl ?? '');
-    } else if (user) {
-      setName(user.name ?? '');
-    }
-  }, [user, profile, loading, router]);
+  }, [loading, user, router]);
+
+  if (loading || !user) return null;
+
+  return <CompleteProfileForm key={profile?.id ?? 'pending'} />;
+}
+
+function CompleteProfileForm() {
+  const router = useRouter();
+  const { user, profile, refreshProfile } = useSession();
+
+  const [name, setName] = useState(profile?.name ?? user?.name ?? '');
+  const [avatarUrl, setAvatarUrl] = useState(profile?.avatarUrl ?? '');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  if (!user) return null;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -55,8 +59,6 @@ export default function CompleteProfilePage() {
       setSubmitting(false);
     }
   }
-
-  if (loading || !user) return null;
 
   const initials = (name || user.email).slice(0, 2).toUpperCase();
 

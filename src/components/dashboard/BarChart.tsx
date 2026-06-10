@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 export interface BarDataPoint {
   label: string;   // x-axis month name e.g. "Jan"
@@ -18,27 +18,27 @@ interface BarChartProps {
   secondaryColor?: string;
 }
 
-const PAD = { top: 28, right: 16, bottom: 30, left: 44 };
+const PAD = { top: 16, right: 12, bottom: 28, left: 34 };
 const VIEW_W = 520;
-const VIEW_H = 200;
+const VIEW_H = 210;
 const PLOT_W = VIEW_W - PAD.left - PAD.right;
 const PLOT_H = VIEW_H - PAD.top - PAD.bottom;
-const BAR_W = 14;
-const BAR_GAP = 4;
-const GRID_LINES = 5;
+const BAR_W = 13;
+const BAR_GAP = 5;
+const INTERVALS = 4; // → 5 gridlines
 
-function niceMax(value: number): number {
-  if (value <= 0) return 10;
-  const magnitude = Math.pow(10, Math.floor(Math.log10(value)));
-  const candidates = [1, 2, 5, 10].map((m) => m * magnitude);
-  for (const c of candidates) {
-    if (c >= value) return c;
-  }
-  return candidates[candidates.length - 1];
+/** Clean, evenly-spaced integer axis: returns yMax divisible into `INTERVALS` nice steps. */
+function niceScale(max: number): { yMax: number; step: number } {
+  if (max <= 0) return { yMax: INTERVALS, step: 1 };
+  const rawStep = max / INTERVALS;
+  const mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const norm = rawStep / mag;
+  const step = (norm <= 1 ? 1 : norm <= 2 ? 2 : norm <= 5 ? 5 : 10) * mag;
+  return { yMax: step * INTERVALS, step };
 }
 
 function fmt(n: number): string {
-  if (n >= 1000) return `${Math.round(n / 1000)}k`;
+  if (n >= 1000) return `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k`;
   return String(n);
 }
 
@@ -48,79 +48,67 @@ export default function BarChart({
   subtitle,
   primaryLabel = 'Notes',
   secondaryLabel = 'Favorites',
-  primaryColor = '#6366f1',
-  secondaryColor = '#a5b4fc',
+  primaryColor = 'var(--color-accent-500)',
+  secondaryColor = 'var(--color-accent-300)',
 }: BarChartProps) {
-  const [tooltipIndex, setTooltipIndex] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [tip, setTip] = useState<{ x: number; y: number } | null>(null);
 
-  const allValues = data.flatMap((d) => [d.primary, d.secondary]);
-  const maxVal = Math.max(...allValues, 1);
-  const yMax = niceMax(maxVal);
+  const maxVal = Math.max(...data.flatMap((d) => [d.primary, d.secondary]), 0);
+  const { yMax } = niceScale(maxVal);
 
-  // X spacing: evenly divide PLOT_W among data points
   const slotW = data.length > 0 ? PLOT_W / data.length : PLOT_W;
-  // pair width
   const pairW = BAR_W * 2 + BAR_GAP;
 
-  function barY(value: number): number {
-    return PAD.top + PLOT_H - (value / yMax) * PLOT_H;
-  }
+  const barY = (v: number) => PAD.top + PLOT_H - (v / yMax) * PLOT_H;
+  const barH = (v: number) => Math.max(0, (v / yMax) * PLOT_H);
 
-  function barH(value: number): number {
-    return (value / yMax) * PLOT_H;
-  }
+  const hovered = hoverIndex !== null ? data[hoverIndex] : null;
 
-  // Tooltip position
-  const tooltipDatum = tooltipIndex !== null ? data[tooltipIndex] : null;
-  let tooltipX = 0;
-  let tooltipY = 0;
-  if (tooltipIndex !== null) {
-    const slotCX = PAD.left + tooltipIndex * slotW + slotW / 2;
-    tooltipX = slotCX - 44;
-    tooltipY = PAD.top - 4;
+  function handleMove(e: React.MouseEvent<SVGSVGElement>) {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    setTip({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  }
+  function handleLeave() {
+    setHoverIndex(null);
+    setTip(null);
   }
 
   return (
     <div className="flex h-full flex-col rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 shadow-sm">
       {/* Header */}
-      <div className="flex items-start justify-between border-b border-slate-100 dark:border-slate-700 px-6 py-4">
-        <div>
+      <div className="flex items-start justify-between gap-3 border-b border-slate-100 dark:border-slate-700 px-6 py-4">
+        <div className="min-w-0">
           <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{title}</p>
-          {subtitle && (
-            <p className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">{subtitle}</p>
-          )}
+          {subtitle && <p className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">{subtitle}</p>}
         </div>
-        {/* Legend */}
-        <div className="flex items-center gap-4">
+        <div className="flex shrink-0 items-center gap-4">
           <div className="flex items-center gap-1.5">
-            <span
-              className="h-2.5 w-2.5 rounded-full shrink-0"
-              style={{ background: primaryColor }}
-            />
+            <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ background: primaryColor }} />
             <span className="text-xs text-slate-500 dark:text-slate-400">{primaryLabel}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span
-              className="h-2.5 w-2.5 rounded-full shrink-0"
-              style={{ background: secondaryColor }}
-            />
+            <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ background: secondaryColor }} />
             <span className="text-xs text-slate-500 dark:text-slate-400">{secondaryLabel}</span>
           </div>
         </div>
       </div>
 
       {/* Chart */}
-      <div className="flex-1 px-4 py-3">
+      <div ref={containerRef} className="relative flex-1 px-4 py-3">
         <svg
           viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-          style={{ height: 200, width: '100%' }}
-          onMouseLeave={() => setTooltipIndex(null)}
+          style={{ height: 210, width: '100%' }}
+          onMouseMove={handleMove}
+          onMouseLeave={handleLeave}
         >
           {/* Gridlines */}
-          {Array.from({ length: GRID_LINES }).map((_, i) => {
-            const y = PAD.top + (PLOT_H / (GRID_LINES - 1)) * i;
-            const isBaseline = i === GRID_LINES - 1;
-            const gridValue = Math.round(yMax * (1 - i / (GRID_LINES - 1)));
+          {Array.from({ length: INTERVALS + 1 }).map((_, i) => {
+            const y = PAD.top + (PLOT_H / INTERVALS) * i;
+            const isBaseline = i === INTERVALS;
+            const gridValue = Math.round(yMax * (1 - i / INTERVALS));
             return (
               <g key={i}>
                 <line
@@ -128,17 +116,11 @@ export default function BarChart({
                   y1={y}
                   x2={PAD.left + PLOT_W}
                   y2={y}
-                  stroke={isBaseline ? '#94a3b8' : '#e2e8f0'}
-                  strokeWidth={isBaseline ? 1.5 : 1}
-                  strokeDasharray={isBaseline ? undefined : '4 4'}
+                  className={isBaseline ? 'stroke-slate-300 dark:stroke-slate-600' : 'stroke-slate-200/70 dark:stroke-slate-700/50'}
+                  strokeWidth={1}
+                  strokeDasharray={isBaseline ? undefined : '3 4'}
                 />
-                <text
-                  x={PAD.left - 6}
-                  y={y + 4}
-                  textAnchor="end"
-                  fontSize={10}
-                  fill="#94a3b8"
-                >
+                <text x={PAD.left - 8} y={y + 3.5} textAnchor="end" fontSize={10} className="fill-slate-400 dark:fill-slate-500">
                   {fmt(gridValue)}
                 </text>
               </g>
@@ -150,51 +132,40 @@ export default function BarChart({
             const slotCX = PAD.left + i * slotW + slotW / 2;
             const primaryX = slotCX - pairW / 2;
             const secondaryX = primaryX + BAR_W + BAR_GAP;
-            const isHovered = tooltipIndex === i;
+            const isHovered = hoverIndex === i;
+            const dim = hoverIndex !== null && !isHovered;
 
             return (
-              <g
-                key={point.label}
-                onMouseEnter={() => setTooltipIndex(i)}
-                className="cursor-default"
-              >
+              <g key={point.label} onMouseEnter={() => setHoverIndex(i)} className="cursor-default">
                 {/* Hover hit area */}
-                <rect
-                  x={slotCX - slotW / 2}
-                  y={PAD.top}
-                  width={slotW}
-                  height={PLOT_H}
-                  fill="transparent"
-                />
+                <rect x={slotCX - slotW / 2} y={PAD.top} width={slotW} height={PLOT_H} fill="transparent" />
+                {/* Hover column highlight */}
+                {isHovered && (
+                  <rect
+                    x={slotCX - slotW / 2 + 2}
+                    y={PAD.top}
+                    width={slotW - 4}
+                    height={PLOT_H}
+                    rx={6}
+                    className="fill-slate-100/70 dark:fill-slate-700/40"
+                  />
+                )}
                 {/* Primary bar */}
                 <rect
-                  x={primaryX}
-                  y={barY(point.primary)}
-                  width={BAR_W}
-                  height={barH(point.primary)}
-                  rx={3}
-                  fill={primaryColor}
-                  opacity={tooltipIndex !== null && !isHovered ? 0.4 : 1}
-                  style={{ transition: 'opacity 150ms' }}
+                  x={primaryX} y={barY(point.primary)} width={BAR_W} height={barH(point.primary)}
+                  rx={3} fill={primaryColor}
+                  opacity={dim ? 0.35 : 1} style={{ transition: 'opacity 150ms' }}
                 />
                 {/* Secondary bar */}
                 <rect
-                  x={secondaryX}
-                  y={barY(point.secondary)}
-                  width={BAR_W}
-                  height={barH(point.secondary)}
-                  rx={3}
-                  fill={secondaryColor}
-                  opacity={tooltipIndex !== null && !isHovered ? 0.4 : 1}
-                  style={{ transition: 'opacity 150ms' }}
+                  x={secondaryX} y={barY(point.secondary)} width={BAR_W} height={barH(point.secondary)}
+                  rx={3} fill={secondaryColor}
+                  opacity={dim ? 0.35 : 1} style={{ transition: 'opacity 150ms' }}
                 />
                 {/* X-axis label */}
                 <text
-                  x={slotCX}
-                  y={PAD.top + PLOT_H + 16}
-                  textAnchor="middle"
-                  fontSize={10}
-                  fill={isHovered ? '#475569' : '#94a3b8'}
+                  x={slotCX} y={PAD.top + PLOT_H + 16} textAnchor="middle" fontSize={10}
+                  className={isHovered ? 'fill-slate-600 dark:fill-slate-300' : 'fill-slate-400 dark:fill-slate-500'}
                   fontWeight={isHovered ? 600 : 400}
                 >
                   {point.label}
@@ -202,68 +173,35 @@ export default function BarChart({
               </g>
             );
           })}
-
-          {/* Tooltip */}
-          {tooltipDatum !== null && (
-            <g style={{ pointerEvents: 'none' }}>
-              {/* Drop shadow filter */}
-              <defs>
-                <filter id="tooltip-shadow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#00000020" />
-                </filter>
-              </defs>
-              <rect
-                x={tooltipX}
-                y={tooltipY}
-                width={88}
-                height={52}
-                rx={6}
-                fill="white"
-                filter="url(#tooltip-shadow)"
-              />
-              {/* Primary row */}
-              <circle cx={tooltipX + 10} cy={tooltipY + 16} r={4} fill={primaryColor} />
-              <text
-                x={tooltipX + 18}
-                y={tooltipY + 20}
-                fontSize={10}
-                fill="#64748b"
-              >
-                {primaryLabel}
-              </text>
-              <text
-                x={tooltipX + 82}
-                y={tooltipY + 20}
-                fontSize={10}
-                fontWeight={700}
-                fill="#1e293b"
-                textAnchor="end"
-              >
-                {tooltipDatum.primary}
-              </text>
-              {/* Secondary row */}
-              <circle cx={tooltipX + 10} cy={tooltipY + 36} r={4} fill={secondaryColor} />
-              <text
-                x={tooltipX + 18}
-                y={tooltipY + 40}
-                fontSize={10}
-                fill="#64748b"
-              >
-                {secondaryLabel}
-              </text>
-              <text
-                x={tooltipX + 82}
-                y={tooltipY + 40}
-                fontSize={10}
-                fontWeight={700}
-                fill="#1e293b"
-                textAnchor="end"
-              >
-                {tooltipDatum.secondary}
-              </text>
-            </g>
-          )}
         </svg>
+
+        {/* Floating HTML tooltip — theme-aware */}
+        {hovered && tip && (
+          <div
+            className="pointer-events-none absolute z-50 min-w-36 rounded-xl border border-slate-100 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2.5 shadow-xl"
+            style={{
+              left: tip.x + 14,
+              top: Math.max(0, tip.y - 50),
+              transform: tip.x > 260 ? 'translateX(-110%)' : undefined,
+            }}
+          >
+            <p className="mb-1.5 text-[11px] font-semibold text-slate-800 dark:text-slate-100">{hovered.label}</p>
+            <div className="flex items-center justify-between gap-4">
+              <span className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400">
+                <span className="h-2 w-2 rounded-full" style={{ background: primaryColor }} />
+                {primaryLabel}
+              </span>
+              <span className="text-[11px] font-bold tabular-nums text-slate-700 dark:text-slate-200">{hovered.primary}</span>
+            </div>
+            <div className="mt-1 flex items-center justify-between gap-4">
+              <span className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400">
+                <span className="h-2 w-2 rounded-full" style={{ background: secondaryColor }} />
+                {secondaryLabel}
+              </span>
+              <span className="text-[11px] font-bold tabular-nums text-slate-700 dark:text-slate-200">{hovered.secondary}</span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

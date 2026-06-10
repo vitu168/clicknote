@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Camera, Save, Check } from 'lucide-react';
 import { useSession } from '@/lib/session';
 import { userProfileService } from '@/lib/services/userProfileService';
@@ -17,25 +17,20 @@ function initials(src: string | null | undefined): string {
 const inputCls = 'w-full rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700/60 px-3.5 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-accent-400 dark:focus:border-accent-500 focus:ring-2 focus:ring-accent-100 dark:focus:ring-accent-950/40 transition-all';
 
 export default function ProfileSettings() {
+  const { profile } = useSession();
+  return <ProfileForm key={profile?.id ?? 'pending'} />;
+}
+
+function ProfileForm() {
   const { t } = useI18n();
   const { user, profile, refreshProfile } = useSession();
 
-  const [name,      setName]      = useState('');
-  const [email,     setEmail]     = useState('');
-  const [avatarUrl, setAvatarUrl] = useState('');
+  const [name,      setName]      = useState(profile?.name ?? user?.name ?? '');
+  const email                     = user?.email ?? '';
+  const avatarUrl                 = profile?.avatarUrl ?? '';
   const [saving,    setSaving]    = useState(false);
   const [saved,     setSaved]     = useState(false);
   const [error,     setError]     = useState<string | null>(null);
-
-  useEffect(() => {
-    if (user) setEmail(user.email);
-    if (profile) {
-      setName(profile.name ?? user?.name ?? '');
-      setAvatarUrl(profile.avatarUrl ?? '');
-    } else if (user) {
-      setName(user.name ?? '');
-    }
-  }, [user, profile]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

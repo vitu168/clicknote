@@ -40,7 +40,10 @@ export default function ProfilePage() {
     }
   }, [user]);
 
-  useEffect(() => { fetchNotes(); }, [fetchNotes]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- async fetcher: state updates happen after await
+    void fetchNotes();
+  }, [fetchNotes]);
 
   if (!user) return null;
 

@@ -55,7 +55,8 @@ export default function NoteDetailPage() {
   }, [id]);
 
   useEffect(() => {
-    fetchNote();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- async fetcher: state updates happen after await
+    void fetchNote();
   }, [fetchNote]);
 
   async function handleSave() {

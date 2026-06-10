@@ -18,8 +18,10 @@ interface SessionContextValue {
 
 const SessionContext = createContext<SessionContextValue | undefined>(undefined);
 
+bootstrapAuthToken();
+
 export function SessionProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(() => customAuth.getCurrentUser());
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -37,9 +39,8 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    bootstrapAuthToken();
     const current = customAuth.getCurrentUser();
-    setUser(current);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- async loader: setProfile happens after await
     if (current) loadProfile(current);
     setLoading(false);
 

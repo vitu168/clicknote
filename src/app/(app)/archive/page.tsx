@@ -48,7 +48,8 @@ export default function ArchivePage() {
   }, [userId]);
 
   useEffect(() => {
-    fetchArchived();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- async fetcher: state updates happen after await
+    void fetchArchived();
     return onArchiveChange(fetchArchived);
   }, [fetchArchived]);
 

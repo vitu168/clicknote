@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Eye, EyeOff, LogIn } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { useSession } from '@/lib/session';
 import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
