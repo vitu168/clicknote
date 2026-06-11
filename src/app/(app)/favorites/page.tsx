@@ -7,7 +7,8 @@ import ViewToggle, { type ViewMode } from '@/components/ui/ViewToggle';
 import Pagination from '@/components/ui/Pagination';
 import { useI18n } from '@/lib/i18n';
 import { useRouter } from 'next/navigation';
-import NoteCard, { NoteListHeader } from '@/components/notes/NoteCard';
+import NoteCard from '@/components/notes/NoteCard';
+import NotesTable from '@/components/notes/NotesTable';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import { noteService } from '@/lib/services/noteService';
 import type { NoteInfo } from '@/lib/types';
@@ -141,20 +142,13 @@ export default function FavoritesPage() {
             </p>
           </div>
         ) : view === 'list' ? (
-          <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden bg-white dark:bg-slate-800 shadow-sm">
-            <NoteListHeader />
-            {notes.map((note) => (
-              <NoteCard
-                key={note.id}
-                note={note}
-                view="list"
-                onToggleFavorite={handleToggleFavorite}
-                onDelete={handleDelete}
-                onArchive={handleArchive}
-                onClick={(n) => router.push(`/notes/${n.id}`)}
-              />
-            ))}
-          </div>
+          <NotesTable
+            notes={notes}
+            onOpen={(n) => router.push(`/notes/${n.id}`)}
+            onToggleFavorite={handleToggleFavorite}
+            onArchive={handleArchive}
+            onDelete={handleDelete}
+          />
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-2">
             {notes.map((note) => (

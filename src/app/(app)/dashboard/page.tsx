@@ -205,9 +205,9 @@ export default function DashboardPage() {
         : insights && <Insights data={insights} />}
 
       {/* ── Row: Donut (left, narrow) + Monthly bar (right, wide) ── */}
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
-        <div className="lg:col-span-2 min-h-65">
-          {loading ? skeleton('h-full min-h-65') : (
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-5 lg:items-start">
+        <div className="lg:col-span-2">
+          {loading ? skeleton('h-64') : (
             <DonutChart
               data={donutData}
               title={t('chart.workspace_title')}
@@ -216,8 +216,8 @@ export default function DashboardPage() {
             />
           )}
         </div>
-        <div className="lg:col-span-3 min-h-65">
-          {loading ? skeleton('h-full min-h-65') : (
+        <div className="lg:col-span-3">
+          {loading ? skeleton('h-56') : (
             <BarChart
               data={barData}
               title={t('chart.monthly_title')}

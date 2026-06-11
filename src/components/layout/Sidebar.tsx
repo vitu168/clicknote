@@ -288,9 +288,9 @@ export default function Sidebar() {
         open={signOutOpen}
         onClose={() => setSignOutOpen(false)}
         onConfirm={handleSignOut}
-        title="Sign out"
-        description="You'll need to sign in again to access your workspace."
-        confirmLabel="Sign out"
+        title={t('sidebar.sign_out_title')}
+        description={t('sidebar.sign_out_desc')}
+        confirmLabel={t('sidebar.sign_out_label')}
         variant="danger"
       />
     </>

@@ -7,7 +7,8 @@ import ViewToggle, { type ViewMode } from '@/components/ui/ViewToggle';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import Pagination from '@/components/ui/Pagination';
 import { useI18n } from '@/lib/i18n';
-import NoteCard, { NoteListHeader } from '@/components/notes/NoteCard';
+import NoteCard from '@/components/notes/NoteCard';
+import NotesTable from '@/components/notes/NotesTable';
 import { noteService } from '@/lib/services/noteService';
 import type { NoteInfo } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -136,18 +137,11 @@ export default function ArchivePage() {
             </p>
           </div>
         ) : view === 'list' ? (
-          <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden bg-white dark:bg-slate-800 shadow-sm">
-            <NoteListHeader />
-            {paged.map((note) => (
-              <NoteCard
-                key={note.id}
-                note={note}
-                view="list"
-                onUnarchive={handleUnarchive}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
+          <NotesTable
+            notes={paged}
+            onUnarchive={handleUnarchive}
+            onDelete={handleDelete}
+          />
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-2">
             {paged.map((note) => (

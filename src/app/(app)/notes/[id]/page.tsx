@@ -17,12 +17,14 @@ import type { NoteInfo } from '@/lib/types';
 import { useSession } from '@/lib/session';
 import { archiveNote } from '@/lib/archive';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/lib/i18n';
 
 export default function NoteDetailPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const id = Number(params?.id);
   const { user } = useSession();
+  const { t } = useI18n();
 
   const [note, setNote] = useState<NoteInfo | null>(null);
   const [name, setName] = useState('');
@@ -62,7 +64,7 @@ export default function NoteDetailPage() {
   async function handleSave() {
     if (!note || !user) return;
     if (!name.trim()) {
-      setError('Title is required.');
+      setError(t('note.title_required'));
       return;
     }
     setSaving(true);
@@ -99,7 +101,7 @@ export default function NoteDetailPage() {
 
   async function handleDelete() {
     if (!note) return;
-    if (!confirm('Delete this note permanently?')) return;
+    if (!confirm(t('note.delete_confirm'))) return;
     await noteService.deleteNote(note.id);
     router.push('/notes');
   }
@@ -130,7 +132,7 @@ export default function NoteDetailPage() {
           href="/notes"
           className="inline-flex items-center gap-1.5 rounded-xl bg-accent-600 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-700 transition-colors"
         >
-          <ArrowLeft className="h-4 w-4" /> Back to notes
+          <ArrowLeft className="h-4 w-4" /> {t('note.back')}
         </Link>
       </div>
     );
@@ -144,13 +146,13 @@ export default function NoteDetailPage() {
           onClick={() => router.push('/notes')}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
         >
-          <ArrowLeft className="h-3.5 w-3.5" /> Back to notes
+          <ArrowLeft className="h-3.5 w-3.5" /> {t('note.back')}
         </button>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={handleToggleFavorite}
-            title={note?.isFavorites ? 'Unfavorite' : 'Favorite'}
+            title={note?.isFavorites ? t('note.unfavorite_title') : t('note.favorite_title')}
             className={cn(
               'flex h-9 w-9 items-center justify-center rounded-xl border transition-colors',
               note?.isFavorites
@@ -163,7 +165,7 @@ export default function NoteDetailPage() {
           <button
             type="button"
             onClick={handleArchive}
-            title="Archive"
+            title={t('note.archive_title')}
             className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 dark:text-slate-500 hover:bg-accent-50 dark:hover:bg-accent-950/30 hover:text-accent-500 dark:hover:text-accent-400 transition-colors"
           >
             <Archive className="h-4 w-4" />
@@ -171,7 +173,7 @@ export default function NoteDetailPage() {
           <button
             type="button"
             onClick={handleDelete}
-            title="Delete"
+            title={t('note.delete_title')}
             className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 dark:text-slate-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
           >
             <Trash2 className="h-4 w-4" />
@@ -184,17 +186,17 @@ export default function NoteDetailPage() {
           type="text"
           value={name}
           onChange={(e) => { setName(e.target.value); setDirty(true); }}
-          placeholder="Note title"
+          placeholder={t('note.title_placeholder')}
           className="w-full border-none bg-transparent text-xl font-bold text-slate-900 dark:text-slate-100 placeholder:text-slate-300 dark:placeholder:text-slate-600 outline-none"
         />
         <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-400 dark:text-slate-500">
           <Clock className="h-3 w-3" />
           <span>
-            Updated {note?.updatedAt ? new Date(note.updatedAt).toLocaleString() : '—'}
+            {t('note.updated')} {note?.updatedAt ? new Date(note.updatedAt).toLocaleString() : '—'}
           </span>
           {note?.isFavorites && (
             <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 dark:bg-amber-950/30 px-2 py-0.5 text-amber-600 dark:text-amber-400 font-medium">
-              <Star className="h-2.5 w-2.5" fill="currentColor" /> Favorite
+              <Star className="h-2.5 w-2.5" fill="currentColor" /> {t('note.favorite_badge')}
             </span>
           )}
         </div>
@@ -202,7 +204,7 @@ export default function NoteDetailPage() {
         <textarea
           value={description}
           onChange={(e) => { setDescription(e.target.value); setDirty(true); }}
-          placeholder="Start writing…"
+          placeholder={t('note.write_placeholder')}
           rows={16}
           className="mt-5 w-full resize-none border-none bg-transparent text-sm leading-relaxed text-slate-700 dark:text-slate-300 placeholder:text-slate-300 dark:placeholder:text-slate-600 outline-none"
         />
@@ -212,7 +214,7 @@ export default function NoteDetailPage() {
         )}
 
         <div className="mt-5 flex items-center justify-end gap-3">
-          {saved && <span className="text-xs font-medium text-emerald-600">✓ Saved</span>}
+          {saved && <span className="text-xs font-medium text-emerald-600">{t('note.saved')}</span>}
           <button
             type="button"
             onClick={handleSave}
@@ -224,7 +226,7 @@ export default function NoteDetailPage() {
             )}
           >
             <Save className="h-4 w-4" />
-            {saving ? 'Saving…' : 'Save changes'}
+            {saving ? t('note.saving') : t('note.save_changes')}
           </button>
         </div>
       </div>

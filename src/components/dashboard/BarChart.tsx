@@ -18,9 +18,9 @@ interface BarChartProps {
   secondaryColor?: string;
 }
 
-const PAD = { top: 16, right: 12, bottom: 28, left: 34 };
+const PAD = { top: 12, right: 12, bottom: 24, left: 34 };
 const VIEW_W = 520;
-const VIEW_H = 210;
+const VIEW_H = 150;
 const PLOT_W = VIEW_W - PAD.left - PAD.right;
 const PLOT_H = VIEW_H - PAD.top - PAD.bottom;
 const BAR_W = 13;
@@ -100,7 +100,7 @@ export default function BarChart({
       <div ref={containerRef} className="relative flex-1 px-4 py-3">
         <svg
           viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-          style={{ height: 210, width: '100%' }}
+          style={{ height: VIEW_H, width: '100%' }}
           onMouseMove={handleMove}
           onMouseLeave={handleLeave}
         >

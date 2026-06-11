@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Plus, Star, FileText, RefreshCw } from 'lucide-react';
-import NoteCard, { NoteListHeader } from '@/components/notes/NoteCard';
+import NoteCard from '@/components/notes/NoteCard';
+import NotesTable from '@/components/notes/NotesTable';
 import NoteForm from '@/components/notes/NoteForm';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import SearchInput from '@/components/ui/SearchInput';
@@ -228,20 +229,13 @@ export default function NotesPage() {
             )}
           </div>
         ) : view === 'list' ? (
-          <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden bg-white dark:bg-slate-800 shadow-sm">
-            <NoteListHeader />
-            {notes.map((note) => (
-              <NoteCard
-                key={note.id}
-                note={note}
-                view="list"
-                onDelete={handleDelete}
-                onToggleFavorite={handleToggleFavorite}
-                onArchive={handleArchive}
-                onClick={openDetail}
-              />
-            ))}
-          </div>
+          <NotesTable
+            notes={notes}
+            onOpen={openDetail}
+            onToggleFavorite={handleToggleFavorite}
+            onArchive={handleArchive}
+            onDelete={handleDelete}
+          />
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-2">
             {notes.map((note) => (

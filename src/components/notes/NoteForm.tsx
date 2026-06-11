@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { X, FileText, StickyNote } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { NoteInfo } from '@/lib/types';
+import { useI18n } from '@/lib/i18n';
 
 interface NoteFormProps {
   initial?: Pick<NoteInfo, 'name' | 'description'>;
@@ -14,6 +15,7 @@ interface NoteFormProps {
 }
 
 export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'Save' }: NoteFormProps) {
+  const { t } = useI18n();
   const [name, setName] = useState(initial?.name ?? '');
   const [description, setDescription] = useState(initial?.description ?? '');
   const [loading, setLoading] = useState(false);
@@ -37,13 +39,13 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!name.trim()) { setError('Title is required.'); return; }
+    if (!name.trim()) { setError(t('form.title_required')); return; }
     setError(null);
     setLoading(true);
     try {
       await onSubmit({ name: name.trim(), description: description.trim() });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong.');
+      setError(err instanceof Error ? err.message : t('form.error_generic'));
     } finally {
       setLoading(false);
     }
@@ -76,16 +78,16 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
-              {initial ? 'Edit Note' : 'New Note'}
+              {initial ? t('form.edit_note') : t('form.new_note')}
             </p>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              {initial ? 'Make changes to your note' : 'Capture your idea'}
+              {initial ? t('form.edit_subtitle') : t('form.new_subtitle')}
             </p>
           </div>
           <button
             type="button"
             onClick={close}
-            aria-label="Close"
+            aria-label={t('form.close')}
             className="flex h-8 w-8 items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300 transition-colors"
           >
             <X className="h-4 w-4" />
@@ -98,7 +100,7 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
             {/* Title */}
             <div className="space-y-1.5">
               <label htmlFor="note-title" className="text-[11px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
-                Title <span className="text-rose-400">*</span>
+                {t('form.title_label')} <span className="text-rose-400">*</span>
               </label>
               <input
                 ref={nameRef}
@@ -106,7 +108,7 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="What's this note about?"
+                placeholder={t('form.title_placeholder')}
                 maxLength={200}
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none placeholder:text-slate-400 focus:border-accent-400 focus:bg-white focus:ring-2 focus:ring-accent-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-accent-900/50 transition-all"
               />
@@ -118,13 +120,13 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
             {/* Description */}
             <div className="space-y-1.5">
               <label htmlFor="note-desc" className="text-[11px] font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
-                Description
+                {t('form.desc_label')}
               </label>
               <textarea
                 id="note-desc"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Add details, ideas, or anything you want to remember…"
+                placeholder={t('form.desc_placeholder')}
                 rows={9}
                 className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-accent-400 focus:bg-white focus:ring-2 focus:ring-accent-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-accent-900/50 transition-all"
               />
@@ -135,7 +137,7 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
               <div className="flex items-start gap-3 rounded-xl bg-accent-50 px-4 py-3 dark:bg-accent-950/30">
                 <FileText className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" />
                 <p className="text-xs text-accent-600 dark:text-accent-400">
-                  Your note will appear in the list once saved.
+                  {t('form.tip')}
                 </p>
               </div>
             )}
@@ -156,7 +158,7 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
                 onClick={close}
                 className="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
               >
-                Cancel
+                {t('form.cancel')}
               </button>
               <button
                 type="submit"
@@ -167,7 +169,7 @@ export default function NoteForm({ initial, onSubmit, onCancel, submitLabel = 'S
                   loading && 'cursor-not-allowed opacity-60',
                 )}
               >
-                {loading ? 'Saving…' : submitLabel}
+                {loading ? t('form.saving') : submitLabel}
               </button>
             </div>
           </div>

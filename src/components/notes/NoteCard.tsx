@@ -42,13 +42,14 @@ export function NoteListHeader() {
 
 /* ── Shared action buttons ── */
 function Actions({ note, onToggleFavorite, onArchive, onUnarchive, onDelete }: Omit<NoteCardProps, 'view' | 'onClick'>) {
+  const { t } = useI18n();
   return (
     <div className="flex shrink-0 items-center gap-1">
       {onToggleFavorite && (
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); onToggleFavorite(note); }}
-          aria-label={note.isFavorites ? 'Remove from favorites' : 'Add to favorites'}
+          aria-label={note.isFavorites ? t('note.unfavorite_title') : t('note.favorite_title')}
           className={cn(
             'flex h-7 w-7 items-center justify-center rounded-lg transition-colors',
             note.isFavorites
@@ -63,8 +64,8 @@ function Actions({ note, onToggleFavorite, onArchive, onUnarchive, onDelete }: O
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); onArchive(note); }}
-          aria-label="Archive note"
-          title="Archive"
+          aria-label={t('note.archive_title')}
+          title={t('note.archive_title')}
           className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-500 hover:bg-accent-50 dark:hover:bg-accent-950/30 hover:text-accent-500 dark:hover:text-accent-400 transition-colors"
         >
           <Archive className="h-3.5 w-3.5" />
@@ -74,8 +75,8 @@ function Actions({ note, onToggleFavorite, onArchive, onUnarchive, onDelete }: O
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); onUnarchive(note); }}
-          aria-label="Restore from archive"
-          title="Restore"
+          aria-label={t('note.restore_title')}
+          title={t('note.restore_title')}
           className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
         >
           <ArchiveRestore className="h-3.5 w-3.5" />
@@ -85,7 +86,7 @@ function Actions({ note, onToggleFavorite, onArchive, onUnarchive, onDelete }: O
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); onDelete(note.id); }}
-          aria-label="Delete note"
+          aria-label={t('note.delete_title')}
           className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:text-rose-500 dark:hover:text-rose-400 transition-colors"
         >
           <Trash2 className="h-3.5 w-3.5" />
@@ -96,6 +97,7 @@ function Actions({ note, onToggleFavorite, onArchive, onUnarchive, onDelete }: O
 }
 
 export default function NoteCard({ note, view = 'grid', onDelete, onToggleFavorite, onClick, onArchive, onUnarchive }: NoteCardProps) {
+  const { t } = useI18n();
 
   /* ── LIST ROW (table-style) ── */
   if (view === 'list') {
@@ -117,7 +119,7 @@ export default function NoteCard({ note, view = 'grid', onDelete, onToggleFavori
             <FileText className="h-3.5 w-3.5" />
           </div>
           <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
-            {note.name ?? 'Untitled'}
+            {note.name ?? t('badge.untitled')}
           </p>
         </div>
 
@@ -136,11 +138,11 @@ export default function NoteCard({ note, view = 'grid', onDelete, onToggleFavori
         {note.isFavorites ? (
           <span className="inline-flex w-fit items-center gap-1 rounded-full bg-amber-50 dark:bg-amber-950/30 px-2.5 py-1 text-[11px] font-medium text-amber-600 dark:text-amber-400">
             <Star className="h-2.5 w-2.5" fill="currentColor" />
-            Favorite
+            {t('badge.favorite')}
           </span>
         ) : (
           <span className="inline-flex w-fit items-center rounded-full bg-slate-100 dark:bg-slate-700 px-2.5 py-1 text-[11px] font-medium text-slate-500 dark:text-slate-400">
-            Note
+            {t('badge.note')}
           </span>
         )}
 
@@ -176,7 +178,7 @@ export default function NoteCard({ note, view = 'grid', onDelete, onToggleFavori
             <FileText className="h-4 w-4" />
           </div>
           <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
-            {note.name ?? 'Untitled'}
+            {note.name ?? t('badge.untitled')}
           </p>
         </div>
         <div className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -203,7 +205,7 @@ export default function NoteCard({ note, view = 'grid', onDelete, onToggleFavori
         <span>{formatDate(note.updatedAt ?? note.createdAt)}</span>
         {note.isFavorites && (
           <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-amber-50 dark:bg-amber-950/30 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400">
-            <Star className="h-2.5 w-2.5" fill="currentColor" /> Favorite
+            <Star className="h-2.5 w-2.5" fill="currentColor" /> {t('badge.favorite')}
           </span>
         )}
       </div>
